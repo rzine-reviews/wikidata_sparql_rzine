@@ -177,52 +177,60 @@ Dans le cas de ce notebook, on s’intéresse aux arts visuels et notamment une 
 
 <br />
 
-## Wikidata & RDF
+## Données Wikidata
 
-Wikidata est une base de connaissances libre éditée de manière collaborative et hébergée par la Wikimedia Foundation. Son contenu étant placé sous licence CC01, elle permet de centraliser les données utilisées par différents projets Wikimedia (source : [Wikipédia](https://fr.wikipedia.org/wiki/Wikidata){target="_blank"}). **Les informations saisies dans Wikidata sont des données “brutes” multilingues** ***non-supervisées***.
+Wikidata est une base de connaissances libre éditée de manière collaborative et hébergée par la Wikimedia Foundation. Son contenu étant placé sous [licence CC0](https://www.wikidata.org/wiki/Wikidata:Licensing), elle permet de centraliser les données utilisées par différents projets Wikimedia (source : [Wikipédia](https://fr.wikipedia.org/wiki/Wikidata){target="_blank"}).   
+**Les informations saisies dans Wikidata sont des données “brutes” multilingues** ***non-supervisées*** (voir Fig.2).
 
 ```{r, out.width="75%", fig.cap="Fig.2 Données Wikipédia (DBpédia) vs données Wikidata (source : [Wikidata-Basics/Wikidata Hackathon event for the Festival of Creative Learning 2018](https://thinking.is.ed.ac.uk/wikidata-basics/faq-and-further-reading/){target='_blank'})",  fig.align = 'center',  echo=FALSE, purl = FALSE }
 
 knitr::include_graphics('figures/wikidata_vs_dbpedia.png')
 ```
 
-La première étape est de configurer le notebook pour permettre l'interrogation de données *à distance* au sein d'un dépôt de données accessibles dans un cadre de description standard du web sémantique. 
-En particulier, ces données sont accessibles sous forme de graphes de données associées aux objets. 
+## Stratégie exploratoire & standard RDF du W3C
+
+La première étape est de configurer le *notebook* pour permettre l'interrogation de données *à distance* au sein d'un dépôt de données accessibles dans un cadre de description standard du web sémantique. 
+Ces données sont accessibles sous une forme générique de *graphes de données* associés aux objets (voir la Fig.3). 
 
 ```{r, out.width="75%", fig.cap="Fig.3 Exemple de graphe de triplets (source : [W3C](https://www.w3.org/TR/rdf11-primer/){target='_blank'})",  fig.align = 'center',  echo=FALSE, purl = FALSE }
 
 knitr::include_graphics('figures/example-graph.jpg')
 ```
 
-L'unité de construction d'un graphe est un triplet du cadre de description des ressources du W3C (RDF), et adopte une forme très générale **sujet - prédicat - objet** traduisant, par exemple, en données structurées l'**assertion ou déclaration "Bob est intéressé par Mona Lisa"** :
+Une unité de construction d'un *graphe de données* est un triplet du cadre de description des ressources du W3C (RDF). Il adopte une forme générale **sujet - prédicat - objet**.  
+Par exemple, l'**assertion ou déclaration "Bob est intéressé par Mona Lisa"** est formalisée selon la représentation de la Fig. 4.
 
 ```{r, out.width="75%",  fig.cap="Fig.4 Composantes génériques d'un triplet RDF", fig.align = 'center',  echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/triplet.svg')
 ```
 
-## Données liées utilisées
+## Description des données et du modèle de données
 
+La description ci-dessous n'est pas exhaustive. Pour de plus amples informations, se référer à la [documentation de Wikidata](https://www.wikidata.org/wiki/Wikidata:Introduction).
 
-Dans ce notebook, les peintures sont des objets décrits par leurs relations aux données liées instanciant certaines classes et propriétés de Wikidata utiles à l'étude de cas proposée. Schématiquement, les peintres, peintures et lieux d'exposition sont modélisées selon la représentation schématique ci-dessous, comprenant des entités liées entre elles et mobilisant une syntaxe spécifique avec des préfixes^[voir notamment, les préfixes wikidata [ici](https://www.wikidata.org/wiki/EntitySchema:E49){target="_blank"}]. 
+Dans ce notebook, les peintures sont des objets décrits par leurs relations aux données instanciant certaines classes et propriétés de Wikidata utiles à l'étude de cas proposée.   
+Les peintres, peintures et lieux d'exposition sont modélisés selon la représentation schématique ci-dessous, comprenant des entités liées entre elles et mobilisant une syntaxe spécifique avec des *préfixes*^[un préfixe est une modalité de simplification d'écriture faisant référence à un *espace de noms*, voir notamment, les préfixes wikidata [ici](https://www.wikidata.org/wiki/EntitySchema:E49){target="_blank"}].  
 
-```{r, out.width="75%", fig.cap="Fig.5 Classes et propriétés générales de Wikidata mobilisées dans l'étude de cas proposée", fig.align = 'center', echo=FALSE, purl = FALSE }
-knitr::include_graphics('figures/modele_interroge.svg')
-```
+Afin de disposer des données relatives à une œuvre visuelle, son auteur ou autrice et sa localisation, plusieurs données associées à l'artiste, à l'œuvre (voir Fig. 5) ou aux déclarations (*statements*, voir Fig.6) sur celle-ci sont nécessaires, notamment :   
 
-
-Afin de disposer des données relatives à une œuvre visuelle, son auteur et sa localisation, plusieurs données associées à l'artiste, à l'œuvre ou aux déclarations (*statements*) sur celle-ci sont nécessaires, notamment :   
-
-- **L'auteur (ici le peintre)** est une entité (préfixe `wd`) ayant pour propriété directe (préfixe `wdt`) :
+- **l'auteur ou l'autrice (ici le peintre)** est une entité (préfixe `wd`) ayant pour propriété directe (préfixe `wdt`) :
   - d'être une instance de Wikidata ([P31](https://www.wikidata.org/wiki/Property:P31){target="_blank"}) de nature une entité humaine ([Q5](https://www.wikidata.org/wiki/Q5));
   - ayant pour catégorie commune ([P373](https://www.wikidata.org/wiki/Property:P373){target="_blank"}) le libellé "Johannes Vermeer";
   - et d'être le créateur ([P170](https://www.wikidata.org/wiki/Property:P170){target="_blank"}) d'œuvres. 
   
    
-- **La désignation de l'œuvre elle-même**, pas le biais de l'entité (préfixe `wd`) associée à l'identifiant qui la représente, par exemple `wd:Q4660880` pour l'œuvre dénommée [A Young Woman Seated at the Virginals](https://www.wikidata.org/wiki/Q4660880){target="_blank"} du peintre Johannes Vermeer.
+- **la désignation de l'œuvre elle-même**, pas le biais de l'entité (préfixe `wd`) associée à l'identifiant qui la représente, par exemple `wd:Q4660880` pour l'œuvre dénommée [A Young Woman Seated at the Virginals](https://www.wikidata.org/wiki/Q4660880){target="_blank"} du peintre Johannes Vermeer.
 
-- **La localisation de l'entité au moyen de la propriété ([P276](https://www.wikidata.org/wiki/Property:P276){target="_blank"})**, permettant l'accès aux assertions ou déclarations de localisation de l'œuvre dans un lieu (géographique & institutionnel) et un espace de temps (intervalle) : `wdt:P276`
+- **la localisation de l'entité au moyen de la propriété ([P276](https://www.wikidata.org/wiki/Property:P276){target="_blank"})**, permettant l'accès aux assertions ou déclarations de localisation de l'œuvre dans un lieu (géographique & institutionnel) et un espace de temps (intervalle) : `wdt:P276`
 
-- **Les coordonnées de la localisation associée à l'œuvre** au moyen de la propriété directe ([P625](https://www.wikidata.org/wiki/Property:P625){target="_blank"}).
+- **les coordonnées de la localisation associée à l'œuvre** au moyen de la propriété directe ([P625](https://www.wikidata.org/wiki/Property:P625){target="_blank"}).
+
+
+```{r, out.width="75%", fig.cap="Fig.5 Classes et propriétés générales de Wikidata mobilisées dans l'étude de cas proposée", fig.align = 'center', echo=FALSE, purl = FALSE }
+knitr::include_graphics('figures/modele_interroge.svg')
+```
+
+Pour collecter les données relatives aux déclarations, les modalités d'interrogation du dépôt nécessitent l'usage de [*qualifiers*](https://www.wikidata.org/wiki/Help:Qualifiers) associés aux déclarations.
 
 ```{r, out.width="75%", fig.cap="Fig.6 Classes et propriétés spécifiques de Wikidata mobilisées dans le cas d'une déclaration (statement)", fig.align = 'center', echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/modele_interroge_qualifiers.svg')
@@ -230,17 +238,16 @@ knitr::include_graphics('figures/modele_interroge_qualifiers.svg')
 
 # Interroger Wikidata
 
+Un [service de collecte des données de Wikidata en langage Sparql](https://query.wikidata.org/) est disponible et offre une solution très complète en première approche (exemples, assistant de requêtes, diversité des représentations etc.). Toutefois, pour explorer la question de la représentation d'une *trajectoire* d'une peinture, la solution du notebook R offre une alternative concrète à une complexité intrinsèque au langage [SPARQL]((https://fr.wikipedia.org/wiki/SPARQL){target="_blank"}).  
 Le package `WikidataQueryServiceR` fournit une API client (i.e. interface de programmation) pour interroger le [*Wikidata Query Service*](https://query.wikidata.org/){target="_blank"} directement via R.
 
-Une première étape est de permettre à l'utilisateur ou utilisatrice du notebook d'identifier l'artiste qu'il ou elle va choisir. On s'intéresse, dans cette étude de cas, aux œuvres de **Johannes Vermeer**. Il sera possible de *jouer* en fin d'exercice pour obtenir les œuvres d'autres peintres ou artistes.
-
-Afin de requêter les données via le package `WikidataQueryServiceR`, il est nécessaire de construire un certain type de requête (ici, en [langage SPARQL](https://fr.wikipedia.org/wiki/SPARQL){target="_blank"}), et de l'exécuter.
+La première étape est de permettre à l'utilisateur ou utilisatrice du notebook d'identifier l'artiste qu'il ou elle va choisir. On choisit arbitrairement, dans cette étude de cas, les œuvres de **Johannes Vermeer**. Toutefois, il sera possible de *jouer*, en fin d'exercice, pour obtenir les données d'œuvres d'autres peintres ou artistes.
 
 <br />
 
 ## Première requête SPARQL
 
-Par exemple, la requête ci-dessous demande l'identifiant d'une entité ayant pour propriété (P31) d'appartenir à la classe des êtres humains (Q5) qui entre dans la catégorie (P373) Johannes Vermeer et dont on demande une image ([P18](https://www.wikidata.org/wiki/Property:P18){target="_blank"}).
+La requête ci-dessous demande l'identifiant d'une entité ayant pour propriété (P31) d'appartenir à la classe des êtres humains (Q5) qui entre dans la catégorie (P373) Johannes Vermeer et dont on demande une image ([P18](https://www.wikidata.org/wiki/Property:P18){target="_blank"}).
 
 
 ```{r sparql1,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
