@@ -64,29 +64,28 @@ knitr::include_graphics("figures/wikidata_page_description.svg")
 
 Les principaux termes utilisés figurent dans le [glossaire](#endnotes) du notebook (pour aller plus loin, le [glossaire de Wikidata](https://www.wikidata.org/wiki/Wikidata:Glossary/fr){target="_blank"}).
 
-L'idée de départ qui conduit à la démarche proposée, est d'accéder à un dépôt de données de sorte à interroger une ou des modalités possibles pour tracer une ou des *trajectoires*. Compte-tenu du formalisme et de la spécificité des données non supervisées de Wikidata, l'objet choisi pour l'étude est une peinture sur son support physique inséré dans un cadre, susceptible d'être exposée au sein d'un musée ou d'une institution culturelle dans le monde. ([voir les données utilisées](#données-utilisées)).
+L'idée de départ qui conduit à la démarche proposée, est d'accéder à un dépôt de données de sorte à interroger une ou des modalités possibles pour tracer une ou des *trajectoires*^[voir par exemple, *Construction de typologies de trajectoires*, Nicolas Robette, [Tuto@Mate#41](https://mate-shs.cnrs.fr/actions/tutomate/tuto41_analyse_trajectoires_nicolas_robette/)]. Compte-tenu du formalisme et de la spécificité des données non supervisées de Wikidata, l'objet choisi pour l'étude est une peinture sur son support physique inséré dans un cadre, susceptible d'être exposée au sein d'un musée ou d'une institution culturelle dans le monde. ([voir les données utilisées](#données-utilisées)).
 
 <br />
 
 # R, code source et packages
-**Ce document computationnel (Notebook) peut être reproduit à l'identique sur un ordinateur**. **Pour cela il est nécessaire d'avoir installé R**.   
-Il est nécessaire également d'installer deux *packages*[^1] (`knitr` et `rmdformats`).
+**Ce document computationnel (Notebook) peut être reproduit à l'identique sur un ordinateur**. **Pour cela il est nécessaire d'avoir installé R**. Il est nécessaire également d'installer deux *packages*[^1] (`knitr` et `rmdformats`).
 
 [^1]: La bibliothèque des fonctions internes de R est divisée en ensembles de fonctions et de jeux de données apparentés nommés *packages* (terme que l’équipe de traduction française de R a choisi de conserver tel quel) [(Goulet, 2016, p.62)](https://cran.r-project.org/doc/contrib/Goulet_introduction_programmation_R.pdf){target="_blank"}
 
 ## Installer R et Rstudio
 Seul R est indispensable pour reproduire ce document. Mais il est fortement conseillé d'installer également l'IDE Rstudio qui facilite considérablement la pratique de R et la production de documents au format Rmarkdown.  
 R et Rstudio s'installent comme n'importe quel autre logiciel :  
-- [Téléchargez R](https://cran.r-project.org/){target="_blank"}, mis à disposition sur le CRAN     
+- [Téléchargez R](https://cran.r-project.org/){target="_blank"}, mis à disposition sur le CRAN ;
 - [Télécharger Rstudio](https://www.rstudio.com/products/rstudio/download/){target="_blank"} (Rstudio Desktop Free version) sur le site de l'entreprise.    
 <br />
 
-## `knitr` & `rmdformats`
+## Packages associés au Notebook, `knitr` & `rmdformats`
 Deux *packages* sont nécessaires pour reproduire ce document à l'identique :  
-- `knitr`: offre des outils pour la génération de rapports dynamiques (*literate programming*)   
-- `rmdformats` : met à disposition le modèle (*template*) de mise en page HTML utilisé (*readthedown*) 
+- `knitr` : offre des outils pour la génération de rapports dynamiques (*literate programming*) ;
+- `rmdformats` : met à disposition le modèle (*template*) de mise en page HTML utilisé (adapté de *readthedown*^[pour les différents formats disponibles, voir par exemple la [page rmdformats](https://cran.r-project.org/web/packages/rmdformats/readme/README.html) du dépôt Cran-R-project.]).
 
-**Installez-les, en exécutant cette ligne de commande dans la console :**
+**Installez-les, en exécutant cette ligne de commande dans la console R :**
 ```{r install0, eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE}
 install.packages("knitr", "rmdformats")
 ```
@@ -95,12 +94,13 @@ install.packages("knitr", "rmdformats")
 
 En fonction du système d'exploitation utilisé, il peut-être nécessaire d'installer des logiciels ou des bibliothèques logicielles dont certains *packages* dépendent.
 
-<b>Sur Windows, l'exécution d'un fichier au format Rmarkdown (avec `knitr`) nécessite l'installation du logiciel [<b>Pandoc</b>](https://pandoc.org/){target="_blank"}</b>. Ce dernier permet de convertir un fichier d'un format donné à un autre (.md vers .html par exemple).
+<b>Sur Windows, l'exécution d'un fichier au format Rmarkdown (avec `knitr`) nécessite l'installation du logiciel [<b>Pandoc</b>](https://pandoc.org/){target="_blank"}</b>^[Ce dernier permet de convertir un fichier d'un format donné à un autre (.md vers .html par exemple).].
 </div>
 <br />
+
 ## Code source du document
 
-Pour les utilisateurs et les utilisatrices de [logiciel de gestion de versions](https://fr.wikipedia.org/wiki/Logiciel_de_gestion_de_versions){target="_blank"}, vous pouvez cloner le dépôt du code source :   
+Pour les utilisateurs et les utilisatrices du [logiciel de gestion de versions](https://fr.wikipedia.org/wiki/Logiciel_de_gestion_de_versions){target="_blank"} Git, le dépôt du code source est accessible ici :   
 
 <p><center>
 [![](https://badgen.net/badge/Code%20source%20on%20/GitHub/blue?icon=github)](https://gitlab.huma-num.fr/gt-notebook/workshop/workshop_3_decembre_2021/atelier_notebooks/-/tree/main/Rmarkdown)
@@ -108,26 +108,28 @@ Pour les utilisateurs et les utilisatrices de [logiciel de gestion de versions](
 </p>
 
 
-Sinon, vous pouvez récupérer le code source de ce document Rmarkdown en cliquant tout simplement sur ce lien ci-dessous. Décompressez le dossier, puis double-cliquez sur le fichier projet ***Rmarkdown.Rproj***. Cela enclenchera l'ouverture du projet dans Rstudio.
+Sinon, il est possible de récupérer le code source de ce document Rmarkdown en cliquant sur le lien ci-dessous. 
 
 <p class="center">[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span> <br /> Télécharger le code source](https://gitlab.huma-num.fr/gt-notebook/workshop/workshop_3_decembre_2021/atelier_notebooks/-/archive/main/atelier_notebooks-main.zip?path=Rmarkdown)</p>
 
+Décompresser le dossier, puis double-cliquer sur le fichier projet ***Rmarkdown.Rproj*** pour ouvrir le projet dans l'IDE Rstudio.
 <br />
 
+## Packages nécessaires au traitement des données et à la représentation d'une *trajectoire*
 
-## Packages utilisés
+Les packages utilisés pour l'exploration de données présentée dans ce document sont :
 
-Voici la liste des packages utilisés pour l'exploration de données présentée dans ce document. **Il seront automatiquement installés si vous exécutez** (***knitez***) **le fichier source** (***mon_notebook_final.rmd***).
+- `WikidataQueryServiceR`: fournit une interface de programmation (API client) pour le [*Wikidata Query Service*](https://query.wikidata.org/){target="_blank"} ;   
+- `rnaturalearth`: met à disposition les données cartographiques de [*Natural Earth*](https://www.naturalearthdata.com/){target="_blank"} ;  
+- `sf`: permet la gestion et la manipulation (géotraitement) de données géographiques ;  
+- `mapview`: permet de produire facilement des cartes interactives (leaflet) ;  
+- `tmap` : permet de produire de cartes thématiques ; 
+- `ggplot2`: permet de produire des graphiques, basés sur la [grammaire graphique théorisée par *Leland Wilkinson*](https://www.cultura.com/the-grammar-of-graphics-9780387987743.html){target="_blank"}  ;  
+- `patchwork`: permet de combiner facilement plusieurs graphiques `ggplot2` ;  
+- `jpeg`: permet d'importer, enregistrer et afficher des images matricielles (format bitmap) ;
+- `DT`: fournit une mise en forme dynamique (HTML) de tableaux de données (bibliothèque javascript [DataTables](https://datatables.net/){target="_blank"}).
 
-- `WikidataQueryServiceR`: fournit une interface de programmation (API client) pour le [*Wikidata Query Service*](https://query.wikidata.org/){target="_blank"}    
-- `rnaturalearth`: met à disposition les données cartographiques de [*Natural Earth*](https://www.naturalearthdata.com/){target="_blank"}   
-- `sf`: pour la gestion et la manipulation (géotraitement) de données géographiques   
-- `mapview`: pour produire facilement des cartes interactives (leaflet)   
-- `tmap` : pour produire de cartes thématiques
-- `ggplot2`: pour produire des graphiques, basés sur la [grammaire graphique théorisée par *Leland Wilkinson*](https://www.cultura.com/the-grammar-of-graphics-9780387987743.html){target="_blank"}    
-- `patchwork`: permet de combiner facilement plusieurs graphiques ggplot2   
-- `jpeg`: pour importer, enregistrer et afficher des images matricielles (bitmap) 
-- `DT`: pour une mise en forme dynamique (HTML) de tableaux de données (bibliothèque javascript [DataTables](https://datatables.net/){target="_blank"}) 
+**Ces *packages* seront automatiquement installés en exécutant** (***knitant***) **le fichier source** (***mon_notebook_final.rmd***).
 
 ```{r install1, eval=FALSE, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
 
@@ -152,17 +154,16 @@ install.packages(mes_packages_no_install)
 
 <div class="alert alert-danger" role="alert">
 
-<b>Sur Linux, Il est parfois nécessaire d'installer [<b>GDAL</b>](https://gdal.org/){target="_blank"}</b> (bibliothèque permettant de lire et de traiter un très grand nombre de formats de données spatiales) <b>pour utiliser le package `sf`</b>.
+<b>Sur Linux, il est parfois nécessaire d'installer [<b>GDAL</b>](https://gdal.org/){target="_blank"}</b> (bibliothèque permettant de lire et de traiter un très grand nombre de formats de données spatiales) <b>pour utiliser le package `sf`</b>.
 </div>   
 
 <div class="alert alert-success" role="alert">
 
-<b>Retrouvez l'ensemble des informations système et version de package utilisés en</b> <a href="#info-session"><b>fin de document</b></a>.
+<b>L'ensemble des informations du système et des versions de *packages* utilisés est fournit en</b> <a href="#info-session"><b>fin de document</b></a>.
 </div>    
    
 
 <br />
-
 
 # Données utilisées
 
