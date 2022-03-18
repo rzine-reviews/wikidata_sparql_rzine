@@ -76,13 +76,13 @@ L'idée de départ qui conduit à la démarche proposée, est d'accéder à un d
 ## Installer R et Rstudio
 Seul R est indispensable pour reproduire ce document. Mais il est fortement conseillé d'installer également l'IDE Rstudio qui facilite considérablement la pratique de R et la production de documents au format Rmarkdown.  
 R et Rstudio s'installent comme n'importe quel autre logiciel :  
-- [Téléchargez R](https://cran.r-project.org/){target="_blank"}, mis à disposition sur le CRAN ;
+- [Téléchargez R](https://cran.r-project.org/){target="_blank"}, mis à disposition sur le CRAN ;  
 - [Télécharger Rstudio](https://www.rstudio.com/products/rstudio/download/){target="_blank"} (Rstudio Desktop Free version) sur le site de l'entreprise.    
 <br />
 
 ## Packages associés au Notebook, `knitr` & `rmdformats`
 Deux *packages* sont nécessaires pour reproduire ce document à l'identique :  
-- `knitr` : offre des outils pour la génération de rapports dynamiques (*literate programming*) ;
+- `knitr` : offre des outils pour la génération de rapports dynamiques (*literate programming*) ;  
 - `rmdformats` : met à disposition le modèle (*template*) de mise en page HTML utilisé (adapté de *readthedown*^[pour les différents formats disponibles, voir par exemple la [page rmdformats](https://cran.r-project.org/web/packages/rmdformats/readme/README.html) du dépôt Cran-R-project.]).
 
 **Installez-les, en exécutant cette ligne de commande dans la console R :**
