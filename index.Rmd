@@ -1,6 +1,6 @@
 ---
-title: "Histoire de cadre spatio-temporelle"
-subtitle: "Exemple appliqué d'un notebook avec R"
+title: "Histoire de cadre : une histoire spatio-temporelle"
+subtitle: "Exemple appliqué d'un notebook avec R sur des données Wikidata"
 date: "`r Sys.Date()`"
 author: 
  - name: Raphaëlle KRUMMEICH
@@ -47,16 +47,16 @@ knitr::opts_chunk$set(echo=TRUE,
 
 > L'objectif de ce document computationnel (notebook R ou Rmarkdown) est de partager une analyse exploratoire de données^[une donnée est un objet relationnel, voir par exemple et de manière non-exhaustive, [le séminaire 2019 de l'ENSSIB](https://www.enssib.fr/seminaire-les-donnees-mille-temps-01){target="_blank"} ou encore l'article de Louis Quéré [Au juste, qu'est-ce que l'information ?](https://www.persee.fr/doc/reso_0751-7971_2000_num_18_100_2227){target="_blank"}], suffisamment détaillée pour être intelligible pour un large public et reproductible à l'identique sur sa machine. 
 >
-> Il permet ainsi de présenter clairement, étapes par étapes, toute une chaîne de traitement de données réalisée avec R à un public qui ne maîtrise pas forcément ce langage. 
+> Le notebook permet ainsi de présenter clairement, étape par étape, toute une chaîne de traitements de données réalisée avec R à un public qui ne maîtrise pas forcément ce langage. 
 >
-> Un certain nombre de métadonnées^[une métadonnée est une donnée sur une donnée] associées au notebook (information de session, liste et version de packages, bibliographie, glossaire, difficultés rencontrées...) fournit les informations nécessaires à la réutilisation d'une partie du code par les lecteurs et lectrices, voire de reproduire ce document en local.
+> Un certain nombre de métadonnées^[une métadonnée est une donnée sur une donnée] associées au notebook (information de session, liste et version de packages, bibliographie, glossaire, difficultés rencontrées...) fournit les informations nécessaires à la réutilisation d'une partie du code par les lecteurs et lectrices, voire de reproduire ce document et l'exécuter en local sur son propre ordinateur.
 
 # Introduction {-}
 
-Nous présentons dans ce document une chaîne complète de traitement de données, de leur collecte à leur visualisation graphique. 
+Nous présentons dans ce document une chaîne complète de traitements de données Wikidata, de leur collecte à leur visualisation graphique. 
 Le processus exploratoire des données, parfois itératif, a été conservé. Cela permet de bien comprendre l'approche réflexive des auteurs et autrices et de retranscrire au mieux la démarche scientifique exploratoire.
 
-Dans cet exemple, les données utilisées sont celles disponibles et mises en jour sur Wikidata. Elles sont structurées sous une forme décrite sommairement ci-dessous. Pour plus d'informations, il est possible de consulter l'[introduction à Wikidata](https://www.wikidata.org/wiki/Wikidata:Introduction/fr){target="_blank"} ou la [page Wikibase](https://www.mediawiki.org/wiki/Wikibase/Indexing/RDF_Dump_Format){target="_blank"} dédiée au format RDF du dépôt de données Wikidata.
+Dans ce notebook, les données utilisées sont celles disponibles et mises en jour sur Wikidata. Elles sont structurées sous une forme décrite sommairement ci-dessous (voir Fig. 1). Pour plus d'informations, il est possible de consulter l'[introduction à Wikidata](https://www.wikidata.org/wiki/Wikidata:Introduction/fr){target="_blank"} ou la [page Wikibase](https://www.mediawiki.org/wiki/Wikibase/Indexing/RDF_Dump_Format){target="_blank"} dédiée au format RDF du dépôt de données Wikidata.
 
 ```{r, out.width="70%", fig.cap="Fig.1 Diagramme d'une entité Wikidata avec les principaux termes utilisés (Source : [Wikidata](https://www.wikidata.org/wiki/Wikidata:Introduction){target='_blank'})", fig.align = 'center', echo=FALSE, purl=FALSE}
 knitr::include_graphics("figures/wikidata_page_description.svg")
@@ -64,31 +64,22 @@ knitr::include_graphics("figures/wikidata_page_description.svg")
 
 Les principaux termes utilisés figurent dans le [glossaire](#endnotes) du notebook (pour aller plus loin, le [glossaire de Wikidata](https://www.wikidata.org/wiki/Wikidata:Glossary/fr){target="_blank"}).
 
-L'idée sous-tendue à la démarche proposée est d'interroger un dépôt de données afin de proposer de tracer une ou des trajectoires. Compte-tenu du formalisme et du contenu des données non supervisées de Wikidata, le choix de l'objet étudié ici est une peinture sur un support physique dans un cadre, susceptible d'être exposée au sein d'un musée ou d'une institution culturelle dans le monde. ([voir les données utilisées](#données-utilisées)).
+L'idée de départ qui conduit à la démarche proposée, est d'interroger un dépôt de données de sorte à interroger une ou des modalités possibles pour tracer une ou des *trajectoires*. Compte-tenu du formalisme et de la spécificité des données non supervisées de Wikidata, l'objet choisi pour l'étude est une peinture sur son support physique inséré dans un cadre, susceptible d'être exposée au sein d'un musée ou d'une institution culturelle dans le monde. ([voir les données utilisées](#données-utilisées)).
 
 <br />
 
 # R, code source et packages
-
-**Ce document peut être reproduit sur votre machine**. **Pour cela vous devez avoir installé R** et l'IDE Rstudio (fortement conseillé). Vous devez également installer deux packages^[La bibliothèque des fonctions internes de R est divisée en ensembles de fonctions et de jeux de données apparentés nommés packages (terme que l’équipe de traduction française de R a choisi de conserver tel quel) [(Goulet, 2016, p.62)](https://cran.r-project.org/doc/contrib/Goulet_introduction_programmation_R.pdf){target="_blank"}] (`knitr` et `rmdformats`) pour reproduire ce document à l'identique.
-
+**Ce document computationnel (Notebook) peut être reproduit à l'identique sur un ordinateur**. **Pour cela il est nécessaire d'avoir installé R** et l'IDE Rstudio (fortement conseillé). Il est nécessaire également d'installer deux *packages*^[La bibliothèque des fonctions internes de R est divisée en ensembles de fonctions et de jeux de données apparentés nommés *packages* (terme que l’équipe de traduction française de R a choisi de conserver tel quel) [(Goulet, 2016, p.62)](https://cran.r-project.org/doc/contrib/Goulet_introduction_programmation_R.pdf){target="_blank"}] (`knitr` et `rmdformats`).
 ## Installer R et Rstudio
-
-Seul R est indispensable pour reproduire ce document. Mais il est fortement conseillé aux utilisateurs d'installer également l'IDE Rstudio qui facilite énormément la pratique de R et la production de Rmarkdown.
-
-R et Rstudio s'installent comme n'importe quel autre logiciel :
-
+Seul R est indispensable pour reproduire ce document. Mais il est fortement conseillé d'installer également l'IDE Rstudio qui facilite considérablement la pratique de R et la production de documents au format Rmarkdown.  
+R et Rstudio s'installent comme n'importe quel autre logiciel :  
 - [Téléchargez R](https://cran.r-project.org/){target="_blank"}, mis à disposition sur le CRAN     
-- [Télécharger Rstudio](https://www.rstudio.com/products/rstudio/download/){target="_blank"} (Rstudio Desktop Free version) sur le site de l'entreprise    
-
+- [Télécharger Rstudio](https://www.rstudio.com/products/rstudio/download/){target="_blank"} (Rstudio Desktop Free version) sur le site de l'entreprise.    
 <br />
-
 ## `knitr` & `rmdformats`
-
-Deux packages sont nécessaires pour reproduire ce document à l'identique :
-
-- `knitr`: offre des outils pour la génération de rapports dynamiques (literate programming)   
-- `rmdformats` : met à disposition le modèle de mise en page HTML utilisé (*readthedown*) 
+Deux packages sont nécessaires pour reproduire ce document à l'identique :  
+- `knitr`: offre des outils pour la génération de rapports dynamiques (*literate programming*)   
+- `rmdformats` : met à disposition le modèle (*template*) de mise en page HTML utilisé (*readthedown*) 
 
 **Installez-les, en exécutant cette ligne de commande dans la console :**
 ```{r install0, eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE}
@@ -97,15 +88,11 @@ install.packages("knitr", "rmdformats")
 
 <div class="alert alert-danger" role="alert">
 
-En fonction du système d'exploitation utilisé, il peut-être nécessaire d'installer des logiciels ou des bibliothèques logicielles dont certains packages dépendent.
+En fonction du système d'exploitation utilisé, il peut-être nécessaire d'installer des logiciels ou des bibliothèques logicielles dont certains *packages* dépendent.
 
-<b>Sur Windows, l'exécution d'un fichier Rmarkdown (avec `knitr`) nécessite l'installation du logiciel [<b>Pandoc</b>](https://pandoc.org/){target="_blank"}</b>, qui permet de convertir un fichier d'un format de balisage à un autre (.md vers .html par exemple).
+<b>Sur Windows, l'exécution d'un fichier au format Rmarkdown (avec `knitr`) nécessite l'installation du logiciel [<b>Pandoc</b>](https://pandoc.org/){target="_blank"}</b>. Ce dernier permet de convertir un fichier d'un format donné à un autre (.md vers .html par exemple).
 </div>
-
 <br />
-
-
-
 ## Code source du document
 
 Pour les utilisateurs et les utilisatrices de [logiciel de gestion de versions](https://fr.wikipedia.org/wiki/Logiciel_de_gestion_de_versions){target="_blank"}, vous pouvez cloner le dépôt du code source :   
