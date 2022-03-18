@@ -82,7 +82,7 @@ R et Rstudio s'installent comme n'importe quel autre logiciel :
 <br />
 
 ## `knitr` & `rmdformats`
-Deux *packages*[^1] sont nécessaires pour reproduire ce document à l'identique :  
+Deux *packages* sont nécessaires pour reproduire ce document à l'identique :  
 - `knitr`: offre des outils pour la génération de rapports dynamiques (*literate programming*)   
 - `rmdformats` : met à disposition le modèle (*template*) de mise en page HTML utilisé (*readthedown*) 
 
