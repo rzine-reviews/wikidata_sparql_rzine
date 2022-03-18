@@ -68,8 +68,8 @@ L'idée de départ qui conduit à la démarche proposée, est d'accéder à un d
 
 <br />
 
-# R, code source et packages
-**Ce document computationnel (Notebook) peut être reproduit à l'identique sur un ordinateur**. **Pour cela il est nécessaire d'avoir installé R**. Il est nécessaire également d'installer deux *packages*[^1] (`knitr` et `rmdformats`).
+# R, code source et packages[^1]
+**Ce document computationnel (Notebook) peut être reproduit à l'identique sur un ordinateur**. **Pour cela il est nécessaire d'avoir installé R**.  
 
 [^1]: La bibliothèque des fonctions internes de R est divisée en ensembles de fonctions et de jeux de données apparentés nommés *packages* (terme que l’équipe de traduction française de R a choisi de conserver tel quel) [(Goulet, 2016, p.62)](https://cran.r-project.org/doc/contrib/Goulet_introduction_programmation_R.pdf){target="_blank"}
 
