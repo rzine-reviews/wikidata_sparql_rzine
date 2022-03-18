@@ -64,20 +64,25 @@ knitr::include_graphics("figures/wikidata_page_description.svg")
 
 Les principaux termes utilisés figurent dans le [glossaire](#endnotes) du notebook (pour aller plus loin, le [glossaire de Wikidata](https://www.wikidata.org/wiki/Wikidata:Glossary/fr){target="_blank"}).
 
-L'idée de départ qui conduit à la démarche proposée, est d'interroger un dépôt de données de sorte à interroger une ou des modalités possibles pour tracer une ou des *trajectoires*. Compte-tenu du formalisme et de la spécificité des données non supervisées de Wikidata, l'objet choisi pour l'étude est une peinture sur son support physique inséré dans un cadre, susceptible d'être exposée au sein d'un musée ou d'une institution culturelle dans le monde. ([voir les données utilisées](#données-utilisées)).
+L'idée de départ qui conduit à la démarche proposée, est d'accéder à un dépôt de données de sorte à interroger une ou des modalités possibles pour tracer une ou des *trajectoires*. Compte-tenu du formalisme et de la spécificité des données non supervisées de Wikidata, l'objet choisi pour l'étude est une peinture sur son support physique inséré dans un cadre, susceptible d'être exposée au sein d'un musée ou d'une institution culturelle dans le monde. ([voir les données utilisées](#données-utilisées)).
 
 <br />
 
 # R, code source et packages
-**Ce document computationnel (Notebook) peut être reproduit à l'identique sur un ordinateur**. **Pour cela il est nécessaire d'avoir installé R** et l'IDE Rstudio (fortement conseillé). Il est nécessaire également d'installer deux *packages*^[La bibliothèque des fonctions internes de R est divisée en ensembles de fonctions et de jeux de données apparentés nommés *packages* (terme que l’équipe de traduction française de R a choisi de conserver tel quel) [(Goulet, 2016, p.62)](https://cran.r-project.org/doc/contrib/Goulet_introduction_programmation_R.pdf){target="_blank"}] (`knitr` et `rmdformats`).
+**Ce document computationnel (Notebook) peut être reproduit à l'identique sur un ordinateur**. **Pour cela il est nécessaire d'avoir installé R**.   
+Il est nécessaire également d'installer deux *packages*[^1] (`knitr` et `rmdformats`).
+
+[^1]: La bibliothèque des fonctions internes de R est divisée en ensembles de fonctions et de jeux de données apparentés nommés *packages* (terme que l’équipe de traduction française de R a choisi de conserver tel quel) [(Goulet, 2016, p.62)](https://cran.r-project.org/doc/contrib/Goulet_introduction_programmation_R.pdf){target="_blank"}
+
 ## Installer R et Rstudio
 Seul R est indispensable pour reproduire ce document. Mais il est fortement conseillé d'installer également l'IDE Rstudio qui facilite considérablement la pratique de R et la production de documents au format Rmarkdown.  
 R et Rstudio s'installent comme n'importe quel autre logiciel :  
 - [Téléchargez R](https://cran.r-project.org/){target="_blank"}, mis à disposition sur le CRAN     
 - [Télécharger Rstudio](https://www.rstudio.com/products/rstudio/download/){target="_blank"} (Rstudio Desktop Free version) sur le site de l'entreprise.    
 <br />
+
 ## `knitr` & `rmdformats`
-Deux packages sont nécessaires pour reproduire ce document à l'identique :  
+Deux *packages*[^1] sont nécessaires pour reproduire ce document à l'identique :  
 - `knitr`: offre des outils pour la génération de rapports dynamiques (*literate programming*)   
 - `rmdformats` : met à disposition le modèle (*template*) de mise en page HTML utilisé (*readthedown*) 
 
