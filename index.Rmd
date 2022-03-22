@@ -64,26 +64,24 @@ knitr::include_graphics("figures/wikidata_page_description.svg")
 
 Les principaux termes utilisés figurent dans le [glossaire](#endnotes) du notebook (pour aller plus loin, le [glossaire de Wikidata](https://www.wikidata.org/wiki/Wikidata:Glossary/fr){target="_blank"}).
 
-L'idée de départ qui conduit à la démarche proposée, est d'accéder à un dépôt de données de sorte à interroger une ou des modalités possibles pour tracer une ou des *trajectoires*^[voir par exemple, *Construction de typologies de trajectoires*, Nicolas Robette, [Tuto@Mate#41](https://mate-shs.cnrs.fr/actions/tutomate/tuto41_analyse_trajectoires_nicolas_robette/)]. Compte-tenu du formalisme et de la spécificité des données non supervisées de Wikidata, l'objet choisi pour l'étude est une peinture sur son support physique inséré dans un cadre, susceptible d'être exposée au sein d'un musée ou d'une institution culturelle dans le monde. ([voir les données utilisées](#données-utilisées)).
-
+L'idée de départ qui conduit à la démarche proposée, est d'accéder à un dépôt de données de sorte à interroger une ou des modalités possibles pour tracer une ou des *trajectoires*^[voir par exemple, *Construction de typologies de trajectoires*, Nicolas Robette, [Tuto@Mate#41](https://mate-shs.cnrs.fr/actions/tutomate/tuto41_analyse_trajectoires_nicolas_robette/){target="_blank"}]. Compte-tenu du formalisme et de la spécificité des données non supervisées de Wikidata, l'objet choisi pour l'étude est une peinture sur son support physique inséré dans un cadre, susceptible d'être exposée au sein d'un musée ou d'une institution culturelle dans le monde. ([voir les données utilisées](#données-utilisées)).
 <br />
 
 # R, code source et packages[^1]
 **Ce document computationnel (Notebook) peut être reproduit à l'identique sur un ordinateur**. **Pour cela il est nécessaire d'avoir installé R**.  
-
 [^1]: La bibliothèque des fonctions internes de R est divisée en ensembles de fonctions et de jeux de données apparentés nommés *packages* (terme que l’équipe de traduction française de R a choisi de conserver tel quel) [(Goulet, 2016, p.62)](https://cran.r-project.org/doc/contrib/Goulet_introduction_programmation_R.pdf){target="_blank"}
 
 ## Installer R et Rstudio
-Seul R est indispensable pour reproduire ce document. Mais il est fortement conseillé d'installer également l'IDE Rstudio qui facilite considérablement la pratique de R et la production de documents au format Rmarkdown.  
+Seul R est indispensable pour reproduire ce document. Mais il est fortement conseillé d'installer également l'IDE Rstudio qui facilite considérablement la pratique de R et la production de documents au format [Rmarkdown](https://rmarkdown.rstudio.com/){target="_blank"}.  
 R et Rstudio s'installent comme n'importe quel autre logiciel :  
-- [Téléchargez R](https://cran.r-project.org/){target="_blank"}, mis à disposition sur le CRAN ;  
+- [Télécharger R](https://cran.r-project.org/){target="_blank"}, mis à disposition sur le Comprehensive R Archive Network (CRAN) ;  
 - [Télécharger Rstudio](https://www.rstudio.com/products/rstudio/download/){target="_blank"} (Rstudio Desktop Free version) sur le site de l'entreprise.    
 <br />
 
 ## Packages associés au Notebook, `knitr` & `rmdformats`
 Deux *packages* sont nécessaires pour reproduire ce document à l'identique :  
 - `knitr` : offre des outils pour la génération de rapports dynamiques (*literate programming*) ;  
-- `rmdformats` : met à disposition le modèle (*template*) de mise en page HTML utilisé (adapté de *readthedown*^[pour les différents formats disponibles, voir par exemple la [page rmdformats](https://cran.r-project.org/web/packages/rmdformats/readme/README.html) du dépôt Cran-R-project.]).
+- `rmdformats` : met à disposition le modèle (*template*) de mise en page HTML utilisé (adapté de *readthedown*^[pour les différents formats disponibles, voir par exemple la [page rmdformats](https://cran.r-project.org/web/packages/rmdformats/readme/README.html){target="_blank"} du dépôt Cran-R-project.]).
 
 **Installez-les, en exécutant cette ligne de commande dans la console R :**
 ```{r install0, eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE}
@@ -179,7 +177,7 @@ Dans le cas de ce notebook, on s’intéresse aux arts visuels et notamment une 
 
 ## Données Wikidata
 
-Wikidata est une base de connaissances libre éditée de manière collaborative et hébergée par la Wikimedia Foundation. Son contenu étant placé sous [licence CC0](https://www.wikidata.org/wiki/Wikidata:Licensing), elle permet de centraliser les données utilisées par différents projets Wikimedia (source : [Wikipédia](https://fr.wikipedia.org/wiki/Wikidata){target="_blank"}).   
+Wikidata est une base de connaissances libre éditée de manière collaborative et hébergée par la Wikimedia Foundation. Son contenu étant placé sous [licence CC0](https://www.wikidata.org/wiki/Wikidata:Licensing){target="_blank"}, elle permet de centraliser les données utilisées par différents projets Wikimedia (source : [Wikipédia](https://fr.wikipedia.org/wiki/Wikidata){target="_blank"}).   
 **Les informations saisies dans Wikidata sont des données “brutes” multilingues** ***non-supervisées*** (voir Fig.2).
 
 ```{r, out.width="75%", fig.cap="Fig.2 Données Wikipédia (DBpédia) vs données Wikidata (source : [Wikidata-Basics/Wikidata Hackathon event for the Festival of Creative Learning 2018](https://thinking.is.ed.ac.uk/wikidata-basics/faq-and-further-reading/){target='_blank'})",  fig.align = 'center',  echo=FALSE, purl = FALSE }
@@ -206,31 +204,30 @@ knitr::include_graphics('figures/triplet.svg')
 
 ## Description des données et du modèle de données
 
-La description ci-dessous n'est pas exhaustive. Pour de plus amples informations, se référer à la [documentation de Wikidata](https://www.wikidata.org/wiki/Wikidata:Introduction).
+La description ci-dessous n'est pas exhaustive. Pour de plus amples informations, se référer à la [documentation de Wikidata](https://www.wikidata.org/wiki/Wikidata:Introduction){target="_blank"}.
 
 Dans ce notebook, les peintures sont des objets décrits par leurs relations aux données instanciant certaines classes et propriétés de Wikidata utiles à l'étude de cas proposée.   
 Les peintres, peintures et lieux d'exposition sont modélisés selon la représentation schématique ci-dessous, comprenant des entités liées entre elles et mobilisant une syntaxe spécifique avec des *préfixes*^[un préfixe est une modalité de simplification d'écriture faisant référence à un *espace de noms*, voir notamment, les préfixes wikidata [ici](https://www.wikidata.org/wiki/EntitySchema:E49){target="_blank"}].  
 
-Afin de disposer des données relatives à une œuvre visuelle, son auteur ou autrice et sa localisation, plusieurs données associées à l'artiste, à l'œuvre (voir Fig. 5) ou aux déclarations (*statements*, voir Fig.6) sur celle-ci sont nécessaires, notamment :   
+Afin de disposer des données relatives à une œuvre visuelle, son auteur ou autrice et sa localisation, plusieurs données associées à l'artiste, à l'œuvre (voir Fig. 5) ou aux déclarations sur celle-ci (*statements*, voir Fig.6) sont nécessaires, notamment :   
 
 - **l'auteur ou l'autrice (ici le peintre)** est une entité (préfixe `wd`) ayant pour propriété directe (préfixe `wdt`) :
-  - d'être une instance de Wikidata ([P31](https://www.wikidata.org/wiki/Property:P31){target="_blank"}) de nature une entité humaine ([Q5](https://www.wikidata.org/wiki/Q5));
+  - d'être une instance de Wikidata ([P31](https://www.wikidata.org/wiki/Property:P31){target="_blank"}) de nature une entité humaine ([Q5](https://www.wikidata.org/wiki/Q5){target="_blank"});
   - ayant pour catégorie commune ([P373](https://www.wikidata.org/wiki/Property:P373){target="_blank"}) le libellé "Johannes Vermeer";
   - et d'être le créateur ([P170](https://www.wikidata.org/wiki/Property:P170){target="_blank"}) d'œuvres. 
   
    
-- **la désignation de l'œuvre elle-même**, pas le biais de l'entité (préfixe `wd`) associée à l'identifiant qui la représente, par exemple `wd:Q4660880` pour l'œuvre dénommée [A Young Woman Seated at the Virginals](https://www.wikidata.org/wiki/Q4660880){target="_blank"} du peintre Johannes Vermeer.
+- **la désignation de l'œuvre elle-même**, par le biais de l'entité (préfixe `wd`) associée à l'identifiant qui la représente, par exemple `wd:Q4660880` pour l'œuvre dénommée [A Young Woman Seated at the Virginals](https://www.wikidata.org/wiki/Q4660880){target="_blank"} du peintre Johannes Vermeer.
 
-- **la localisation de l'entité au moyen de la propriété ([P276](https://www.wikidata.org/wiki/Property:P276){target="_blank"})**, permettant l'accès aux assertions ou déclarations de localisation de l'œuvre dans un lieu (géographique & institutionnel) et un espace de temps (intervalle) : `wdt:P276`
+- **la localisation de l'entité au moyen de la propriété ([P276]((https://www.wikidata.org/wiki/Property:P276){target="_blank"}))**, permettant l'accès aux assertions ou déclarations de localisation de l'œuvre dans un lieu (géographique & institutionnel) : `wdt:P276` ou d'un espace de temps (couplant lieu et laps de temps) : `p:P276`associée aux [*qualifiers*]((https://www.wikidata.org/wiki/Help:Qualifiers){target="_blank"}) de la déclaration (préfixes `pq:P580` ou `pq:P82`) ;
 
-- **les coordonnées de la localisation associée à l'œuvre** au moyen de la propriété directe ([P625](https://www.wikidata.org/wiki/Property:P625){target="_blank"}).
+- **les coordonnées de la localisation associée à l'œuvre** au moyen de la propriété directe ([P625]((https://www.wikidata.org/wiki/Property:P625){target="_blank"})) : `wdt:P625`.
 
 
 ```{r, out.width="75%", fig.cap="Fig.5 Classes et propriétés générales de Wikidata mobilisées dans l'étude de cas proposée", fig.align = 'center', echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/modele_interroge.svg')
 ```
 
-Pour collecter les données relatives aux déclarations, les modalités d'interrogation du dépôt nécessitent l'usage de [*qualifiers*](https://www.wikidata.org/wiki/Help:Qualifiers) associés aux déclarations.
 
 ```{r, out.width="75%", fig.cap="Fig.6 Classes et propriétés spécifiques de Wikidata mobilisées dans le cas d'une déclaration (statement)", fig.align = 'center', echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/modele_interroge_qualifiers.svg')
@@ -238,7 +235,7 @@ knitr::include_graphics('figures/modele_interroge_qualifiers.svg')
 
 # Interroger Wikidata
 
-Un [service de collecte des données de Wikidata en langage Sparql](https://query.wikidata.org/) est disponible et offre une solution très complète en première approche (exemples, assistant de requêtes, diversité des représentations etc.). Toutefois, pour explorer la question de la représentation d'une *trajectoire* d'une peinture, la solution du notebook R offre une alternative concrète à une complexité intrinsèque au langage [SPARQL]((https://fr.wikipedia.org/wiki/SPARQL){target="_blank"}).  
+Un [service de collecte des données de Wikidata en langage Sparql]((https://query.wikidata.org/){target="_blank"}) est disponible et offre une solution très complète en première approche (exemples, assistant de requêtes, diversité des représentations etc.). Toutefois, pour explorer la question de la représentation d'une *trajectoire* d'une peinture, la solution du notebook R offre une alternative concrète à une complexité intrinsèque au langage [SPARQL]((https://fr.wikipedia.org/wiki/SPARQL){target="_blank"}).  
 Le package `WikidataQueryServiceR` fournit une API client (i.e. interface de programmation) pour interroger le [*Wikidata Query Service*](https://query.wikidata.org/){target="_blank"} directement via R.
 
 La première étape est de permettre à l'utilisateur ou utilisatrice du notebook d'identifier l'artiste qu'il ou elle va choisir. On choisit arbitrairement, dans cette étude de cas, les œuvres de **Johannes Vermeer**. Toutefois, il sera possible de *jouer*, en fin d'exercice, pour obtenir les données d'œuvres d'autres peintres ou artistes.
