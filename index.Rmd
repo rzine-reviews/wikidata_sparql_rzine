@@ -71,10 +71,10 @@ L'idée de départ qui conduit à la démarche proposée, est d'accéder à un d
 **Ce document computationnel (Notebook) peut être reproduit à l'identique sur un ordinateur**. **Pour cela il est nécessaire d'avoir installé R**.  
 
 ## Installer R et Rstudio
-Seul R est indispensable pour reproduire ce document. Mais il est fortement conseillé d'installer également l'IDE Rstudio qui facilite considérablement la pratique de R et la production de documents au format [Rmarkdown](https://rmarkdown.rstudio.com/){target="_blank"}.  
+Seul R est indispensable pour reproduire ce document. Mais il est fortement conseillé d'installer également l'environnement de développement intégré (IDE^[Un environnement de développement intégré, ou IDE pour *Integrated Developpment Environment*, est un logiciel de création d'applications, qui rassemble des outils de développement fréquemment utilisés dans une seule interface utilisateur graphique (GUI pour *Graphical User Interface*)]) *Rstudio* qui facilite considérablement la pratique de R et la production de documents au format [Rmarkdown](https://rmarkdown.rstudio.com/){target="_blank"}.  
 R et Rstudio s'installent comme n'importe quel autre logiciel :  
-- [Télécharger R](https://cran.r-project.org/){target="_blank"}, mis à disposition sur le Comprehensive R Archive Network (CRAN) ;  
-- [Télécharger Rstudio](https://www.rstudio.com/products/rstudio/download/){target="_blank"} (Rstudio Desktop Free version) sur le site de l'entreprise.    
+- [Télécharger R](https://cran.r-project.org/){target="_blank"}, mis à disposition sur le *Comprehensive R Archive Network* (CRAN) ;  
+- [Télécharger Rstudio](https://www.rstudio.com/products/rstudio/download/){target="_blank"} (*Rstudio Desktop Free version*) sur le site de l'entreprise.    
 <br />
 
 ## Packages associés au Notebook, `knitr` & `rmdformats`
@@ -82,7 +82,7 @@ Deux *packages*^[La bibliothèque des fonctions internes de R est divisée en en
 - `knitr` : offre des outils pour la génération de rapports dynamiques (*literate programming*) ;  
 - `rmdformats` : met à disposition le modèle (*template*) de mise en page HTML utilisé (adapté de *readthedown*^[pour les différents formats disponibles, voir par exemple la [page rmdformats](https://cran.r-project.org/web/packages/rmdformats/readme/README.html){target="_blank"} du dépôt Cran-R-project.]).
 
-**Installez-les, en exécutant cette ligne de commande dans la console R :**
+**Installer ces *packages*, en exécutant la ligne de commande suivante dans la console R :**
 ```{r install0, eval=FALSE, echo=TRUE, message=FALSE, warning=FALSE}
 install.packages("knitr", "rmdformats")
 ```
@@ -91,7 +91,7 @@ install.packages("knitr", "rmdformats")
 
 En fonction du système d'exploitation utilisé, il peut-être nécessaire d'installer des logiciels ou des bibliothèques logicielles dont certains *packages* dépendent.
 
-<b>Sur Windows, l'exécution d'un fichier au format Rmarkdown (avec `knitr`) nécessite l'installation du logiciel [<b>Pandoc</b>](https://pandoc.org/){target="_blank"}</b>^[Ce dernier permet de convertir un fichier d'un format donné à un autre (.md vers .html par exemple).].
+<b>Sur Windows, l'exécution d'un fichier au format *Rmarkdown* (avec `knitr`) nécessite l'installation du logiciel [<b>Pandoc</b>](https://pandoc.org/){target="_blank"}</b>^[Ce dernier permet de convertir un fichier d'un format donné à un autre (.md vers .html par exemple).].
 </div>
 <br />
 
@@ -105,7 +105,7 @@ Pour les utilisateurs et les utilisatrices du [logiciel de gestion de versions](
 </p>
 
 
-Sinon, il est possible de récupérer le code source de ce document Rmarkdown en cliquant sur le lien ci-dessous. 
+Sinon, il est possible de récupérer le code source de ce document *Rmarkdown* en cliquant sur le lien ci-dessous. 
 
 <p class="center">[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span> <br /> Télécharger le code source](https://gitlab.huma-num.fr/gt-notebook/workshop/workshop_3_decembre_2021/atelier_notebooks/-/archive/main/atelier_notebooks-main.zip?path=Rmarkdown)</p>
 
