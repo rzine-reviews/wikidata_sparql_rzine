@@ -67,7 +67,7 @@ Les principaux termes utilisés figurent dans le [glossaire](#endnotes) du noteb
 L'idée de départ qui conduit à la démarche proposée, est d'accéder à un dépôt de données de sorte à interroger une ou des modalités possibles pour tracer une ou des *trajectoires*^[voir par exemple, *Construction de typologies de trajectoires*, Nicolas Robette, [Tuto@Mate#41](https://mate-shs.cnrs.fr/actions/tutomate/tuto41_analyse_trajectoires_nicolas_robette/){target="_blank"}]. Compte-tenu du formalisme et de la spécificité des données non supervisées de Wikidata, l'objet choisi pour l'étude est une peinture sur son support physique inséré dans un cadre, susceptible d'être exposée au sein d'un musée ou d'une institution culturelle dans le monde. ([voir les données utilisées](#données-utilisées)).
 <br />
 
-# R, code source et packages[^1]
+# R, code source et packages
 **Ce document computationnel (Notebook) peut être reproduit à l'identique sur un ordinateur**. **Pour cela il est nécessaire d'avoir installé R**.  
 [^1]: La bibliothèque des fonctions internes de R est divisée en ensembles de fonctions et de jeux de données apparentés nommés *packages* (terme que l’équipe de traduction française de R a choisi de conserver tel quel) [(Goulet, 2016, p.62)](https://cran.r-project.org/doc/contrib/Goulet_introduction_programmation_R.pdf){target="_blank"}
 
@@ -79,7 +79,7 @@ R et Rstudio s'installent comme n'importe quel autre logiciel :
 <br />
 
 ## Packages associés au Notebook, `knitr` & `rmdformats`
-Deux *packages* sont nécessaires pour reproduire ce document à l'identique :  
+Deux *packages*[^1] sont nécessaires pour reproduire ce document à l'identique :  
 - `knitr` : offre des outils pour la génération de rapports dynamiques (*literate programming*) ;  
 - `rmdformats` : met à disposition le modèle (*template*) de mise en page HTML utilisé (adapté de *readthedown*^[pour les différents formats disponibles, voir par exemple la [page rmdformats](https://cran.r-project.org/web/packages/rmdformats/readme/README.html){target="_blank"} du dépôt Cran-R-project.]).
 
