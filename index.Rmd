@@ -1,5 +1,5 @@
 ---
-title: "Histoire de cadre : une histoire spatio-temporelle"
+title: "Histoire de cadre : élaboration d'une *trajectoire* spatio-temporelle"
 subtitle: "Exemple appliqué d'un notebook avec R sur des données Wikidata"
 date: "`r Sys.Date()`"
 author: 
@@ -20,7 +20,7 @@ bibliography: biblio.bib
 nocite: |
   @*
 link-citations: true
-# github: "author/repository"
+# github: "Madouck/wikidata_sparql_rzine"
 # gitlab: "https://gitlab.huma-num.fr/gt-notebook/workshop/workshop_3_decembre_2021/atelier_notebooks"
 # doi: "xx.xxx/xxxx.xxxxxxx"
 # licence: "by-nc-sa"
@@ -1224,15 +1224,15 @@ kableExtra::kable_styling(knitr::kable(rzine::sessionRzine()[[2]], row.names = F
 ```{r Citation, echo=FALSE}
 rref <- bibentry(
    bibtype = "misc",
-   title = "Titre de la fiche",
-   subtitle = "Sous-Titre de la fiche",
-   author = c("Premier Auteur.e", "Second Auteur.e"),
+   title = "Histoire de cadre : élaboration d'une *trajectoire* spatio-temporelle",
+   subtitle = "Exemple appliqué d'un notebook avec R sur des données Wikidata",
+   author = c("Raphaëlle KRUMMEICH", "Hugues PECOUT","Sébastien REY-COYREHOURCQ"),
    doi = "10.48645/xxxxxx",
    url = "https://rzine.fr/publication_rzine/xxxxxxx/",
    keywords ="FOS: Other social sciences",
    language = "fr",
    publisher = "FR2007 CIST",
-   year = 2021,
+   year = 2022,
    copyright = "Creative Commons Attribution Share Alike 4.0 International")
 
 ``` 
