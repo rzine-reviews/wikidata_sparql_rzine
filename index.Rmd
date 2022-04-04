@@ -521,6 +521,7 @@ nrow(data)
 ### Géoréférencement
 
 Comme pour le tableau de données précédant ('data2'), nous géoréférençons les musées concernées à partir de la variable 'coord' afin de créer une couche géographique, en deux étapes.
+
 **Affichage des coordonnées géographiques collectées**
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 data$coord
@@ -554,7 +555,7 @@ data_geo <- st_as_sf(data_geo, coords = c("long", "lat"), crs = 4326)
 mapview(data_geo)
 ```
 
-
+<br />
 Les données semblent correctement géoréférencées. L'exploration spatiale des données ainsi *nettoyées* peut démarrer !
 
 <br />
@@ -861,6 +862,7 @@ ggplot(data_geo, aes(x = dated, y = nomLabel.x, color = ADM0_A3)) +
   geom_segment(aes(xend = datef, yend = nomLabel.x, color =  ADM0_A3), size = 6)
 ```
 *Graphique 4 : Représentation graphique : affichage des segments et de la légende*
+
 **Assignation du résultat graphique dans un objet**
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 
@@ -895,6 +897,7 @@ Mon_graph
 
 ```
 *Graphique 5 : Représentation graphique : affichage des labels au sein du graphique*
+
 **Modification de l'axe des abscisses, ajout de titres, paramétrage du 'thème'**
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE}
