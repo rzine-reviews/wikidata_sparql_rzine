@@ -1,5 +1,5 @@
 ---
-title: "Spatio-temporal Wikidata, exploration de données collaboratives du web 3.0"
+title: "Spatio-temporal Wikidata. Exploration de données collaboratives du web 3.0"
 subtitle: "Histoire de cadre : élaboration d'une *trajectoire* spatio-temporelle"
 date: "`r Sys.Date()`"
 author: 
@@ -44,7 +44,7 @@ knitr::opts_chunk$set(echo=TRUE,
 
 ```
 
-> Cette fiche est le fruit d'une collaboration interdisciplinaire de membres du [GT Notebook](https://gitlab.huma-num.fr/gt-notebook) dans le cadre d'un [atelier](https://gt-notebook.gitpages.huma-num.fr/workshop/workshop_3_decembre_2021/slide2html-3-dec/) proposé aux [*Journées d’étude normande sur les données de la recherche*](https://www.unicaen.fr/evenement/journee-detude-normande-sur-les-donnees-de-la-recherche/) qui se sont déroulées en décembre 2021. L'association de plusieurs compétences et disciplines a abouti à ce notebook présentant une analyse exploratoire reproductible de données collaboratives wikidata, mises à disposition au format RDF. Les enjeux d'un tel processus inter-disciplinaire sont esquissés en conclusion.
+> Cette fiche est le fruit d'une collaboration interdisciplinaire de membres du [GT Notebook](https://gitlab.huma-num.fr/gt-notebook) dans le cadre d'un [atelier](https://gt-notebook.gitpages.huma-num.fr/workshop/workshop_3_decembre_2021/slide2html-3-dec/) proposé aux [*Journées d’étude normande sur les données de la recherche*](https://www.unicaen.fr/evenement/journee-detude-normande-sur-les-donnees-de-la-recherche/) qui se sont déroulées en décembre 2021. L'association de plusieurs compétences et disciplines a abouti à ce notebook présentant une analyse exploratoire reproductible de données collaboratives wikidata, mises à disposition au format RDF. Les enjeux d'un tel processus inter-disciplinaire sont esquissés en conclusion. Les requêtes SPARQL élaborées ont fait l'objet d'une présentation et d'échanges au sein des [Ateliers du Web Sémantique](https://les-ateliers-du-web-semantique.gitpages.huma-num.fr/les-ateliers-du-web-semantique/) au printemps 2021.
 
 # Introduction {-}
 
@@ -81,11 +81,12 @@ Il existe plusieurs méthodes pour accéder à ces données. Dans ce document, n
 
 Le RDF est cadre général de modélisation utilisé pour décrire formellement les ressources Web et leurs métadonnées, afin de permettre le traitement par inférence de telles descriptions. Développé par le W3C, RDF est le formalisme de base du [Web sémantique](https://fr.wikipedia.org/wiki/Web_s%C3%A9mantique). 
 
-Un document structuré en RDF est un ensemble de triplets^[Un **triplet** est un groupe formé par trois éléments dont chacun appartient à un ensemble distinct.], chaque triplet associant un sujet, un prédicat et un objet):</br>
-- le « **sujet** » représente la ressource à décrire;</br>
-- le « **prédicat** » représente un type de propriété applicable à cette ressource;</br>
-- l' « **objet** » représente une donnée ou une autre ressource : c'est la valeur de la propriété.
-</br>
+Un document structuré en RDF est un ensemble de triplets^[Un **triplet** est un groupe formé par trois éléments dont chacun appartient à un ensemble distinct.], chaque triplet associant un sujet, un prédicat et un objet):  
+- le « **sujet** » représente la ressource à décrire;  
+- le « **prédicat** » représente un type de propriété applicable à cette ressource;  
+- l' « **objet** » représente une donnée ou une autre ressource : c'est la valeur de la propriété.  
+
+
 Par exemple, l'*assertion ou déclaration "Bob s'intéresse à Mona Lisa"* est formalisée de la manière suivante :
 ```{r, out.width="75%", fig.align = 'center',  echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/triplet.png')
@@ -94,13 +95,13 @@ knitr::include_graphics('figures/triplet.png')
 Figure 2 :  **Composantes génériques d'un triplet RDF**</br>*source : https://www.w3.org/TR/rdf11-primer/*
 </center>
 </br>
-Un dépôt de données RDF ainsi formé correspond à un multigraphe orienté étiqueté. Chaque triplet correspond alors à une arête orientée dont l'étiquette est le prédicat, le nœud source le sujet et le nœud cible l'objet.
+Un dépôt de données RDF ainsi formé correspond à un multigraphe orienté étiqueté. Chaque triplet correspond alors à une arête orientée dont l'étiquette est le prédicat, le nœud source, le sujet et le nœud cible, l'objet.
 ```{r, out.width="75%", fig.align = 'center',  echo=FALSE, purl = FALSE }
 
-knitr::include_graphics('figures/triplet_mona_lisa.jpg')
+knitr::include_graphics('figures/triplet_mona_lisa.png')
 ```
 <center>
-Figure 2 : **Exemple de graphe de triplets**</br>*source : https://www.w3.org/TR/rdf11-primer/*
+Figure 3 : **Exemple de graphe de triplets**</br>*source : https://www.w3.org/TR/rdf11-primer/*
 </center>
 </br>
 Le sujet et l'objet, dans le cas où ce sont des ressources, peuvent être identifiés par un identifiant unique de la ressource (URI^[Un **URI** (*Uniform Resource Identifier*, en français *Identifiant unique de ressource*) est une chaîne qui fait référence à une ressource. Les plus courantes sont les URL, qui identifient une ressource en donnant son emplacement sur le Web. Au contraire, les URN font référence à une ressource grâce à son nom, dans un environnement donné, par exemple le code ISBN d'un livre.]) ou être des nœuds anonymes. Le prédicat est nécessairement identifié par un URI.
@@ -115,10 +116,10 @@ SPARQL (prononcé *sparkle*, en anglais : « étincelle ») est un langage de re
 Plusieurs langages de requête destinés à interroger les graphes RDF ont été développés. Le langage SPARQL, développé par le W3C, est destiné à devenir le standard en ce domaine. Aujourd'hui, le Web des données (ou Linked Open Data) est constitué de centaines de services SPARQL qui mettent à disposition de plus en plus de données au travers d'Internet comme le fait le projet Wikidata (@frwiki:194953405).
 
 Dans ce notebook, quelques requêtes de base permettant d'[interroger la base de données Wikidata](https://www.wikidata.org/wiki/Wikidata:Data_access#How_can_I_get_data_out_of_Wikidata?) utilisent les éléments suivants :  
-- la clause [SELECT ?data WHERE{}](https://www.w3.org/TR/sparql11-query/#select) qui renvoit les variables spécifiques et leurs liens lorsqu'une liste de noms de variables est donnée;  
-- un service WikiLabel spécifique au point d'accès Wikidata Query Service,  
-- l'option de la clause SELECT, OPTIONNAL, permettant de renvoyer les variables même si elles ne sont pas instanciées (noeuds vides) sur la liste de noms de variables.    
- et les *préfixes* associés aux fragments RDF de Wikidata ([+d'info](https://linkeddatafragments.org/)).
+- la clause [`SELECT ?data WHERE{}`](https://www.w3.org/TR/sparql11-query/#select) qui renvoit les variables spécifiques et leurs liens lorsqu'une liste de noms de variables est donnée,    
+- un service WikiLabel spécifique au point d'accès Wikidata Query Service,    
+- l'option de la clause `SELECT`, `OPTIONAL`, permettant de renvoyer les variables même si elles ne sont pas instanciées (noeuds vides) sur la liste de noms de variables,    
+- et les *préfixes* associés aux fragments de graphe RDF de Wikidata ([+d'info](https://linkeddatafragments.org/)). 
 <br/>
 
 # Packages et données
@@ -191,22 +192,21 @@ Un [service de collecte des données de Wikidata en langage SPARQL](https://quer
 
 ## Modèle des données ciblées
 
-L'objectif de cette analyse consiste à s'intéresser à un·e peintre et à ses peintures. </br> Dans Wikidata, les peintres, peintures et lieux d'exposition sont modélisés selon les représentations schématiques ci-dessous (Figures 4 et 5), comprenant des entités liées entre elles et mobilisant [une syntaxe spécifique avec des préfixes^[Un **préfixe** est une modalité de simplification d'écriture faisant référence à un *espace de noms*, voir notamment, les préfixes wikidata [ici](https://www.wikidata.org/wiki/EntitySchema:E49){target="_blank"}]](https://www.wikidata.org/wiki/EntitySchema:E49). 
-Le fragment de graphe de données Wikidata utilisé ici est illustré en figure 7, ci-dessous.
+L'objectif de cette analyse consiste à s'intéresser à un·e peintre et à ses peintures. </br> Dans Wikidata, les peintres, peintures et lieux d'exposition sont modélisés selon les représentations schématiques ci-dessous (Figures 4 et 6.a à c), comprenant des entités liées entre elles et mobilisant [une syntaxe spécifique avec des préfixes^[Un **préfixe** est une modalité de simplification d'écriture faisant référence à un *espace de noms*, voir notamment, les préfixes wikidata [ici](https://www.wikidata.org/wiki/EntitySchema:E49){target="_blank"}]](https://www.wikidata.org/wiki/EntitySchema:E49).   
+Le fragment de graphe de données Wikidata utilisé ici est illustré en figure 6b, ci-dessous.
 </br>
 Après plusieurs explorations, nous avons décidé de nous intéresser au peintre néerlandais du 17e siècle, **Johannes Vermeer**. 
 
 Pour construire la requête SPARQL permettant d'interroger les données brutes, il est nécessaire de connaître le graphe de données sous-jacent.
 
 
-Dans Wikidata, ce peintre est une entité ? (toute entité Wikidata est désignée par le préfixe `wd:`), ayant pour propriété directe (préfixe `wdt:`) d'être une instance de Wikidata :  
+Dans Wikidata, ce peintre est une entité donnée à trouver (toute entité Wikidata est désignée par le préfixe `wd:`), ayant pour propriété directe (préfixe `wdt:`) d'être une instance de Wikidata ayant les propriétés suivantes :  
 
   - ([P31](https://www.wikidata.org/wiki/Property:P31))-de nature ([Q5](https://www.wikidata.org/wiki/Q5))-humaine;</br>
   - ([P373](https://www.wikidata.org/wiki/Property:P373))-ayant pour catégorie commune le libellé sous la forme de chaîne de caractères "Johannes Vermeer";</br>
   - celui-ci ([P18](https://www.wikidata.org/wiki/Property:P18){target="_blank"})-ayant pour image le résultat associé (ici, l'adresse URL de l'image).
 </br>
 
-Dans une seconde requête, on liera que l'entité trouvée comme ([P170](https://www.wikidata.org/wiki/Property:P170){target="_blank"})-créateur·rice des œuvres que l'on cherche à localiser dans l'espace et le temps.</br>
 ```{r, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/modele_interroge.png')
 ```  
@@ -251,7 +251,9 @@ datatable(data1)
 - l'[identifiant](http://www.wikidata.org/entity/Q41264){target="_blank"} : le lien vers la page wikidata du peintre Johannes Vermeer ;    
 - l'[image](http://commons.wikimedia.org/wiki/Special:FilePath/Cropped%20version%20of%20Jan%20Vermeer%20van%20Delft%20002.jpg){target="_blank"} : le lien vers l'image associée à ce peintre dans wikidata.
 
-Le résultat renvoyé par cette requête nous permet de constater que le peintre **Johannes Vermeer est directement identifié par une URI (*entity ID*)** [`wd:Q41264`](https://www.wikidata.org/wiki/Q41264) **dans Wikidata**.
+Le résultat renvoyé par cette requête nous permet de constater que le peintre **Johannes Vermeer est directement identifié par une URI (*entity ID*)** [Q41264](https://www.wikidata.org/wiki/Q41264) **dans Wikidata**. 
+
+Dans une seconde requête, on liera l'entité trouvée comme ([P170](https://www.wikidata.org/wiki/Property:P170){target="_blank"})-créatrice des œuvres que l'on cherche à localiser dans l'espace et le temps.</br>
 <br />
 
 Pour **sauvegarder l'image** associée :
@@ -275,33 +277,26 @@ download.file(url = data1$image,
 knitr::include_graphics('data/images/portrait_artiste.jpg')
 ```
 <center>
-Figure 6 : **Illustration de wikidata pouridentifier visuellement le peintre Johannes Vermeer**
+Figure 5 : **Illustration de wikidata pouridentifier visuellement le peintre Johannes Vermeer**
 </center>
 </br>    
 
-Dans un second temps, nous nous intéresserons à une œuvre précise de Johannes Vermeer : [A Young Woman Seated at the Virginals](https://www.wikidata.org/wiki/Q4660880).
-Dans Wikidata, cette œuvre est désignée par le biais de l'entité (préfixe `wd:`) associée à un identifiant unique : [`wd:Q4660880`](https://www.wikidata.org/wiki/Q4660880).
+## Seconde requête SPARQL
 
-La localisation d'une entité est déclarée au moyen d'une propriété ([P276](https://www.wikidata.org/wiki/Property:P276)), qui permet l'accès à:</br> 
-- Une localisation de l'œuvre dans un lieu (géographique et institutionnel) : `wdt:P276`;</br>
-- Ou à un ensemble de localisation renseignées dans le temps : `p:P276` associée aux [*qualifiers*](https://www.wikidata.org/wiki/Help:Qualifiers) de la déclaration de lieu (désignée par le préfixe `pq:`) donnant une période temporelle (date de début : [P580](https://www.wikidata.org/wiki/Property:P580) et date de fin: [P582](https://www.wikidata.org/wiki/Property:P582)).
+En second lieu, on propose donc de lister l'ensemble des œuvres de Johannes Vermeer (entité ou donnée Wikidata [Q41264](https://www.wikidata.org/wiki/Q41264)) et leurs localisations.
 
 Les coordonnées de la localisation (ici, une déclaration ou *statement*) associée à une œuvre sont obtenues via la propriété [P625]((https://www.wikidata.org/wiki/Property:P625){target="_blank"}) : `wdt:P625`.
 
 ```{r, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
-knitr::include_graphics('figures/modele_interroge_qualifier.png')
+knitr::include_graphics('figures/modele_interroge_qualifier_a.png')
 ```
 <center>
-Figure 5 : **Classes et propriétés spécifiques de Wikidata mobilisées dans le cas d'une déclaration (*statement*)**
+Figure 6a : **Classes et propriétés spécifiques de Wikidata mobilisées pour la localisation des oeuvres de Johannes Vermeer dans le cas d'une déclaration (*statement*)**
 </center>
 </br>    
 
 Pour plus d'informations, vous pouvez consulter l'[introduction à Wikidata](https://www.wikidata.org/wiki/Wikidata:Introduction/fr){target="_blank"} ou la [page Wikibase](https://www.mediawiki.org/wiki/Wikibase/Indexing/RDF_Dump_Format){target="_blank"} dédiée au formalisme du *Ressource Description Framework* (RDF) du dépôt de données Wikidata.
 <br/>
-
-## Seconde requête SPARQL
-
-En second lieu, on propose donc de lister l'ensemble des œuvres de Johannes Vermeer (entité [Q41264](https://www.wikidata.org/wiki/Q41264)) et leurs localisations.
 
 La requête ci-dessous demande l'identifiant de (ou des) entité·s (œuvre·s), [P170](https://www.wikidata.org/wiki/Property:P170){target="_blank"}-ayant pour créateur  l'artiste [Q41264](https://www.wikidata.org/wiki/Q41264){target="_blank"}-Johannes Vermeer. Cette requête tente également de récupérer [P276](https://www.wikidata.org/wiki/Property:P276){target="_blank"}-le lieu d'exposition renseigné pour chaque œuvre, ainsi que sa localisation géographique (coordonnées géographiques du système de référence *World Geodetic System* ([WGS84](https://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf)).
 
@@ -330,10 +325,15 @@ data2 <- read.csv("data/data2.csv", row.names = NULL)
 datatable(data2)
 ```
 
-On constate que les données (non supervisées) concernant le lieu d'exposition sont très hétérogènes. Alors que certaines œuvres n'ont aucun lieu d'exposition indiqué car l'information n'est tout simplement pas disponible, d'autres présentent plusieurs localisations et dans certains cas, plusieurs fois le même musée. Pourquoi ?
+Dans un second temps, nous nous intéresserons à une œuvre précise de Johannes Vermeer : [A Young Woman Seated at the Virginals](https://www.wikidata.org/wiki/Q4660880).
+Dans Wikidata, cette œuvre est désignée par le biais de l'entité (préfixe `wd:`) associée à un identifiant unique : [Q4660880](https://www.wikidata.org/wiki/Q4660880).
 
-- Un même musée peut avoir plusieurs localisations (plusieurs couples de coordonnées géographiques) renseignées;
-- Une même œuvre peut être localisée dans plusieurs musées, ou plusieurs fois dans un même musée, mais à des périodes différentes. 
+On constate dans le tableau de résultat ci-dessus que les données (non supervisées) concernant le lieu d'exposition sont très hétérogènes. Alors que certaines œuvres n'ont aucun lieu d'exposition indiqué car l'information n'est tout simplement pas disponible, d'autres présentent plusieurs localisations et dans certains cas, plusieurs fois le même musée. 
+
+Pourquoi ?
+
+- un même musée peut avoir plusieurs localisations (plusieurs couples de coordonnées géographiques) renseignées,
+- une même œuvre peut être localisée dans plusieurs musées, ou plusieurs fois dans un même musée, mais à des périodes différentes. 
 
 Ce constat nécessite d'entrer plus en détail dans les déclarations (*statements*) renseignées dans Wikidata, notamment la localisation de l'œuvre au cours du temps entre divers musées ou institutions culturelles de divers pays, en utilisant les valeurs et qualificatifs (*qualifiers*) associés aux propriétés figurant dans les déclarations :
 <br/>
@@ -343,7 +343,7 @@ knitr::include_graphics("figures/wikidata_page_description.svg")
 ```
 
 <center>
-Figure 7 : **Diagramme d'une entité Wikidata avec les principaux termes utilisés**</br>*Source : [Wikidata](https://www.wikidata.org/wiki/Wikidata:Introduction)*
+Figure 6b : **Diagramme d'une entité Wikidata avec les principaux termes utilisés**</br>*Source : [Wikidata](https://www.wikidata.org/wiki/Wikidata:Introduction)*
 </center>
 </br>    
    
@@ -353,6 +353,18 @@ Ce constat ouvre une nouvelle perspective en matière d'analyse exploratoire. No
 <br/>
 
 ## Troisième requête SPARQL
+
+Comme illustré dans la figure 6b, la localisation d'une entité est déclarée au moyen d'une propriété ([P276](https://www.wikidata.org/wiki/Property:P276)), qui permet l'accès à:</br> 
+- une localisation de l'œuvre dans un lieu (géographique et institutionnel) : `wdt:P276`, objet de la seconde requête (voir Figure 6a),   
+- ou à un ensemble de localisation renseignées dans le temps (voir Figure 6c) : `p:P276` associée aux [*qualifiers*](https://www.wikidata.org/wiki/Help:Qualifiers) de la déclaration de lieu (désignée par le préfixe `pq:`) donnant une période temporelle (date de début : [P580](https://www.wikidata.org/wiki/Property:P580) et date de fin: [P582](https://www.wikidata.org/wiki/Property:P582)).
+
+```{r, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
+knitr::include_graphics('figures/modele_interroge_qualifier_b.png')
+```
+<center>
+Figure 6c : **Classes et propriétés spécifiques de Wikidata mobilisées pour la localisation spatio-temporelle dans le cas d'une déclaration (*statement*)**
+</center>
+</br>    
 
 Pour connaître les modalités de circulation de l'œuvre dans divers musées et institutions, la requête SPARQL ci-dessous collecte les noms des différents lieux d'exposition ([P276](https://www.wikidata.org/wiki/Property:P276){target="_blank"}), ainsi qu'une dimension spatio-temporelle associée, qui est composée de coordonnées géographiques ([P625](https://www.wikidata.org/wiki/Property:P625){target="_blank"}) et des dates de début et de fin ([P580](https://www.wikidata.org/wiki/Property:P580){target="_blank"} & [P582](https://www.wikidata.org/wiki/Property:P582){target="_blank"}) de la période pendant laquelle l'œuvre ([Q4660880](http://www.wikidata.org/entity/Q4660880)) semble avoir été présente dans les différents lieux (figure 7). La requête permet également d'obtenir l'image de l'œuvre ciblée ([P18](https://www.wikidata.org/wiki/Property:P18)).
 
@@ -401,7 +413,7 @@ knitr::include_graphics("data/images/Q4660880.jpg")
 
 
 <center>
-Figure 8 : ***A Young Woman Seated at the Virginals*** **de Johannes Vermeer, 1670**
+Figure 7 : ***A Young Woman Seated at the Virginals*** **de Johannes Vermeer, 1670**
 </center>
 </br>   
 
