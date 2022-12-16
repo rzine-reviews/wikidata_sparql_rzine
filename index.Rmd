@@ -20,7 +20,7 @@ bibliography: biblio.bib
 nocite: |
   @*
 link-citations: true
-github: "HuguesPecout/sparql_test"
+github: "Madouck/wikidata_sparql_rzine"
 # gitlab: "https://gitlab.huma-num.fr/gt-notebook/workshop/workshop_3_decembre_2021/atelier_notebooks"
 doi: "xx.xxx/xxxx.xxxxxxx"
 licence: "by-nc-sa"
@@ -177,7 +177,7 @@ Plusieurs sources de données sont utilisées pour ce travail exploratoire:
 
 **Afin de maximiser la reproductibilité du code présenté, les jeux de données 1 et 2 ont été archivés et sont disponibles au téléchargement :**
 <br/>
-<p class="center">[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span> <br/> Télécharger les données](https://github.com/HuguesPecout/sparql_test/raw/main/data.zip)</p>
+<p class="center">[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span> <br/> Télécharger les données](https://github.com/Madouck/wikidata_sparql_rzine/data.zip)</p>
 <br/>
 <div class="alert alert-danger" role="alert">
 <b>Wikidata est une base de données collaboratives, régulièrement mise à jour. Une requête réalisée à deux dates différentes est susceptible de renvoyer un résultat différent.</b></div>   
