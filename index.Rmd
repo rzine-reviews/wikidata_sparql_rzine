@@ -79,7 +79,7 @@ Wikidata offre ainsi un large domaine d'informations générales sur notre unive
 
 Il existe plusieurs méthodes pour accéder à ces données. Dans ce document, nous utilisons un accès à la base de données Wikidata mises à disposition au **format RDF** sans toutefois expliciter le langage de requête [SPARQL](https://www.w3.org/TR/sparql11-query/), qui n'est pas l'objet de la fiche. 
 
-Le RDF est cadre général de modélisation utilisé pour décrire formellement les ressources Web et leurs métadonnées, afin de permettre le traitement par inférence de telles descriptions. Développé par le W3C, RDF est le formalisme de base du [Web sémantique](https://fr.wikipedia.org/wiki/Web_s%C3%A9mantique). 
+Le RDF (Resource Description Framework) est un cadre général de modélisation utilisé pour décrire formellement les ressources Web et leurs métadonnées, afin de permettre le traitement par inférence de telles descriptions. Développé par le W3C, RDF est le formalisme de base du [Web sémantique](https://fr.wikipedia.org/wiki/Web_s%C3%A9mantique). 
 
 Un document structuré en RDF est un ensemble de triplets^[Un **triplet** est un groupe formé par trois éléments dont chacun appartient à un ensemble distinct.], chaque triplet associant un sujet, un prédicat et un objet):  
 - le « **sujet** » représente la ressource à décrire;  
@@ -177,7 +177,7 @@ Plusieurs sources de données sont utilisées pour ce travail exploratoire:
 
 **Afin de maximiser la reproductibilité du code présenté, les jeux de données 1 et 2 ont été archivés et sont disponibles au téléchargement :**
 <br/>
-<p class="center">[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span> <br/> Télécharger les données](https://github.com/Madouck/wikidata_sparql_rzine/data.zip)</p>
+<p class="center">[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span> <br/> Télécharger les données](https://github.com/Madouck/wikidata_sparql_rzine/raw/main/data.zip)</p>
 <br/>
 <div class="alert alert-danger" role="alert">
 <b>Wikidata est une base de données collaboratives, régulièrement mise à jour. Une requête réalisée à deux dates différentes est susceptible de renvoyer un résultat différent.</b></div>   
@@ -192,8 +192,7 @@ Un [service de collecte des données de Wikidata en langage SPARQL](https://quer
 
 ## Modèle des données ciblées
 
-L'objectif de cette analyse consiste à s'intéresser à un·e peintre et à ses peintures. </br> Dans Wikidata, les peintres, peintures et lieux d'exposition sont modélisés selon les représentations schématiques ci-dessous (Figures 4 et 6.a à c), comprenant des entités liées entre elles et mobilisant [une syntaxe spécifique avec des préfixes^[Un **préfixe** est une modalité de simplification d'écriture faisant référence à un *espace de noms*, voir notamment, les préfixes wikidata [ici](https://www.wikidata.org/wiki/EntitySchema:E49){target="_blank"}]](https://www.wikidata.org/wiki/EntitySchema:E49).   
-Le fragment de graphe de données Wikidata utilisé ici est illustré en figure 6b, ci-dessous.
+L'objectif de cette analyse consiste à s'intéresser à un·e peintre et à ses peintures. </br> Dans Wikidata, les peintres, peintures et lieux d'exposition sont modélisés selon les représentations schématiques ci-dessous (Figures 4 et 6.a à c), comprenant des entités liées entre elles et mobilisant [une syntaxe spécifique avec des préfixes^[Un **préfixe** est une modalité de simplification d'écriture faisant référence à un *espace de noms*, voir notamment, les préfixes wikidata [ici](https://www.wikidata.org/wiki/EntitySchema:E49){target="_blank"}]](https://www.wikidata.org/wiki/EntitySchema:E49). Le fragment de graphe de données Wikidata utilisé ici est illustré en figure 6b, ci-dessous.
 </br>
 Après plusieurs explorations, nous avons décidé de nous intéresser au peintre néerlandais du 17e siècle, **Johannes Vermeer**. 
 
@@ -502,44 +501,27 @@ Graphique 1 : **Distribution du nombre d'œuvres de Johannes Vermeer exposées p
 
 ### Géoréférencement
 
-A partir de la variable 'coord', il est possible de transformer ce tableau de données géographiques dans un format permettant l'analyse spatiale, où chaque individu/entité (musée) est représenté par un point précisément localisé dans l'espace. Pour cela, nous commençons par créer les colonnes *'long'* et *'lat'* à partir de la colonne *'Coordinates'* :
-
+La variable 'Coordinates' stocke les coordonnées géographiques des musées dans le format **WKT**^[Le format **Well-known text,** abrégé en **WKT**, peut se traduire par « texte bien lisible ». C'est un format standard en mode texte utilisé pour représenter des objets géométriques vectoriels issus des systèmes d’informations géographiques (SIG), mais aussi des informations s’y rattachant, tels les références de systèmes de coordonnées.] (Well-known text). A l'aide du package `sf`, il est simple de construire des données géographiques vectorielles permettant l'analyse spatiale avec R ([`Simple Features object`](https://r-spatial.github.io/sf/articles/sf1.html)) à partir de ce format de stockage. Pour cela, nous utilisons les fonctions `st_as_sfc` et `st_as_sf`.  
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
-# Suppression des chaînes de caractères "Point(" dans la colonne 'Coordinates'
-nb_oeuvre_by_musee$Coordinates <- gsub(pattern = 'Point\\(', replacement = '', 
-                                       x = nb_oeuvre_by_musee$Coordinates)
 
-# Suppression des chaînes de caractères ")" dans la colonne 'Coordinates'
-nb_oeuvre_by_musee$Coordinates <- gsub(pattern = '\\)', replacement = '',
-                                       x = nb_oeuvre_by_musee$Coordinates)
+# Chargement du package sf, pour la gestion de données géographiques vectorielles
+library(sf)
 
-# Création d'un liste comportant un vecteur de coordonnées pour chaque musée
-out <- strsplit(nb_oeuvre_by_musee$Coordinates, split = ' ')
+# Création d'objets géographiques ponctuels à partir des coordonnées stockées en WKT
+geometry <- st_as_sfc(nb_oeuvre_by_musee$Coordinates, crs = 4326)
 
-# Création de deux nouvelles colonnes comportant les longitudes et latitudes
-musee_geo <- cbind(nb_oeuvre_by_musee, do.call(rbind, out))
+# Création d'une couche géographique vectorielle (attributs des musées + géométries)
+musee_geo  <- st_as_sf(nb_oeuvre_by_musee, geometry)
 
-# Renommage de deux nouvelles colonnes créées
-colnames(musee_geo)[4:5] <- c('long', 'lat')
 ```
 
-La table de données comporte dorénavant deux nouvelles colonnes ('long' et 'lat').
+La table de données a été transformée en couche géographique manipulable avec R ([objet `sf`](https://r-spatial.github.io/sf/articles/sf1.html)), où chaque musée comporte une géométrie (point localisé dans l'espace, dans le [système géographique de référence WGS84](https://fr.wikipedia.org/wiki/WGS_84)).
 
 ```{r,  eval=TRUE, echo=FALSE, include=TRUE}
 datatable(musee_geo)
 ```
 
-Il ne reste plus qu'à **convertir notre tableau en véritable couche géographique (objet de type `sf`), en utilisant les variables 'long' et 'lat'**.
-```{r,  eval=TRUE, echo=TRUE, include=TRUE, message=FALSE}
-# Package sf, pour la gestion de données géographiques
-library(sf)
-
-# Transformation du tableau de données vers une couche géographique
-musee_geo <- st_as_sf(musee_geo, coords = c("long", "lat"), crs = 4326)
-
-head(musee_geo)
-```
-L'objet `musee_geo` est désormais un objet `sf`, que l'on va pourvoir cartographier. Il est très facile d'afficher les points créés (musées) sur une carte interactive, en utilisant le package `mapview`. Cela permet, entre autres, de vérifier la qualité des données et du géoréférencement effectué.
+Il est maintenant très simple de cartographier les points créés (musées) sur une carte interactive, en utilisant le package `mapview`. Cela permet, entre autres, de vérifier la qualité des données et du géoréférencement effectué.
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 # Package pour la cartographie interactive (repose sur la librairie Leaflet)
@@ -595,13 +577,13 @@ Carte 2 : **Nombre d'œuvres de Johannes Vermeer exposées au cours du temps, pa
 
 Au vue de la carte précédente, il semble intéressant d'explorer la répartition des œuvres de Johannes Vermeer à l'échelle des pays. Pour cela, il est nécessaire d'enrichir les données. Plusieurs étapes sont nécessaires :
 
-**Téléchargement d'un fond de carte pays mis à disposition par le package [`rnaturalearth`](https://cran.r-project.org/web/packages/rnaturalearth/README.html):**
+**Téléchargement d'un fond de carte pays mis à disposition par le package [`rnaturalearth`](https://cran.r-project.org/web/packages/rnaturalearth/):**
 ```{r,  eval=FALSE, echo=TRUE, warning=FALSE, message=FALSE}
 # Package permettant d'utiliser l'API de Natural Earth
 library(rnaturalearth)
 
-# Téléchargement et enregistrement d'un fond de carte pays
-world <- ne_download(scale = "small",
+# Téléchargement et enregistrement d'un fond de carte "pays"
+world <- ne_download(scale = "medium",
                      type = "countries",
                      category = "cultural",
                      destdir = "data/world",
@@ -610,19 +592,16 @@ world <- ne_download(scale = "small",
 ```
 
 ```{r,  eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
-# Pour le charger de nouveau
-world <- st_read("data/world/ne_110m_admin_0_countries.shp", quiet = TRUE )
+world <- st_read("data/world/ne_50m_admin_0_countries.shp", quiet = TRUE )
 ```
 
-
+Affichage de la couche géographique :
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, message = FALSE}
-# Affichage de la couche géographique
 plot(st_geometry(world))
-
 ```
 
-**Les attributs des entités (pays)** de la couche géographique :
+**Les attributs des entités (pays)** de la couche géographique récupérée sont :
 
 ```{r,  eval=TRUE, echo=FALSE, include=TRUE, message = FALSE}
 
@@ -630,19 +609,13 @@ datatable(world)
 
 ```
 
-La couche géographique des musées ('musee_geo') et le fond de carte du monde ('world') sont géoréférencés dans le même système de coordonées^[Un **système de coordonnées** est un référentiel dans lequel on peut représenter des éléments dans l'espace. Ce système permet de se situer sur l'ensemble du globe terrestre grâce à un couple de coordonnées géographiques.] (le [WGS84](https://fr.wikipedia.org/wiki/WGS_84)). Cependant, ces deux couches sont dans un système de coordonnées sphérique, non une projection cartographique. En effet, par défaut, le package `sf` repose sur bibliothèque [S2 Geometry](https://s2geometry.io/) pour la gestion de ce type de coordonnées, et cela risque de nous compliquer la tâche pour les traitements spatiaux à venir...
-
-Nous utilisons donc la fonction `sf_use_s2` du package `sf` pour modifier la définition par défaut de ce paramètre. 
-```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning = FALSE}
-sf_use_s2(FALSE)
-```
-Nous pouvons ensuite réaliser une [*jointure spatiale*](https://www.emse.fr/tice/uved/SIG/Glossaire/co/Jointure_spatiale.html) qui nous permet d'obtenir pour chaque musée, le [code ISO3](https://fr.wikipedia.org/wiki/ISO_3166-1) du pays dans lequel il se situe. Pour cela, nous utilisons la fonction `st_intersection` du package `sf`.
+La couche géographique des musées ('musee_geo') et le fond de carte du monde ('world') sont géoréférencés dans le même système de coordonées^[Un **système de coordonnées** est un référentiel dans lequel on peut représenter des éléments dans l'espace. Ce système permet de se situer sur l'ensemble du globe terrestre grâce à un couple de coordonnées géographiques.] (le [WGS84](https://fr.wikipedia.org/wiki/WGS_84)). Nous pouvons donc réaliser une [*jointure spatiale*](https://www.emse.fr/tice/uved/SIG/Glossaire/co/Jointure_spatiale.html) qui permet de récupérer pour chaque musée, le [code ISO3](https://fr.wikipedia.org/wiki/ISO_3166-1) du pays dans lequel il se situe. Pour cela, nous utilisons la fonction `st_intersection` du package `sf`.
 
 **Jointure spatiale entre les musées (points) et les pays (polygones) :**
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning = FALSE}
-# Jointure spatiale 
-musee_geo <-st_intersection(musee_geo, world[,"ADM0_A3"])
+musee_geo <- st_intersection(musee_geo, world[,"ADM0_A3"])
 ```
+
 **Le code ISO3 du pays de localisation a été ajouté à la couche géographique des musées :**
 ```{r,  eval=TRUE, echo=FALSE, include=TRUE}
 datatable(st_drop_geometry(musee_geo[2:4]))
@@ -701,25 +674,14 @@ data <- data[!duplicated(data$dated), ]
 ### Géoréférencement
 
 **Géoréférencement des musées à partir de la variable 'coord' :**
+
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
-# Suppression des chaînes de caractères "Point(" et ")"
-data$coord <- gsub(pattern = 'Point\\(', replacement = '', data$coord)
-data$coord <- gsub(pattern = '\\)', replacement = '', data$coord)
 
-# Création d'un liste comportant un vecteur de coordonnées pour chaque musée
-out <- strsplit(data$coord, split = ' ')
+# Création d'objets géographiques ponctuels à partir des coordonnées stockées en WKT
+geometry <- st_as_sfc(data$coord, crs = 4326)
 
-# Création de deux nouvelles colonnes comportant les longitudes et latitudes
-data_geo <- cbind(data, do.call(rbind, out))
-
-# Suppression des colonnes inutiles
-data_geo <- data_geo[, c(2:4,6,7)]
-
-# Renommage de deux nouvelles colonnes
-colnames(data_geo)[4:5] <- c('long', 'lat')
-
-# Conversion du dataframe en objet sf (couche géographique)
-data_geo <- st_as_sf(data_geo, coords = c("long", "lat"), crs = 4326)
+# Création d'une couche géographique vectorielle (attributs des musées + géométries)
+data_geo  <- st_as_sf(data, geometry)
 
 # Affichage des données 
 datatable(data_geo)
@@ -731,7 +693,7 @@ Plusieurs musées, comme le *Ashmolean Museum*, apparaissent plusieurs fois dans
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 # Regroupement par musée - Calcul du nombre total d'expositions
-nb_expo_musee_geo <- aggregate(x = data_geo[,1], by = list(Musée=data_geo$nomLabel), FUN = length)
+nb_expo_musee_geo <- aggregate(x = data_geo[,2], by = list(Musée=data_geo$nomLabel), FUN = length)
 ```
 
 Il est facile d'afficher ces données géographiques ponctuelles sur un fond de carte dynamique, en améliorant cette fois-ci la mise en page des pop-ups contenant les attributs de chaque musée.
@@ -766,6 +728,7 @@ De la même manière que dans la [partie 4.1.5](#enrichissement_des_données), n
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning = FALSE}
 # Jointure spatiale points/pays
 data_geo <-st_intersection(data_geo, world[,"ADM0_A3"])
+
 ```
 On vérifie que le code ISO3 du pays a bien été collecté pour chaque point (musée).
 
@@ -858,7 +821,7 @@ Afin d'obtenir ces variables, nous réalisons une jointure entre les différents
 tab_museum <- merge(nb_expo_musee_geo, nb_days_musee_geo, by = "Musée")
 
 # Jointure entre 'tab_museum' et  'nb_expo_musee_geo'
-tab_museum <- merge(tab_museum, st_drop_geometry(data_geo[,c(1,4)]), by.x = "Musée", by.y="nomLabel", all.x = FALSE)
+tab_museum <- merge(tab_museum, st_drop_geometry(unique(data_geo[,c("nomLabel","ADM0_A3")])), by.x = "Musée", by.y="nomLabel")
 
 # Modification de noms de colonnes
 colnames(tab_museum)[2:4] <- c("nb_expo","nb_days","pays")
@@ -899,7 +862,7 @@ Carte 4 : **Nombre de jours d'exposition de l'œuvre** ***A Young Woman Seated a
 
 ## Carte temporelle animée
 
-La carte précedente ne permet pas de rendre compte de la trajectoire spatio-temporelle de l'œuvre. Une carte animée représentant la localisation de l'œuvre au cours du temps permettrait de formaliser son déplacement dans l'espace et dans le temps.
+La carte précédente ne permet pas de rendre compte de la trajectoire spatio-temporelle de l'œuvre. Une carte animée représentant la localisation de l'œuvre au cours du temps permettrait de formaliser son déplacement dans l'espace et dans le temps.
 
 Pour cela, nous devons dans un premier temps choisir un pas de temps. La période de temps analysée est de presque 20 ans et le tableau peut avoir été exposé dans deux musées différents au cours d'un même mois. Nous choisissons donc de construire une carte animée réglée sur un pas de temps hebdomadaire, ce qui laissera le temps aux lecteur·rice·s de lire les informations affichées. 
 
@@ -923,7 +886,7 @@ Si c'est le cas, on inscrit les informations du tableau `data_geo`dans le tablea
 for (i in 1:nrow(data_by_week)){
 
 # Sélection des lignes où : Date d'arrivée <= week[i] <= Date de départ 
-temp <-   data_geo[data_geo$dated <= data_by_week$week[i] & data_geo$datef >= data_by_week$week[i], c(1,6,4,5)]
+temp <-   data_geo[data_geo$dated <= data_by_week$week[i] & data_geo$datef >= data_by_week$week[i], c("nomLabel", "nb_days", "ADM0_A3", "geometry")]
 
 # Si une ligne est séléctionnée = Inscription des données dans 'data_by_week'
 if (nrow(temp)==1){data_by_week[i,2:5] <- temp}
@@ -944,7 +907,6 @@ data_by_week[is.na(data_by_week$pays), "pays"] <- "pays ?"
 
 # Nombre total de jours d'exposition NA = 0
 data_by_week[is.na(data_by_week$Nb_day), "Nb_day"] <- 0
-
 
 # Affichage du tableau
 datatable(data_by_week)
@@ -996,9 +958,11 @@ CARTE  <- tm_shape(world) +                      # Ajout fond de carte monde
 
 Avec la fonction `tm_facet`, ce bout de code crée autant de cartes qu'il y a de lignes dans le tableau `data_by_week`.
 
-**Il est ensuite très facile de convertir cet objet `list` qui contient l'ensemble des cartes produites en fichier mp4 avec la fonction `tmap_animation`**.
+Il est ensuite très facile de convertir cet objet `list` qui contient l'ensemble des cartes produites en fichier mp4 avec la fonction `tmap_animation`. **Attention, la création d'un GIF ou d'une vidéo peut prendre plusieurs minutes.**
 
 ```{r,  eval=FALSE, echo=TRUE, include=TRUE}
+
+# install.packages("av")
 
 tmap_animation(tm = CARTE, 
                filename = "figures/peinture_en_voyage.mp4", 
@@ -1064,11 +1028,11 @@ data_geo$ADM0_A3 <- ordered(as.factor(data_geo$ADM0_A3), levels = countries)
 Nous créons une nouvelle colonne qui sera utilisée comme étiquette dans le graphique. Dans cette colonne, les noms des musées n'apparaissent qu'une fois, uniquement pour la première exposition.
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 
-# Conversion de l'objet sf en data.frame
+# Conversion de l'objet sf en data.frame (= suppression de la géométrie)
 df_geo <- st_drop_geometry(data_geo)
 
 # Sélection des premières dates d'arrivée (si il en existe plusieurs) pour chaque musée
-date_label <- df_geo[!duplicated(df_geo$nomLabel), 1:2]
+date_label <- df_geo[!duplicated(df_geo$nomLabel), c("nomLabel", "dated")]
 
 # Jointure par la date d'arrivée - ajout de la colonne label (nomLabel.y)
 data_geo <- merge(data_geo, date_label, by="dated", all.x=TRUE)
@@ -1106,7 +1070,7 @@ La bibliothèque `ggplot2` fonctionne avec une syntaxe particulière (basée sur
 Nous commençons par préciser le type de géometrie (ici `geom_segment`) et les variables à représenter :
 
 - color = 'ADM0_A3' (code ISO3) : pays de localisation ;
-- Xend = 'dated' (date d'arrivée) : limite du segment en x ;
+- xend = 'datef' (date de fin) : limite du segment en x ;
 - yend = 'nomLabel.x' (nom du musée) : limite du segment en y.
 
 
@@ -1311,28 +1275,15 @@ colnames(nb_oeuvre)[3] <- "Nb_oeuvre"
 
 #----------------------------------------- GEOREFERENCEMENT ------------------------------------------#
 
-#### Traitement des coordonnées
 
-# Suppression des chaînes de caractères "Point(" dans la variable 'coord'
-nb_oeuvre$coord <- gsub(pattern = 'Point\\(', replacement = '', nb_oeuvre$coord)
-
-# Suppression des chaînes de caractères ")" dans la variable 'coord'
-nb_oeuvre$coord <- gsub(pattern = '\\)', replacement = '', nb_oeuvre$coord)
-
-# Séparation longitude et latitude en deux colonnes
-out <- strsplit(nb_oeuvre$coord, split = ' ')
-
-# Création de deux nouvelles colonnes avec longitude et latitude
-my_museum <- cbind(nb_oeuvre, do.call(rbind, out))
-
-# Renommage de colonnes créées
-colnames(my_museum)[4:5] <- c('long', 'lat')
-
-
-#### Géoréférencement des points
-
+# Chargement de la librairie sf
 library(sf)
-my_museum <- st_as_sf(my_museum, coords = c("long", "lat"), crs = 4326)
+
+# Création d'objets géographiques ponctuels à partir des coordonnées stockées en WKT
+geometry <- st_as_sfc(nb_oeuvre$coord, crs = 4326)
+
+# Création d'une couche géographique vectorielle (attributs des musées + géométries)
+nb_oeuvre_by_museum <- st_as_sf(nb_oeuvre, geometry)
 
 
 
@@ -1341,7 +1292,7 @@ my_museum <- st_as_sf(my_museum, coords = c("long", "lat"), crs = 4326)
 #### Import de la couche géographique des pays
 
 library(rnaturalearth)
-world <- ne_download(scale = "small",
+world <- ne_download(scale = "medium",
                      type = "countries",
                      category = "cultural",
                      destdir = "data/world",
@@ -1351,15 +1302,14 @@ world <- ne_download(scale = "small",
 
 
 #### Jointure spatiale
-
-my_museum <-st_intersection(my_museum, world[,"ADM0_A3"])
+nb_oeuvre_by_museum <-st_intersection(nb_oeuvre_by_museum , world[,"ADM0_A3"])
 
 
 #---------------------------------- GRAPHIQUE NOMBRE ŒUVRES PAR PAYS ---------------------------------#
 
 #### Regroupement par pays 
 
-by_country <- aggregate(Nb_oeuvre ~ ADM0_A3 , data = my_museum, FUN = sum)
+by_country <- aggregate(Nb_oeuvre ~ ADM0_A3 , data = nb_oeuvre_by_museum, FUN = sum)
 
 
 #### Graphique 
@@ -1379,7 +1329,7 @@ ggplot(data = by_country, aes(x = ADM0_A3, y = Nb_oeuvre) )  +
 
 library(tmap)
 tmap_mode(mode = "view")
-tm_shape(my_museum) +
+tm_shape(nb_oeuvre_by_museum) +
 tm_symbols(size="Nb_oeuvre",
            scale = 2,
            col="red3",
@@ -1435,17 +1385,10 @@ datatable(nb_oeuvre)
 
 ```{r,  eval=TRUE, echo=FALSE, include=TRUE, warning=FALSE, message=FALSE}
 
-nb_oeuvre$coord <- gsub(pattern = 'Point\\(', replacement = '', nb_oeuvre$coord)
-nb_oeuvre$coord <- gsub(pattern = '\\)', replacement = '', nb_oeuvre$coord)
-out <- strsplit(nb_oeuvre$coord, split = ' ')
-my_museum <- cbind(nb_oeuvre, do.call(rbind, out))
-colnames(my_museum)[4:5] <- c('long', 'lat')
-
-my_museum <- st_as_sf(my_museum, coords = c("long", "lat"), crs = 4326)
-
-my_museum <-st_intersection(my_museum, world[,"ADM0_A3"])
-
-by_country <- aggregate(Nb_oeuvre ~ ADM0_A3 , data = my_museum, FUN = sum)
+geometry <- st_as_sfc(nb_oeuvre$coord, crs = 4326)
+nb_oeuvre_by_museum <- st_as_sf(nb_oeuvre, geometry)
+nb_oeuvre_by_museum  <-st_intersection(nb_oeuvre_by_museum , world[,"ADM0_A3"])
+by_country <- aggregate(Nb_oeuvre ~ ADM0_A3 , data = nb_oeuvre_by_museum , FUN = sum)
 
 library(ggplot2)
 ggplot(data = by_country, aes(x = ADM0_A3, y = Nb_oeuvre) )  +
@@ -1466,7 +1409,7 @@ ggplot(data = by_country, aes(x = ADM0_A3, y = Nb_oeuvre) )  +
 
 library(tmap)
 tmap_mode(mode = "view")
-tm_shape(my_museum) +
+tm_shape(nb_oeuvre_by_museum) +
 tm_symbols(size="Nb_oeuvre",
            scale = 2,
            col="red3",

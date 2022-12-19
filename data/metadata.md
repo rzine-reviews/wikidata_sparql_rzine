@@ -1,21 +1,50 @@
-3 types de jeux de données sont mis à disposition :  
-- les données au format CSV (séparateur ","") extraites de Wikidata à partir des requêtes explicitées (data, data1 et data2.csv),  
-- les données image au format JPG issues de ces requêtes,  
-- les données géographiques nécessaires pour la jointure.  
+----------------------------------------------------------------------------------------------------------------
+# Données associées à la fiche Rzine : "Spatio-temporal Wikidata. Exploration de données collaboratives du web 3.0"
+----------------------------------------------------------------------------------------------------------------
 
-data.csv contient les données suivantes :
-- "image" : l'url de l'image de l'oeuvre, de type chaîne de caractères,  
-- "nomLabel" : le nomen du lieu d'exposition de l'oeuvre, de type chaîne de caractères,  
-- "dated","datef" : les dates respectivement de début et de fin de l'exposition de l'oeuvre, de type date au format JJJJ-MM-AA,  
-- "coord" : les coordonnées géo-spatiales du lieu d'exposition, sous la forme d'un point(x,y).  
+Le code R utilisé pour télécharger (requêter) ces données est présenté dans la fiche Rzine (DOI : )
+Trois types de données sont mis à disposition :  
 
-data1.csv contient l'identifiant Wikidata de Johannes Vermeer et l'url de l'image Wikimédia associée.  
+1. Fichiers CSV (séparateur virgule) qui contiennent des données extraites de Wikidata à partir des requêtes explicitées dans la fiche,  
+2. Images JPG extraites de Wikidata à partir des requêtes explicitées dans la fiche
+3. Couche géographique Natural Earth (fond de carte pays) récupérée via la package rnaturalearth, 
 
-data2.csv contient les données suivantes :  
-- "oeuvreLabel" : le nomen de l'oeuvre, de type chaîne de caractères,  
-- "museeLabel" : le nomen du lieu d'exposition, de type chaîne de caractères,  
-- "coord" : la localisation du lieu, sous la forme d'un point(x,y).
 
-Le dossier "images" contient les deux images issues Wikimédia du peintre et de l'oeuvre au format jpg.
 
-Le dossier "world" contient les données géographiques nécessaires à la jointure cartographique.
+1. Les fichiers csv
+
+1.a. 'data1.csv' contient :  
+- "identifiant" : URL de la page wikidata de Johannes Vermeer (Q41264)
+- "image" : image Wikimédia associée Johannes Vermeer (autoportrait présumé de l'artiste)
+
+1.b. 'data2.csv' contient :  
+- "oeuvreLabel" : intitulé des œuvres de Johannes Vermeer - chaîne de caractères,  
+- "museeLabel" : nom des différents lieux d'exposition (musées) des œuvres - chaîne de caractères,  
+- "coord" : coordonnées des lieux d'exposition - chaîne de caractères au format WKT.  
+
+1.c. 'data.csv' contient :
+- "image" : url de l'image de l’œuvre - chaîne de caractères,  
+- "nomLabel" : nom du lieu d'exposition de l’œuvre (musée) - chaîne de caractères, 
+- "dated" et "datef" : dates respectivement de début et de fin de l'exposition de l’œuvre - chaîne de caractères au format date 'JJJJ-MM-AA',  
+- "coord" : coordonnées du lieu d'exposition - chaîne de caractères au format WKT.  
+
+
+
+
+2. Les images
+
+Le répertoire 'images' contient deux images issues Wikimédia :
+a. Image du portait de l'artiste Johannes Vermeer (portrait_artiste.jpg),
+b. Image de l'œuvre "A Young Woman Seated at the Virginals" de Johannes Vermeer (Q4660880.jpg) : 
+
+
+
+
+3. La couche géographique 
+
+Le répertoire 'world' contient une couche géographique Natural Earth (fond de carte pays) au format shapefile, nommée 'ne_50m_admin_0_countries'.
+Cette couche géographique a directement été récupérée avec R en utilisant la package rnaturalearth. Elle peut également être téléchargée depuis le site de Natural Earth à cette url : https://www.naturalearthdata.com/downloads/50m-cultural-vectors/50m-admin-0-countries-2/
+
+
+
+

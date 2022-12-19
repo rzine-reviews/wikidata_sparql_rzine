@@ -1,6 +1,4 @@
 "oeuvreLabel","museeLabel","coord"
-"The Concert",NA,NA
-"The Lacemaker",NA,NA
 "Saint Praxedis","National Museum of Western Art","Point(139.775677 35.71546)"
 "Saint Praxedis","National Museum of Western Art","Point(139.7758498 35.7153567)"
 "Woman with a Pearl Necklace","Gemäldegalerie","Point(13.36472 52.50861)"
@@ -71,3 +69,5 @@
 "The Geographer","Villa San Donato","Point(11.2256 43.7904)"
 "The Procuress","Gemäldegalerie Alte Meister","Point(13.73466 51.05338)"
 "The Procuress","Gemäldegalerie Alte Meister","Point(13.734707 51.053388)"
+"The Concert",NA,NA
+"The Lacemaker",NA,NA
