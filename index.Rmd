@@ -44,7 +44,7 @@ knitr::opts_chunk$set(echo=TRUE,
 
 ```
 
-> Cette fiche est le fruit d'une collaboration interdisciplinaire de membres du [GT Notebook](https://gitlab.huma-num.fr/gt-notebook) dans le cadre d'un [atelier](https://gt-notebook.gitpages.huma-num.fr/workshop/workshop_3_decembre_2021/slide2html-3-dec/) proposé aux [*Journées d’étude normande sur les données de la recherche*](https://www.unicaen.fr/evenement/journee-detude-normande-sur-les-donnees-de-la-recherche/) qui se sont déroulées en décembre 2021. L'association de plusieurs compétences et disciplines a abouti à ce notebook présentant une analyse exploratoire reproductible de données collaboratives *Wikidata*, mises à disposition au format RDF. Les enjeux d'un tel processus inter-disciplinaire sont esquissés en conclusion. Les requêtes SPARQL élaborées ont fait l'objet d'une présentation et d'échanges au sein des [Ateliers du Web Sémantique](https://les-ateliers-du-web-semantique.gitpages.huma-num.fr/les-ateliers-du-web-semantique/) au printemps 2021.
+> Cette fiche est le fruit d'une collaboration interdisciplinaire de membres du [GT Notebook](https://gitlab.huma-num.fr/gt-notebook) dans le cadre d'un [atelier](https://gt-notebook.gitpages.huma-num.fr/workshop/workshop_3_decembre_2021/slide2html-3-dec/){target="_blank"} proposé aux [*Journées d’étude normande sur les données de la recherche*](https://www.unicaen.fr/evenement/journee-detude-normande-sur-les-donnees-de-la-recherche/) qui se sont déroulées en décembre 2021. L'association de plusieurs compétences et disciplines a abouti à ce notebook présentant une analyse exploratoire reproductible de données collaboratives *Wikidata*, mises à disposition au format RDF. Les enjeux d'un tel processus inter-disciplinaire sont esquissés en conclusion. Les requêtes SPARQL élaborées ont fait l'objet d'une présentation et d'échanges au sein des [Ateliers du Web Sémantique](https://les-ateliers-du-web-semantique.gitpages.huma-num.fr/les-ateliers-du-web-semantique/) au printemps 2021.
 
 # Introduction {-}
 
@@ -171,8 +171,8 @@ install.packages(liste_packages_to_install)
 Plusieurs sources de données sont utilisées pour ce travail exploratoire:
 
 1) Données issues de la base *Wikidata* ;    
-2) Couche géographique [*Natural Earth*](https://www.naturalearthdata.com/);      
-3) Fonds de carte mis à disposition par [*Leaflet*](https://rstudio.github.io/leaflet/basemaps.html).         
+2) Couche géographique [*Natural Earth*](https://www.naturalearthdata.com/){target="_blank"};      
+3) Fonds de carte mis à disposition par [*Leaflet*](https://rstudio.github.io/leaflet/basemaps.html){target="_blank"}.         
 
 
 **Afin de maximiser la reproductibilité du code présenté, les jeux de données 1 et 2 ont été archivés et sont disponibles au téléchargement :**
@@ -187,7 +187,7 @@ Plusieurs sources de données sont utilisées pour ce travail exploratoire:
 
 Un [service de collecte des données de *Wikidata* en langage SPARQL](https://query.wikidata.org/) est mis à disposition et offre une solution très complète en première approche (exemples, assistant de requêtes, diversité des représentations etc.). Toutefois, dans une dynamique d'exploration de la base de données *Wikidata*, l'utilisation de R facilite l'archivage et la reproductibilité des différentes requêtes réalisées. Pour cette raison, nous utilisons le package [`WikidataQueryServiceR`](https://github.com/wikimedia/WikidataQueryServiceR) qui fournit une Interface de Programmation d'Application (API) pour interroger le [*Wikidata Query Service*](https://query.wikidata.org/){target="_blank"} directement via *R*.
 
-`WikidataQueryServiceR` a été développé par Mikhail Popov, membre de la Fondation Wikimédia. Il s'est inspiré des packages [`WikipediR`](https://cran.r-project.org/web/packages/WikipediR/index.html) et [`WikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html). 
+`WikidataQueryServiceR` a été développé par Mikhail Popov, membre de la Fondation Wikimédia. Il s'est inspiré des packages [`WikipediR`](https://cran.r-project.org/web/packages/WikipediR/index.html){target="_blank"} et [`WikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html){target="_blank"}. 
 <br />
 
 ## Modèle des données ciblées
@@ -501,7 +501,7 @@ Graphique 1 : **Distribution du nombre d'œuvres de Johannes Vermeer exposées p
 
 ### Géoréférencement
 
-La variable 'Coordinates' stocke les coordonnées géographiques des musées dans le format **WKT**^[Le format **Well-known text,** abrégé en **WKT**, peut se traduire par « texte bien lisible ». C'est un format standard en mode texte utilisé pour représenter des objets géométriques vectoriels issus des systèmes d’informations géographiques (SIG), mais aussi des informations s’y rattachant, tels les références de systèmes de coordonnées.] (Well-known text). A l'aide du package `sf`, il est simple de construire des données géographiques vectorielles permettant l'analyse spatiale avec R ([`Simple Features object`](https://r-spatial.github.io/sf/articles/sf1.html)) à partir de ce format de stockage. Pour cela, nous utilisons les fonctions `st_as_sfc` et `st_as_sf`.  
+La variable 'Coordinates' stocke les coordonnées géographiques des musées dans le format **WKT**^[Le format **Well-known text,** abrégé en **WKT**, peut se traduire par « texte bien lisible ». C'est un format standard en mode texte utilisé pour représenter des objets géométriques vectoriels issus des systèmes d’informations géographiques (SIG), mais aussi des informations s’y rattachant, tels les références de systèmes de coordonnées.] (Well-known text). A l'aide du package `sf`, il est simple de construire des données géographiques vectorielles permettant l'analyse spatiale avec R ([`Simple Features object`](https://r-spatial.github.io/sf/articles/sf1.html){target="_blank"}) à partir de ce format de stockage. Pour cela, nous utilisons les fonctions `st_as_sfc` et `st_as_sf`.  
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 
 # Chargement du package sf, pour la gestion de données géographiques vectorielles
@@ -515,7 +515,7 @@ musee_geo  <- st_as_sf(nb_oeuvre_by_musee, geometry)
 
 ```
 
-La table de données a été transformée en couche géographique manipulable avec R ([objet `sf`](https://r-spatial.github.io/sf/articles/sf1.html)), où chaque musée comporte une géométrie (point localisé dans l'espace, dans le [système géographique de référence WGS84](https://fr.wikipedia.org/wiki/WGS_84)).
+La table de données a été transformée en couche géographique manipulable avec R ([objet `sf`](https://r-spatial.github.io/sf/articles/sf1.html){target="_blank"}), où chaque musée comporte une géométrie (point localisé dans l'espace, dans le [système géographique de référence WGS84](https://fr.wikipedia.org/wiki/WGS_84)).
 
 ```{r,  eval=TRUE, echo=FALSE, include=TRUE}
 datatable(musee_geo)
@@ -609,7 +609,7 @@ datatable(world)
 
 ```
 
-La couche géographique des musées ('musee_geo') et le fond de carte du monde ('world') sont géoréférencés dans le même système de coordonées^[Un **système de coordonnées** est un référentiel dans lequel on peut représenter des éléments dans l'espace. Ce système permet de se situer sur l'ensemble du globe terrestre grâce à un couple de coordonnées géographiques.] (le [WGS84](https://fr.wikipedia.org/wiki/WGS_84)). Nous pouvons donc réaliser une [jointure spatiale](https://www.emse.fr/tice/uved/SIG/Glossaire/co/Jointure_spatiale.html) qui permet de récupérer pour chaque musée, le [code ISO3](https://fr.wikipedia.org/wiki/ISO_3166-1) du pays dans lequel il se situe. Pour cela, nous utilisons la fonction `st_intersection` du package `sf`.
+La couche géographique des musées ('musee_geo') et le fond de carte du monde ('world') sont géoréférencés dans le même système de coordonées^[Un **système de coordonnées** est un référentiel dans lequel on peut représenter des éléments dans l'espace. Ce système permet de se situer sur l'ensemble du globe terrestre grâce à un couple de coordonnées géographiques.] (le [WGS84](https://fr.wikipedia.org/wiki/WGS_84)). Nous pouvons donc réaliser une [jointure spatiale](https://www.emse.fr/tice/uved/SIG/Glossaire/co/Jointure_spatiale.html){target="_blank"} qui permet de récupérer pour chaque musée, le [code ISO3](https://fr.wikipedia.org/wiki/ISO_3166-1) du pays dans lequel il se situe. Pour cela, nous utilisons la fonction `st_intersection` du package `sf`.
 
 **Jointure spatiale entre les musées (points) et les pays (polygones) :**
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning = FALSE}
@@ -999,7 +999,7 @@ Carte 5 : **Carte animée de circulation de l'œuvre de Johannes Vermeer *A Youn
 
 **Bien que la carte animée soit une représentation techniquement aboutie, elle ne transmet pas efficacement les informations sur la trajectoire spatio-temporelle du tableau de Johannes Vermeer au monde des musées. Une représentation statique et axée sur la dimension temporelle, comme une frise chronologique, nous semblerait plus appropriée.**
 
-Il existe des packages spécialisés dans la construction de frise chronologique, comme par exemple [`vistime`](https://cran.r-project.org/web/packages/vistime/vignettes/vistime-vignette.html). Cependant, afin de s'assurer d'une certaine liberté pour la mise en forme de la frise, nous utilisons le package `ggplot2` pour concevoir et construire cette représentation graphique.
+Il existe des packages spécialisés dans la construction de frise chronologique, comme par exemple [`vistime`](https://cran.r-project.org/web/packages/vistime/vignettes/vistime-vignette.html){target="_blank"}. Cependant, afin de s'assurer d'une certaine liberté pour la mise en forme de la frise, nous utilisons le package `ggplot2` pour concevoir et construire cette représentation graphique.
 
 ## Préparation des données
 
