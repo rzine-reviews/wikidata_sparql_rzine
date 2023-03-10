@@ -50,7 +50,7 @@ knitr::opts_chunk$set(echo=TRUE,
 
 Cette fiche présente une exploration de données collaboratives *Wikidata* mises à disposition au format RDF (cf. [partie 1.2](#standard-rdf-du-w3c)). Du requêtage en langage SPARQL (cf. [partie 3](#interrogation-de-wikidata)) au traitement et à la représentation graphique des données *Wikidata*, ce document présente, étape par étape, l'ensemble de la chaîne de traitement réalisée. Le processus exploratoire des données, parfois itératif, a été conservé. Cela permet de bien comprendre l'approche réflexive des auteurs et autrice et de retranscrire au mieux la démarche scientifique exploratoire.
 
-Les données utilisées, issues de la base *Wikidata*, sont régulièrement mises en jour. La structure de ces données est présentée dans la [partie 1](#wikimédia-wikiproject-w3c). Les données automatiquement collectées (le `r format(Sys.time(), "%d %B %Y")`) et utilisées dans ce document sont mises à disposition ([partie 2.2](#données-collectées)) afin de permettent une reproduction des traitements et des résultats présentés. 
+Les données utilisées, issues de la base *Wikidata*, sont régulièrement mises en jour. La structure de ces données est présentée dans la [partie 1](#wikimédia-wikiproject-w3c). Les données automatiquement collectées (le `r format(Sys.time(), "%d %B %Y")`) et utilisées dans ce document sont mises à disposition ([partie 2.2](#données-collectées)) afin de permettre une reproduction des traitements et des résultats présentés. 
 
 L'idée de départ qui conduit à la démarche proposée est de requêter des données *Wikidata* et leurs modalités pouvant comporter une dimension spatiale et temporelle, et ainsi reconstruire une ou des trajectoires dans le temps et l'espace. Compte-tenu du formalisme et de la spécificité des données non supervisées de *Wikidata*, l'objet choisi pour l'étude, après exploration, est une peinture, sur son support physique inséré dans un cadre, susceptible d'être exposée au sein d'un musée ou d'une institution culturelle dans le monde.
 
@@ -276,7 +276,7 @@ download.file(url = data1$image,
 knitr::include_graphics('data/images/portrait_artiste.jpg')
 ```
 <center>
-Figure 5 : **Illustration de *Wikidata* pouridentifier visuellement le peintre Johannes Vermeer**
+Figure 5 : **Illustration de *Wikidata* pour identifier visuellement le peintre Johannes Vermeer**
 </center>
 </br>    
 
@@ -355,7 +355,7 @@ Ce constat ouvre une nouvelle perspective en matière d'analyse exploratoire. No
 
 Comme illustré dans la figure 6b, la localisation d'une entité est déclarée au moyen d'une propriété ([P276](https://www.wikidata.org/wiki/Property:P276)), qui permet l'accès à:</br> 
 - une localisation de l'œuvre dans un lieu (géographique et institutionnel) : `wdt:P276`, objet de la seconde requête (voir Figure 6a),   
-- ou à un ensemble de localisation renseignées dans le temps (voir Figure 6c) : `p:P276` associée aux [*qualifiers*](https://www.wikidata.org/wiki/Help:Qualifiers) de la déclaration de lieu (désignée par le préfixe `pq:`) donnant une période temporelle (date de début : [P580](https://www.wikidata.org/wiki/Property:P580) et date de fin: [P582](https://www.wikidata.org/wiki/Property:P582)).
+- ou à un ensemble de localisations renseignées dans le temps (voir Figure 6c) : `p:P276` associée aux [*qualifiers*](https://www.wikidata.org/wiki/Help:Qualifiers) de la déclaration de lieu (désignée par le préfixe `pq:`) donnant une période temporelle (date de début : [P580](https://www.wikidata.org/wiki/Property:P580) et date de fin: [P582](https://www.wikidata.org/wiki/Property:P582)).
 
 ```{r, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/modele_interroge_qualifier_b.png')
