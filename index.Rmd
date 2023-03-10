@@ -232,6 +232,14 @@ data1 <- query_wikidata('
               ?identifiant wdt:P18 ?image .
               }
 ')
+
+# Ou avec glitter
+library(glitter)
+data1 <- spq_init() %>% 
+  spq_add("?identifiant wdt:P31 wd:Q5") %>% 
+  spq_add(". wdt:P373 'Johannes Vermeer'") %>%
+  spq_add(". wdt:P18 ?image") %>% 
+  spq_perform()
 ```
 
 ```{r writedata1,  eval=TRUE, echo=FALSE, include=FALSE}
@@ -306,12 +314,24 @@ data2 <- query_wikidata('
               SELECT ?oeuvreLabel ?museeLabel ?coord
                 WHERE { SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
                 ?oeuvre wdt:P170 wd:Q41264 .
-                OPTIONAL {?oeuvre p:P276 ?loc . ?loc ps:P276 ?musee . ?musee wdt:P625 ?coord} .
+                OPTIONAL {?oeuvre wdt:P276 ?musee}
+                OPTIONAL {?musee wdt:P625 ?coord}
                 }
         ')
 
+# Ou avec glitter
+data2 <- spq_init() %>% 
+  spq_add("?oeuvre wdt:P170 wd:Q41264", .label="?oeuvre") %>% 
+  spq_add("?oeuvre wdt:P276 ?musee",
+          .label="?musee",
+          .required=FALSE) %>%
+  spq_add("?musee wdt:P625 ?coord",
+          .required=FALSE) %>% 
+  spq_select(-oeuvre,-loc,-musee) %>% 
+  spq_perform()
 ```
 
+<!-- Ici j'ai un peu simplifié la requête qui ne requérait en fait pas de faire appel à un "statement". (=> passage de p:P276 + ps:P276 à wdt:P276). Attention j'ai fait mon dessin "à la main" du graphe avant ce changement, il faudra le prendre en compte si vous simplifiez la requête... -->
 
 ```{r writedata2,  eval=TRUE, echo=FALSE, include=FALSE}
 write.csv(x = data2, file = "data/data2.csv", row.names = FALSE)
@@ -383,6 +403,17 @@ data <- query_wikidata('
               }
         ')
 
+# Ou avec glitter:
+data <- spq_init() %>% 
+  spq_add("wd:Q4660880 wdt:P18 ?image") %>% 
+  spq_add("wd:Q4660880 p:P276 ?location") %>% 
+  spq_add("?location ps:P276 ?nom",
+          .label="?nom") %>% 
+  spq_add("?location pq:P580 ?dated") %>% 
+  spq_add("?location pq:P582 ?datef") %>% 
+  spq_add("?nom wdt:P625 ?coord") %>% 
+  spq_select(image,nomLabel,dated,datef,coord) %>% 
+  spq_perform()
 ```
 
 **Affichage des données récupérées :**
