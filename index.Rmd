@@ -41,16 +41,17 @@ knitr::opts_chunk$set(echo=TRUE,
                       class.source="bg-info",
                       class.output="bg-warning")
 
+library(dplyr)
 
 ```
 
-> Cette fiche est le fruit d'une collaboration interdisciplinaire de membres du [GT Notebook](https://gitlab.huma-num.fr/gt-notebook) dans le cadre d'un [atelier](https://gt-notebook.gitpages.huma-num.fr/workshop/workshop_3_decembre_2021/slide2html-3-dec/) proposé aux [*Journées d’étude normande sur les données de la recherche*](https://www.unicaen.fr/evenement/journee-detude-normande-sur-les-donnees-de-la-recherche/) qui se sont déroulées en décembre 2021. L'association de plusieurs compétences et disciplines a abouti à ce notebook présentant une analyse exploratoire reproductible de données collaboratives *Wikidata*, mises à disposition au format RDF. Les enjeux d'un tel processus inter-disciplinaire sont esquissés en conclusion. Les requêtes SPARQL élaborées ont fait l'objet d'une présentation et d'échanges au sein des [Ateliers du Web Sémantique](https://les-ateliers-du-web-semantique.gitpages.huma-num.fr/les-ateliers-du-web-semantique/) au printemps 2021.
+> Cette fiche est le fruit d'une collaboration interdisciplinaire de membres du [GT Notebook](https://gitlab.huma-num.fr/gt-notebook) dans le cadre d'un [atelier](https://gt-notebook.gitpages.huma-num.fr/workshop/workshop_3_decembre_2021/slide2html-3-dec/){target="_blank"} proposé aux [*Journées d’étude normande sur les données de la recherche*](https://www.unicaen.fr/evenement/journee-detude-normande-sur-les-donnees-de-la-recherche/) qui se sont déroulées en décembre 2021. L'association de plusieurs compétences et disciplines a abouti à ce notebook présentant une analyse exploratoire reproductible de données collaboratives *Wikidata*, mises à disposition au format RDF. Les enjeux d'un tel processus inter-disciplinaire sont esquissés en conclusion. Les requêtes SPARQL élaborées ont fait l'objet d'une présentation et d'échanges au sein des [Ateliers du Web Sémantique](https://les-ateliers-du-web-semantique.gitpages.huma-num.fr/les-ateliers-du-web-semantique/) au printemps 2021.
 
 # Introduction {-}
 
 Cette fiche présente une exploration de données collaboratives *Wikidata* mises à disposition au format RDF (cf. [partie 1.2](#standard-rdf-du-w3c)). Du requêtage en langage SPARQL (cf. [partie 3](#interrogation-de-wikidata)) au traitement et à la représentation graphique des données *Wikidata*, ce document présente, étape par étape, l'ensemble de la chaîne de traitement réalisée. Le processus exploratoire des données, parfois itératif, a été conservé. Cela permet de bien comprendre l'approche réflexive des auteurs et autrice et de retranscrire au mieux la démarche scientifique exploratoire.
 
-Les données utilisées, issues de la base *Wikidata*, sont régulièrement mises en jour. La structure de ces données est présentée dans la [partie 1](#wikimédia-wikiproject-w3c). Les données automatiquement collectées (le `r format(Sys.time(), "%d %B %Y")`) et utilisées dans ce document sont mises à disposition ([partie 2.2](#données-collectées)) afin de permettent une reproduction des traitements et des résultats présentés. 
+Les données utilisées, issues de la base *Wikidata*, sont régulièrement mises en jour. La structure de ces données est présentée dans la [partie 1](#wikimédia-wikiproject-w3c). Les données automatiquement collectées (le `r format(Sys.time(), "%d %B %Y")`) et utilisées dans ce document sont mises à disposition ([partie 2.2](#données-collectées)) afin de permettre une reproduction des traitements et des résultats présentés. 
 
 L'idée de départ qui conduit à la démarche proposée est de requêter des données *Wikidata* et leurs modalités pouvant comporter une dimension spatiale et temporelle, et ainsi reconstruire une ou des trajectoires dans le temps et l'espace. Compte-tenu du formalisme et de la spécificité des données non supervisées de *Wikidata*, l'objet choisi pour l'étude, après exploration, est une peinture, sur son support physique inséré dans un cadre, susceptible d'être exposée au sein d'un musée ou d'une institution culturelle dans le monde.
 
@@ -136,6 +137,8 @@ Les packages utilisés pour réaliser l'ensemble de la chaîne de traitement pr�
 - `patchwork`: permet de combiner facilement plusieurs graphiques `ggplot2`;  
 - `jpeg`: permet d'importer, enregistrer et afficher des images matricielles (format *bitmap*);  
 - `DT`: met en forme dynamique (HTML) des tableaux de données (bibliothèque *javascript* [*DataTables*](https://datatables.net/){target="_blank"}).  
+<!-- - glitter ? -->
+<!-- - dplyr?-  -->
 
 Pour installer l'ensemble de ces packages, vous pouvez utiliser les lignes de code suivantes, qui vérifient que les packages nécéssaires ne soient pas déjà installés sur votre machine :
 
@@ -171,8 +174,8 @@ install.packages(liste_packages_to_install)
 Plusieurs sources de données sont utilisées pour ce travail exploratoire:
 
 1) Données issues de la base *Wikidata* ;    
-2) Couche géographique [*Natural Earth*](https://www.naturalearthdata.com/);      
-3) Fonds de carte mis à disposition par [*Leaflet*](https://rstudio.github.io/leaflet/basemaps.html).         
+2) Couche géographique [*Natural Earth*](https://www.naturalearthdata.com/){target="_blank"};      
+3) Fonds de carte mis à disposition par [*Leaflet*](https://rstudio.github.io/leaflet/basemaps.html){target="_blank"}.         
 
 
 **Afin de maximiser la reproductibilité du code présenté, les jeux de données 1 et 2 ont été archivés et sont disponibles au téléchargement :**
@@ -187,7 +190,7 @@ Plusieurs sources de données sont utilisées pour ce travail exploratoire:
 
 Un [service de collecte des données de *Wikidata* en langage SPARQL](https://query.wikidata.org/) est mis à disposition et offre une solution très complète en première approche (exemples, assistant de requêtes, diversité des représentations etc.). Toutefois, dans une dynamique d'exploration de la base de données *Wikidata*, l'utilisation de R facilite l'archivage et la reproductibilité des différentes requêtes réalisées. Pour cette raison, nous utilisons le package [`WikidataQueryServiceR`](https://github.com/wikimedia/WikidataQueryServiceR) qui fournit une Interface de Programmation d'Application (API) pour interroger le [*Wikidata Query Service*](https://query.wikidata.org/){target="_blank"} directement via *R*.
 
-`WikidataQueryServiceR` a été développé par Mikhail Popov, membre de la Fondation Wikimédia. Il s'est inspiré des packages [`WikipediR`](https://cran.r-project.org/web/packages/WikipediR/index.html) et [`WikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html). 
+`WikidataQueryServiceR` a été développé par Mikhail Popov, membre de la Fondation Wikimédia. Il s'est inspiré des packages [`WikipediR`](https://cran.r-project.org/web/packages/WikipediR/index.html){target="_blank"} et [`WikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html){target="_blank"}. 
 <br />
 
 ## Modèle des données ciblées
@@ -232,6 +235,14 @@ data1 <- query_wikidata('
               ?identifiant wdt:P18 ?image .
               }
 ')
+
+# Ou avec glitter
+library(glitter)
+data1 <- spq_init() %>% 
+  spq_add("?identifiant wdt:P31 wd:Q5") %>% 
+  spq_add(". wdt:P373 'Johannes Vermeer'") %>%
+  spq_add(". wdt:P18 ?image") %>% 
+  spq_perform()
 ```
 
 ```{r writedata1,  eval=TRUE, echo=FALSE, include=FALSE}
@@ -276,7 +287,7 @@ download.file(url = data1$image,
 knitr::include_graphics('data/images/portrait_artiste.jpg')
 ```
 <center>
-Figure 5 : **Illustration de *Wikidata* pouridentifier visuellement le peintre Johannes Vermeer**
+Figure 5 : **Illustration de *Wikidata* pour identifier visuellement le peintre Johannes Vermeer**
 </center>
 </br>    
 
@@ -306,12 +317,24 @@ data2 <- query_wikidata('
               SELECT ?oeuvreLabel ?museeLabel ?coord
                 WHERE { SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
                 ?oeuvre wdt:P170 wd:Q41264 .
-                OPTIONAL {?oeuvre p:P276 ?loc . ?loc ps:P276 ?musee . ?musee wdt:P625 ?coord} .
+                OPTIONAL {?oeuvre wdt:P276 ?musee}
+                OPTIONAL {?musee wdt:P625 ?coord}
                 }
         ')
 
+# Ou avec glitter
+data2 <- spq_init() %>% 
+  spq_add("?oeuvre wdt:P170 wd:Q41264", .label="?oeuvre") %>% 
+  spq_add("?oeuvre wdt:P276 ?musee",
+          .label="?musee",
+          .required=FALSE) %>%
+  spq_add("?musee wdt:P625 ?coord",
+          .required=FALSE) %>% 
+  spq_select(-oeuvre,-loc,-musee) %>% 
+  spq_perform()
 ```
 
+<!-- Ici j'ai un peu simplifié la requête qui ne requérait en fait pas de faire appel à un "statement". (=> passage de p:P276 + ps:P276 à wdt:P276). Attention j'ai fait mon dessin "à la main" du graphe avant ce changement, il faudra le prendre en compte si vous simplifiez la requête... -->
 
 ```{r writedata2,  eval=TRUE, echo=FALSE, include=FALSE}
 write.csv(x = data2, file = "data/data2.csv", row.names = FALSE)
@@ -355,7 +378,7 @@ Ce constat ouvre une nouvelle perspective en matière d'analyse exploratoire. No
 
 Comme illustré dans la figure 6b, la localisation d'une entité est déclarée au moyen d'une propriété ([P276](https://www.wikidata.org/wiki/Property:P276)), qui permet l'accès à:</br> 
 - une localisation de l'œuvre dans un lieu (géographique et institutionnel) : `wdt:P276`, objet de la seconde requête (voir Figure 6a),   
-- ou à un ensemble de localisation renseignées dans le temps (voir Figure 6c) : `p:P276` associée aux [*qualifiers*](https://www.wikidata.org/wiki/Help:Qualifiers) de la déclaration de lieu (désignée par le préfixe `pq:`) donnant une période temporelle (date de début : [P580](https://www.wikidata.org/wiki/Property:P580) et date de fin: [P582](https://www.wikidata.org/wiki/Property:P582)).
+- ou à un ensemble de localisations renseignées dans le temps (voir Figure 6c) : `p:P276` associée aux [*qualifiers*](https://www.wikidata.org/wiki/Help:Qualifiers) de la déclaration de lieu (désignée par le préfixe `pq:`) donnant une période temporelle (date de début : [P580](https://www.wikidata.org/wiki/Property:P580) et date de fin: [P582](https://www.wikidata.org/wiki/Property:P582)).
 
 ```{r, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/modele_interroge_qualifier_b.png')
@@ -381,13 +404,26 @@ data <- query_wikidata('
               ?location pq:P582 ?datef .
               ?nom wdt:P625 ?coord .
               }
-        ')
+        ')%>% 
+  select(musee=nomLabel,dated,datef,coord,image)
 
+# Ou avec glitter:
+data <- spq_init() %>% 
+  spq_add("wd:Q4660880 wdt:P18 ?image") %>% 
+  spq_add("wd:Q4660880 p:P276 ?location") %>% 
+  spq_add("?location ps:P276 ?nom",
+          .label="?nom") %>% 
+  spq_add("?location pq:P580 ?dated") %>% 
+  spq_add("?location pq:P582 ?datef") %>% 
+  spq_add("?nom wdt:P625 ?coord") %>% 
+  spq_select(nomLabel,dated,datef,coord) %>% 
+  spq_perform() %>% 
+  select(musee=nomLabel,dated,datef,coord,image)
 ```
 
 **Affichage des données récupérées :**
 ```{r displaydata1,  eval=TRUE, echo=FALSE}
-datatable(data[,c(2:5,1)])
+datatable(data)
 ```
 
 **Enregistrement et (ré)import des données :**
@@ -450,15 +486,20 @@ Dans cette partie, nous allons uniquement nous intéresser à la dimension spati
 
 **Commençons par supprimer les localisations (musée ou institution) qui ne sont pas associées à des coordonnées géographiques dans *Wikidata* ** :
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
-data2 <- data2[!is.na(data2$coord), ]
+data2 <- data2 %>% 
+  filter(!is.na(coord))
 ```
 
 
 **Nous pouvons ensuite supprimer les doublons**, que l'on peut expliquer par le fait qu'une œuvre ait pu être exposée à plusieurs reprises dans un même musée, ou qu'un même lieu ait pu être renseigné par plusieurs couples de coordonnées géographiques dans *Wikidata*.
 
 Pour cela, nous utilisons la fonction `duplicated`, appliquée au couple  "nom de l'œuvre + lieu d'exposition"
+
+<!-- Texte ci-dessus à changer si vous prenez l'option dplyr. Ici je trouve qu'on voit bien l'avantage de dplyr en terme de facilité de relecture/compréhension de ce qu'on a fait -->
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
-data2 <- data2[!duplicated(data2[, c("oeuvreLabel", "museeLabel")]), ]
+data2 <- data2 %>% 
+  group_by(oeuvreLabel,museeLabel) %>% 
+  summarise(coord=first(coord))
 ```
 
 <div class="alert alert-danger" role="alert">
@@ -478,19 +519,20 @@ datatable(data2)
 Plusieurs œuvres semblent avoir été exposées dans les mêmes lieux. Afin de cartographier les musées ayant exposé différentes œuvres de Johannes Vermeer, nous réalisons un regroupement des œuvres par intitulé des musées (*museeLabel*), tout en calculant le nombre d'œuvres que chacune de ces institutions a exposées au cours du temps.
 
 
+<!-- <!-- Vous utilisez ggplot2 pour d'autres graphiques ailleurs, autant tout homogénéiser en l'utilisant ici également --> -->
+<!-- Je ne comprends pas forcément l'intérêt de passer à des noms de variables en anglais et en changeant de convention pour la casse (Museum plutôt que musee, Coordinates plutôt que coords) ici -?- -->
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 # Regroupement et calcul du nombre d'œuvres par musée
-nb_oeuvre_by_musee <- aggregate(oeuvreLabel ~ coord + museeLabel, data = data2, FUN = length)
-
-# Modification des noms des colonnes
-nb_oeuvre_by_musee <- setNames(nb_oeuvre_by_musee, c("Coordinates", "Museum", "Nb of paint exposed")) 
+nb_oeuvres_musee=data2 %>% 
+  group_by(Museum=museeLabel,Coordinates=coord) %>% 
+  summarise(Nb_oeuvres=n())
 
 # Histogramme de répartition des musées en fonction du nombre d'œuvres de J.V. exposées
-hist(nb_oeuvre_by_musee$`Nb of paint exposed`, 
-     xlab = "Nombre d'œuvres exposées",
-     ylab = "Nombre de musées", 
-     main = "")
-
+library(ggplot2)
+ggplot(nb_oeuvres_musee,aes(x=Nb_oeuvres))+
+  geom_histogram(breaks=0:max(nb_oeuvres_musee$Nb_oeuvres))+
+  xlab("Nombre d'œuvres exposées")+
+  ylab("Nombre de musées")
 ```
 <center>
 Graphique 1 : **Distribution du nombre d'œuvres de Johannes Vermeer exposées par musée**
@@ -501,21 +543,21 @@ Graphique 1 : **Distribution du nombre d'œuvres de Johannes Vermeer exposées p
 
 ### Géoréférencement
 
-La variable 'Coordinates' stocke les coordonnées géographiques des musées dans le format **WKT**^[Le format **Well-known text,** abrégé en **WKT**, peut se traduire par « texte bien lisible ». C'est un format standard en mode texte utilisé pour représenter des objets géométriques vectoriels issus des systèmes d’informations géographiques (SIG), mais aussi des informations s’y rattachant, tels les références de systèmes de coordonnées.] (Well-known text). A l'aide du package `sf`, il est simple de construire des données géographiques vectorielles permettant l'analyse spatiale avec R ([`Simple Features object`](https://r-spatial.github.io/sf/articles/sf1.html)) à partir de ce format de stockage. Pour cela, nous utilisons les fonctions `st_as_sfc` et `st_as_sf`.  
+La variable 'Coordinates' stocke les coordonnées géographiques des musées dans le format **WKT**^[Le format **Well-known text,** abrégé en **WKT**, peut se traduire par « texte bien lisible ». C'est un format standard en mode texte utilisé pour représenter des objets géométriques vectoriels issus des systèmes d’informations géographiques (SIG), mais aussi des informations s’y rattachant, tels les références de systèmes de coordonnées.] (Well-known text). A l'aide du package `sf`, il est simple de construire des données géographiques vectorielles permettant l'analyse spatiale avec R ([`Simple Features object`](https://r-spatial.github.io/sf/articles/sf1.html){target="_blank"}) à partir de ce format de stockage. Pour cela, nous utilisons les fonctions `st_as_sfc` et `st_as_sf`.  
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 
 # Chargement du package sf, pour la gestion de données géographiques vectorielles
 library(sf)
 
 # Création d'objets géographiques ponctuels à partir des coordonnées stockées en WKT
-geometry <- st_as_sfc(nb_oeuvre_by_musee$Coordinates, crs = 4326)
+geometry <- st_as_sfc(nb_oeuvres_musee$Coordinates, crs = 4326)
 
 # Création d'une couche géographique vectorielle (attributs des musées + géométries)
-musee_geo  <- st_as_sf(nb_oeuvre_by_musee, geometry)
+musee_geo  <- st_as_sf(nb_oeuvres_musee, geometry)
 
 ```
 
-La table de données a été transformée en couche géographique manipulable avec R ([objet `sf`](https://r-spatial.github.io/sf/articles/sf1.html)), où chaque musée comporte une géométrie (point localisé dans l'espace, dans le [système géographique de référence WGS84](https://fr.wikipedia.org/wiki/WGS_84)).
+La table de données a été transformée en couche géographique manipulable avec R ([objet `sf`](https://r-spatial.github.io/sf/articles/sf1.html){target="_blank"}), où chaque musée comporte une géométrie (point localisé dans l'espace, dans le [système géographique de référence WGS84](https://fr.wikipedia.org/wiki/WGS_84)).
 
 ```{r,  eval=TRUE, echo=FALSE, include=TRUE}
 datatable(musee_geo)
@@ -554,7 +596,7 @@ tmap_mode(mode = "view")
 # Carte en symboles proportionnels
 tm_basemap() +
 tm_shape(musee_geo) +
-tm_symbols(size="Nb of paint exposed",
+tm_symbols(size="Nb_oeuvres",
            scale = 4,
            col="red3",
            border.col="white",
@@ -562,7 +604,7 @@ tm_symbols(size="Nb of paint exposed",
            border.lwd=0.1,
            border.alpha=0.5,
            id = "Museum",
-           popup.vars=c("Nombre d'œuvres :"="Nb of paint exposed" ))
+           popup.vars=c("Nombre d'œuvres :"="Nb_oeuvres" ))
 
 
 ```
@@ -592,7 +634,8 @@ world <- ne_download(scale = "medium",
 ```
 
 ```{r,  eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
-world <- st_read("data/world/ne_50m_admin_0_countries.shp", quiet = TRUE )
+world <- st_read("data/world/ne_50m_admin_0_countries.shp", quiet = TRUE ) %>% 
+  mutate(pays=ADM0_A3)
 ```
 
 **Affichage de la couche géographique :**
@@ -609,16 +652,18 @@ datatable(world)
 
 ```
 
-La couche géographique des musées ('musee_geo') et le fond de carte du monde ('world') sont géoréférencés dans le même système de coordonées^[Un **système de coordonnées** est un référentiel dans lequel on peut représenter des éléments dans l'espace. Ce système permet de se situer sur l'ensemble du globe terrestre grâce à un couple de coordonnées géographiques.] (le [WGS84](https://fr.wikipedia.org/wiki/WGS_84)). Nous pouvons donc réaliser une [jointure spatiale](https://www.emse.fr/tice/uved/SIG/Glossaire/co/Jointure_spatiale.html) qui permet de récupérer pour chaque musée, le [code ISO3](https://fr.wikipedia.org/wiki/ISO_3166-1) du pays dans lequel il se situe. Pour cela, nous utilisons la fonction `st_intersection` du package `sf`.
+La couche géographique des musées ('musee_geo') et le fond de carte du monde ('world') sont géoréférencés dans le même système de coordonées^[Un **système de coordonnées** est un référentiel dans lequel on peut représenter des éléments dans l'espace. Ce système permet de se situer sur l'ensemble du globe terrestre grâce à un couple de coordonnées géographiques.] (le [WGS84](https://fr.wikipedia.org/wiki/WGS_84)). Nous pouvons donc réaliser une [jointure spatiale](https://www.emse.fr/tice/uved/SIG/Glossaire/co/Jointure_spatiale.html){target="_blank"} qui permet de récupérer pour chaque musée, le [code ISO3](https://fr.wikipedia.org/wiki/ISO_3166-1) du pays dans lequel il se situe. Pour cela, nous utilisons la fonction `st_intersection` du package `sf`.
 
 **Jointure spatiale entre les musées (points) et les pays (polygones) :**
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning = FALSE}
-musee_geo <- st_intersection(musee_geo, world[,"ADM0_A3"])
+musee_geo <- musee_geo %>% 
+  select(-Coordinates) %>% 
+  st_intersection(world %>% select(pays))
 ```
 
 **Le code ISO3 du pays de localisation a été ajouté à la couche géographique des musées :**
 ```{r,  eval=TRUE, echo=FALSE, include=TRUE}
-datatable(st_drop_geometry(musee_geo[2:4]))
+datatable(st_drop_geometry(musee_geo))
 ```
 
 <br/>
@@ -629,7 +674,9 @@ Le pays de localisation de chaque musée ayant été obtenu, nous pouvons réali
 
 **Commençons par calculer le nombre total d'œuvres exposées par pays :**
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
-nb_oeuvre_musee_geo <- aggregate(Nb.of.paint.exposed ~ ADM0_A3, data = musee_geo, FUN = sum)
+nb_oeuvres_pays <- musee_geo %>% 
+  group_by(pays) %>% 
+  summarise(Nb_oeuvres=sum(Nb_oeuvres))
 ```
 
 Nous pouvons ensuite construire un graphique en utilisant le package de référence [`ggplot2`](https://ggplot2.tidyverse.org/).
@@ -638,14 +685,17 @@ Nous pouvons ensuite construire un graphique en utilisant le package de référe
 library(ggplot2)
 
 # Graphique en barre - Nombre d'œuvres par pays
-ggplot(data = nb_oeuvre_musee_geo, 
-       aes(x = reorder(ADM0_A3, -Nb.of.paint.exposed), y = Nb.of.paint.exposed, fill = ADM0_A3)) +
+ggplot(data = nb_oeuvres_pays, 
+       aes(x = reorder(pays, -Nb_oeuvres),
+           y = Nb_oeuvres, fill = pays)) +
   geom_bar(stat = "identity") +
   ggtitle("Nombre d'œuvres de Johannes Vermeer exposées, par pays") +
   xlab("") +
   ylab("") +
-  scale_fill_manual(values = c("#FC8D62", "#80B1D3"  ,"#E78AC3","#A6D854","#FFD92F","#E5C494",
-                               "#FB8072","#BEBADA","#66C2A5","#FFFFB3","#8DA0CB")) +
+  scale_fill_manual(values = c("#FC8D62", "#80B1D3"  ,"#E78AC3",
+                               "#A6D854","#FFD92F","#E5C494",
+                               "#FB8072","#BEBADA","#66C2A5",
+                               "#FFFFB3","#8DA0CB")) +
   annotate(geom="text", 
            x = 9, y = 13, 
            label = "Une œuvre peut\navoir été exposée\ndans plusieurs pays" ) +
@@ -666,7 +716,9 @@ Les données issues de la [troisième requête SPARQL](#troisième-requête-spar
 **Suppression des doublons :**
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
-data <- data[!duplicated(data$dated), ]
+data <- data %>% 
+  group_by(musee,dated,datef) %>% 
+  summarise_all("first")
 ```
 
 <br/>
@@ -693,7 +745,9 @@ Plusieurs musées, comme le *Ashmolean Museum*, apparaissent plusieurs fois dans
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 # Regroupement par musée - Calcul du nombre total d'expositions
-nb_expo_musee_geo <- aggregate(x = data_geo[,2], by = list(Musée=data_geo$nomLabel), FUN = length)
+nb_expos_musee_geo <- data_geo %>% 
+  group_by(musee) %>% 
+  summarise(nb_expos=n())
 ```
 
 Il est facile d'afficher ces données géographiques ponctuelles sur un fond de carte dynamique, en améliorant cette fois-ci la mise en page des pop-ups contenant les attributs de chaque musée.
@@ -702,14 +756,19 @@ Il est facile d'afficher ces données géographiques ponctuelles sur un fond de 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 
 # Popup content
-content <- paste0( "<img  src='http://commons.wikimedia.org/wiki/Special:FilePath/Vermeer%20-%20A%20young%20Woman%20seated%20at%20the%20Virginals.jpg'  width='180'><br /><b>",  nb_expo_musee_geo$Musée,
-                  "</b><br />Nombre d'expositions de l'œuvre : <b>",nb_expo_musee_geo$nomLabel,"</b>")
+impath="http://commons.wikimedia.org/wiki/Special:FilePath/Vermeer%20-%20A%20young%20Woman%20seated%20at%20the%20Virginals.jpg"
+
+nb_expos_musee_geo <- nb_expos_musee_geo %>% 
+  mutate(popup= paste0( "<img  src='",impath,"'  width='180'><br />",
+                        "<b>",musee,"</b>",
+                        "<br />Nombre d'expositions de l'œuvre :",
+                        "<b>",nb_expos,"</b>"))
 # Carte
-mapview(nb_expo_musee_geo,
-        zcol = "Musée",
+mapview(nb_expos_musee_geo,
+        zcol = "musee",
         col.regions = "red",
         legend = FALSE,
-        popup = content,
+        popup = "popup",
         map.types = "Esri.WorldImagery")
 
 ```
@@ -727,55 +786,61 @@ De la même manière que dans la [partie 4.1.5](#enrichissement_des_données), n
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning = FALSE}
 # Jointure spatiale points/pays
-data_geo <-st_intersection(data_geo, world[,"ADM0_A3"])
+data_geo <-data_geo %>% 
+  st_intersection(world %>% select(pays))
 
 ```
 On vérifie que le code ISO3 du pays a bien été collecté pour chaque point (musée).
 
 ```{r,  eval=TRUE, echo=FALSE, include=TRUE}
 # Affichage du résultat
-datatable(st_drop_geometry(data_geo[c(1:4)]))
+data_geo %>%
+  select(musee,dated,datef,pays) %>%
+  st_drop_geometry() %>% 
+  datatable()
 ```
 
 <br/>
 
-### Répartition par pays
+<!-- ### Répartition par pays -->
 
 
-Nous calculons le nombre d'expositions par pays :
-```{r,  eval=TRUE, echo=TRUE, include=TRUE}
+<!-- Nous calculons le nombre d'expositions par pays : -->
+<!-- ```{r,  eval=TRUE, echo=TRUE, include=TRUE} -->
 
-# Regroupement par pays - calcul du nombre d'expositions
-nb_expo_pays_geo <- aggregate(x = data_geo$ADM0_A3, by = list(data_geo$ADM0_A3), FUN = length)
+<!-- # Regroupement par pays - calcul du nombre d'expositions -->
+<!-- nb_expo_pays_geo <- aggregate(x = data_geo$ADM0_A3, by = list(data_geo$ADM0_A3), FUN = length) -->
 
-# Modification des noms de colonnes
-colnames(nb_expo_pays_geo) <- c("pays", "nb_expo")
+<!-- # Modification des noms de colonnes -->
+<!-- colnames(nb_expo_pays_geo) <- c("pays", "nb_expo") -->
 
-```
+<!-- ``` -->
 
-Représentation graphique :
-```{r,  eval=TRUE, echo=TRUE, include=TRUE}
+<!-- Représentation graphique : -->
+<!-- ```{r,  eval=TRUE, echo=TRUE, include=TRUE} -->
 
-# Graphique en barre - Nombre d'expositions par pays
-ggplot(data = nb_expo_pays_geo, 
-       aes(x = reorder(pays,-nb_expo) , y = nb_expo, fill=pays) )  +
-  geom_bar(stat="identity") +
-  ggtitle("Nombre d'expositions de l'œuvre de Johannes Vermeer par pays" ) +
-  xlab("") +
-  ylab("") +
-  scale_fill_manual(values =c("#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494",
-                              "#66C2A5","#FB8072","#BEBADA","#FFFFB3","#80B1D3")) +
-  annotate(geom="text" ,
-           x = 6, y = 6, 
-           label="l'œuvre peut avoir été\nexposée plusieurs fois\ndans un même musée" ) +
-  theme(legend.position = "none")
-```
+<!-- # Graphique en barre - Nombre d'expositions par pays -->
+<!-- ggplot(data = nb_expo_pays_geo,  -->
+<!--        aes(x = reorder(pays,-nb_expo) , y = nb_expo, fill=pays) )  + -->
+<!--   geom_bar(stat="identity") + -->
+<!--   ggtitle("Nombre d'expositions de l'œuvre de Johannes Vermeer par pays" ) + -->
+<!--   xlab("") + -->
+<!--   ylab("") + -->
+<!--   scale_fill_manual(values =c("#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494", -->
+<!--                               "#66C2A5","#FB8072","#BEBADA","#FFFFB3","#80B1D3")) + -->
+<!--   annotate(geom="text" , -->
+<!--            x = 6, y = 6,  -->
+<!--            label="l'œuvre peut avoir été\nexposée plusieurs fois\ndans un même musée" ) + -->
+<!--   theme(legend.position = "none") -->
+<!-- ``` -->
 
-<center>
-Graphique 3 : **Représentation histographique du nombre d'expositions de l'œuvre de Johannes Vermeer** ***A Young Woman Seated at the Virginals*** **par pays**
-</center>
+<!-- <center> -->
+<!-- Graphique 3 : **Représentation histographique du nombre d'expositions de l'œuvre de Johannes Vermeer** ***A Young Woman Seated at the Virginals*** **par pays** -->
+<!-- </center> -->
 
-<br/>
+<!-- <br/> -->
+
+<!-- J'enlèverais cette partie qui est assez redondante avec le nombre d'oeuvres par pays -->
 
 
 # Trajectoire spatio-temporelle
@@ -788,45 +853,46 @@ Graphique 3 : **Représentation histographique du nombre d'expositions de l'œuv
 Pour manipuler facilement le temps, nous commençons par convertir les dates d'arrivée et de départ de l'œuvre dans chaque musée en format de type `date`.
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
-data_geo$datef <- as.Date(data_geo$datef)
-data_geo$dated <- as.Date(data_geo$dated)
+data_geo <- data_geo %>% 
+  mutate(dated=as.Date(dated),
+         datef=as.Date(datef))
 ```
 
 
-Il est ensuite simple de caculer le nombre de jours de présence dans un musée avec une soustraction :
+Il est ensuite simple de caculer le nombre de jours de présence dans un musée avec une soustraction. Nous sauvegardons ces valeurs (nombre de jours) dans une nouvelle colonne ('nb_days')
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
-data_geo$datef  - data_geo$dated
-```
-Nous sauvegardons ces valeurs (nombre de jours) dans une nouvelle colonne ('nb_days')
-
-```{r,  eval=TRUE, echo=TRUE, include=TRUE}
-data_geo$nb_days <- as.integer(data_geo$datef  - data_geo$dated)
+data_geo <- data_geo %>% 
+  mutate(duree=as.integer(datef-dated))
 ```
 Le tableau a été exposé à deux reprises dans plusieurs musées. Nous calculons donc le nombre de jour total d'exposition du tableau par musée.
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
-nb_days_musee_geo <- aggregate(x = data_geo$nb_days, by = list(Musée = data_geo$nomLabel), FUN = sum)
+data_musee=data_geo %>% 
+  group_by(musee,pays) %>% 
+  summarise(duree=sum(duree),
+            nb_expos=n())
 ```
 
 
-Des variables décrivant les musées ont été ajoutées dans la [partie 4.2](#la-dame-assise-au-virginal) :     
-- le pays de localisation des musées (tableau 'data_geo')   
-- le nombre de séjours de l'œuvre dans chaque musée (tableau 'nb_expo_musee_geo')
+<!-- Des variables décrivant les musées ont été ajoutées dans la [partie 4.2](#la-dame-assise-au-virginal) :      -->
+<!-- - le pays de localisation des musées (tableau 'data_geo')    -->
+<!-- - le nombre de séjours de l'œuvre dans chaque musée (tableau 'nb_expo_musee_geo') -->
 
-Afin d'obtenir ces variables, nous réalisons une jointure entre les différents tableaux, en utilisant les noms des musées comme clef de jointure.
-```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 
-# Jointure entre 'nb_days_musee_geo' et 'nb_expo_musee_geo'
-tab_museum <- merge(nb_expo_musee_geo, nb_days_musee_geo, by = "Musée")
+<!-- ```{r,  eval=TRUE, echo=TRUE, include=TRUE} -->
 
-# Jointure entre 'tab_museum' et  'nb_expo_musee_geo'
-tab_museum <- merge(tab_museum, st_drop_geometry(unique(data_geo[,c("nomLabel","ADM0_A3")])), by.x = "Musée", by.y="nomLabel")
+<!-- # Jointure entre 'nb_days_musee_geo' et 'nb_expo_musee_geo' -->
+<!-- tab_museum <- merge(nb_expos_musee_geo, data_duree_musee_geo, by = "musee") -->
 
-# Modification de noms de colonnes
-colnames(tab_museum)[2:4] <- c("nb_expo","nb_days","pays")
+<!-- # Jointure entre 'tab_museum' et  'nb_expo_musee_geo' -->
+<!-- tab_museum <- merge(tab_museum, st_drop_geometry(unique(data_geo[,c("nomLabel","ADM0_A3")])), by.x = "Musée", by.y="nomLabel") -->
 
-```
+<!-- # Modification de noms de colonnes -->
+<!-- colnames(tab_museum)[2:4] <- c("nb_expo","nb_days","pays") -->
+
+<!-- <!-- ``` -->  -->
+<!-- Les traitements ci-dessus deviennent inutiles je crois -->
 
 Plusieurs informations collectées peuvent être cartographiées. Voici un exemple de carte interactive réalisée avec le package `tmap`, qui représente le nombre de jours d'exposition du tableau au cours du temps, à l'échelle des musées. 
 
@@ -838,8 +904,8 @@ tmap_mode(mode = "view")
 # Construction d'une carte en symbole proportionnel
 tm_basemap() +
 
-tm_shape(tab_museum) +
-tm_bubbles("nb_days",
+tm_shape(data_musee) +
+tm_bubbles("duree",
            col = "pays",
            scale = 9,
            border.col="white",
@@ -847,9 +913,9 @@ tm_bubbles("nb_days",
            border.lwd=0.1,
            border.alpha=0.5,
            title.col="Pays d'exposition",
-           id = "Musée",
-           popup.vars=c("Nombre de séjours :"="nb_expo",
-                        "Nombre total de jours :"="nb_days"))
+           id = "musee",
+           popup.vars=c("Nombre de séjours :"="nb_expos",
+                        "Nombre total de jours :"="duree"))
 
 ```
 
@@ -868,55 +934,81 @@ Pour cela, nous devons dans un premier temps choisir un pas de temps. La périod
 
 Un partir de ce pas de temps, nous créons un `data.frame` où chaque ligne représente une semaine calendaire située entre le 8 mars 2001 et le 13 Janvier 2019 à l'aide de la fonction `seq`. Nous créons également des colonnes vides qui permettront de stocker l'ensemble des informations de localisation de l'œuvre pour chaque semaine. 
 
-```{r,  eval=TRUE, echo=TRUE, include=TRUE}
+<!-- Ici je vous propose une façon de faire un peu plus simple (peut-être?) et en tout cas plus raccord avec le process tidyverse (si vous choisissez de le conserver): -->
 
-data_by_week <- data.frame(week = seq(min(data_geo$dated), max(data_geo$datef), "week"),
-                           Musée = as.character(NA),
-                           Nb_day = as.integer(NA),
-                           pays = as.character(NA),
-                           geometry = NA)
-
+```{r}
+data_semaine_renseignee=data_geo %>% 
+  st_drop_geometry() %>% 
+  select(musee,dated,datef) %>% 
+  # on récupère les semaines de début et fin de chaque expo
+  mutate(semained=lubridate::round_date(dated,"week"),
+         semainef=lubridate::round_date(datef,"week")) %>% 
+  group_by(across(everything())) %>%
+  # pour chaque ligne-expo, on construit un vecteur 'semaine'
+  # qui correspond à une sequence de dates allant de semained à semainef
+  # Pour ce faire on construit un "nid" de données pour chaque ligne-expo
+  tidyr::nest() %>% 
+  mutate(semaine=purrr::map2(.x=semained,
+                             .y=semainef,
+                             ~seq(.x,.y,by="week"))) %>% 
+  # on "dénidifie" ce vecteur (cela consiste à aplatir la colonne-liste 'semaine'
+  # en répétant les données des autres colonnes autant de fois que nécessaire)
+  # et ce à l'aide de tidyr::unnest()
+  tidyr::unnest(semaine) %>% 
+  ungroup() %>% 
+  select(musee,semaine)
 ```
 
-Une boucle `for` permet de parcourir le tableau et d'obtenir les informations de localisation de l'œuvre si la date du premier jour d'une semaine ciblée `data_by_week$week[i]` est située entre une date d'arrivée et de départ dans le tableau `data_geo`.
-Si c'est le cas, on inscrit les informations du tableau `data_geo`dans le tableau `data_by_week`.
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
-
-for (i in 1:nrow(data_by_week)){
-
-# Sélection des lignes où : Date d'arrivée <= week[i] <= Date de départ 
-temp <-   data_geo[data_geo$dated <= data_by_week$week[i] & data_geo$datef >= data_by_week$week[i], c("nomLabel", "nb_days", "ADM0_A3", "geometry")]
-
-# Si une ligne est séléctionnée = Inscription des données dans 'data_by_week'
-if (nrow(temp)==1){data_by_week[i,2:5] <- temp}
-
-}
-
+data_semaine <- tibble(semaine=lubridate::round_date(seq(min(data_geo$dated),
+                                                         max(data_geo$datef),
+                                                         "week"),
+                                                     "week")) %>% 
+  left_join(data_semaine_renseignee,by="semaine") %>% 
+  left_join(data_geo,by="musee")
 ```
+
+<!-- Une boucle `for` permet de parcourir le tableau et d'obtenir les informations de localisation de l'œuvre si la date du premier jour d'une semaine ciblée `data_by_week$week[i]` est située entre une date d'arrivée et de départ dans le tableau `data_geo`. -->
+<!-- Si c'est le cas, on inscrit les informations du tableau `data_geo`dans le tableau `data_by_week`. -->
+
+<!-- ```{r,  eval=TRUE, echo=TRUE, include=TRUE} -->
+
+<!-- for (i in 1:nrow(data_by_week)){ -->
+
+<!-- # Sélection des lignes où : Date d'arrivée <= week[i] <= Date de départ  -->
+<!-- temp <-   data_geo[data_geo$dated <= data_by_week$week[i] & data_geo$datef >= data_by_week$week[i], c("nomLabel", "nb_days", "ADM0_A3", "geometry")] -->
+
+<!-- # Si une ligne est séléctionnée = Inscription des données dans 'data_by_week' -->
+<!-- if (nrow(temp)==1){data_by_week[i,2:5] <- temp} -->
+
+<!-- } -->
+
+<!-- ``` -->
 
 Nous modifions ensuite les valeurs restées manquantes, pour les semaines où la peinture n'a pas été exposée.
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
-
-# Musée NA = "Emplacement inconnu"
-data_by_week[is.na(data_by_week$Musée), "Musée"] <- "Emplacement inconnu"
-
-# Pays NA = "pays ?"
-data_by_week[is.na(data_by_week$pays), "pays"] <- "pays ?"
-
-# Nombre total de jours d'exposition NA = 0
-data_by_week[is.na(data_by_week$Nb_day), "Nb_day"] <- 0
-
+data_semaine <- data_semaine %>% 
+  mutate(
+    # si musee non renseigné, remplace par "Emplacement inconnu"
+    musee=case_when(is.na(musee)~"Emplacement inconnu",
+                         TRUE~musee),
+    # si pays non renseigné, remplace par "pays ?"
+    pays=case_when(is.na(pays)~"pays ?",
+                   TRUE~pays),
+    # si duree non renseignée, remplace par 0
+    duree=case_when(is.na(duree)~0,
+                    TRUE~duree)) 
 # Affichage du tableau
-datatable(data_by_week)
+datatable(data_semaine)
 ```
 
 
 Bien que ce tableau possède une colonne `geometry`, il s'agit en fait d'un `data.frame`. Nous le convertissons en objet `sf` (couche géographique).
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
-data_by_week <-st_as_sf(data_by_week)
+data_semaine <-st_as_sf(data_semaine)
 ```
 
 Les données sont prêtes pour créer une carte animée qui représente la localisation de l'œuvre pour chaque semaine calendaire de 2001 à 2019. Pour cela, nous utilisons le package `tmap`, son mode `plot` (cartographique statique), sa fonction `tm_facet` (génère plusieurs cartes en fonction d'une variable) et sa fonction `tmap_animation` pour créer une carte animée en format vidéo.
@@ -932,22 +1024,22 @@ CARTE  <- tm_shape(world) +                      # Ajout fond de carte monde
                   border.col = "grey60", 
                   border.lwd = 0.2) +
           
-          tm_shape(data_by_week) +               # Ajout des musées, mais...
+          tm_shape(data_semaine) +               # Ajout des musées, mais...
           tm_symbols(col = "red") +              
   
-          tm_facets(along = "week",              # Une carte / semaine grâce à tm_facet
+          tm_facets(along = "semaine",           # Une carte / semaine grâce à tm_facet
                     free.coords= FALSE, 
                     drop.units=FALSE)  +
       
           tm_layout(main.title ="",              # Gestion du titre
                     panel.label.fontface = 2,
-                    panel.labels = paste0("Semaine du ", format(x = data_by_week$week, format = "%d %b %Y" )),
+                    panel.labels = paste0("Semaine du ", format(x = data_semaine$semaine, format = "%d %b %Y" )),
                     bg.color="lightblue") +
     
           tm_credits(bg.color = 'red',           # Affichage Nom des musées et Nombre de jours d'exposition
                      width = 0.5,
                      position = c('center', 'bottom'),
-                     text = paste0(data_by_week$Musée, " (",data_by_week$pays,")\n", data_by_week$Nb_day, " jours d'exposition"),
+                     text = paste0(data_semaine$musee," (",data_semaine$pays,")\n",data_semaine$duree, " jours d'exposition"),
                      size = 1.2,
                      fontface = "bold",
                      col = 'white',
@@ -956,7 +1048,7 @@ CARTE  <- tm_shape(world) +                      # Ajout fond de carte monde
 
 ```
 
-Avec la fonction `tm_facet`, ce bout de code crée autant de cartes qu'il y a de lignes dans le tableau `data_by_week`.
+Avec la fonction `tm_facet`, ce bout de code crée autant de cartes qu'il y a de lignes dans le tableau `data_semaine`.
 
 Il est ensuite très facile de convertir cet objet `list` qui contient l'ensemble des cartes produites en fichier mp4 avec la fonction `tmap_animation`. **Attention, la création d'un GIF ou d'une vidéo peut prendre plusieurs minutes.**
 
@@ -999,7 +1091,7 @@ Carte 5 : **Carte animée de circulation de l'œuvre de Johannes Vermeer *A Youn
 
 **Bien que la carte animée soit une représentation techniquement aboutie, elle ne transmet pas efficacement les informations sur la trajectoire spatio-temporelle du tableau de Johannes Vermeer au monde des musées. Une représentation statique et axée sur la dimension temporelle, comme une frise chronologique, nous semblerait plus appropriée.**
 
-Il existe des packages spécialisés dans la construction de frise chronologique, comme par exemple [`vistime`](https://cran.r-project.org/web/packages/vistime/vignettes/vistime-vignette.html). Cependant, afin de s'assurer d'une certaine liberté pour la mise en forme de la frise, nous utilisons le package `ggplot2` pour concevoir et construire cette représentation graphique.
+Il existe des packages spécialisés dans la construction de frise chronologique, comme par exemple [`vistime`](https://cran.r-project.org/web/packages/vistime/vignettes/vistime-vignette.html){target="_blank"}. Cependant, afin de s'assurer d'une certaine liberté pour la mise en forme de la frise, nous utilisons le package `ggplot2` pour concevoir et construire cette représentation graphique.
 
 ## Préparation des données
 
@@ -1007,36 +1099,34 @@ Une mise en forme des données est nécessaire pour construire ce type de frise 
 
 **Tri du tableau en fonction de la date** ('dated') d'arrivée dans chaque musée.
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
-data_geo <- data_geo[order(data_geo$dated, decreasing = FALSE),]
+data_geo <- data_geo %>% 
+  arrange(dated)
 ```
 
 
 **Tri d'ordre d'apparition des modalités (levels)** pour les variables (factor) 'nomLabel' et 'ADM0_A3'
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 
-# Liste unique musée
-musee <- unique(data_geo$nomLabel)
-# Tri en fonction de l'ordre de la liste
-data_geo$nomLabel <- ordered(as.factor(data_geo$nomLabel), levels = musee)
+# Liste unique musée (dans l'ordre d'apparition de la table)
+musees_ordonnes <- unique(data_geo$musee)
+pays_ordonnes <- unique(data_geo$pays)
 
-# Liste unique pays
-countries <- unique(data_geo$ADM0_A3)
-# Tri en fonction de l'ordre de la liste
-data_geo$ADM0_A3 <- ordered(as.factor(data_geo$ADM0_A3), levels = countries)
+data_geo <- data_geo %>% 
+  mutate(musee=ordered(as.factor(musee),levels=musees_ordonnes),
+         pays=ordered(as.factor(pays),levels=pays_ordonnes))
 ```
 
 Nous créons une nouvelle colonne qui sera utilisée comme étiquette dans le graphique. Dans cette colonne, les noms des musées n'apparaissent qu'une fois, uniquement pour la première exposition.
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 
-# Conversion de l'objet sf en data.frame (= suppression de la géométrie)
-df_geo <- st_drop_geometry(data_geo)
-
-# Sélection des premières dates d'arrivée (si il en existe plusieurs) pour chaque musée
-date_label <- df_geo[!duplicated(df_geo$nomLabel), c("nomLabel", "dated")]
-
-# Jointure par la date d'arrivée - ajout de la colonne label (nomLabel.y)
-data_geo <- merge(data_geo, date_label, by="dated", all.x=TRUE)
-
+data_geo <- data_geo %>% 
+  arrange(musee,dated) %>%
+  group_by(musee) %>% 
+  mutate(rank=1:n()) %>% 
+  mutate(musee_label=case_when(rank==1~musee,
+                               rank>1~NA_character_)) %>% 
+  select(-rank) %>% 
+  ungroup()
 ```
 
 **Tableau de données après traitement :**
@@ -1059,7 +1149,7 @@ Les variables utilisées pour l'axe des abscisses (x) et des ordonnées (y) sont
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 
-ggplot(data_geo, aes(x = dated, y = nomLabel.x))
+ggplot(data_geo, aes(x = dated, y = musee))
 
 ```
 
@@ -1076,18 +1166,16 @@ Nous commençons par préciser le type de géometrie (ici `geom_segment`) et les
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 # Construction de 'segments' entre la date d'arrivée (dated) et de départ (datef)
-ggplot(data_geo, aes(x = dated, y = nomLabel.x)) +
-  geom_segment(aes(xend = datef, yend = nomLabel.x, color =  ADM0_A3), size = 6)
+ggplot(data_geo, aes(x = dated, y = musee)) +
+  geom_segment(aes(xend = datef, yend = musee, color =  pays), size = 6)
 ```
 
 
 **Nous assignons le résultat dans un objet :**
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 
-Mon_graph <- ggplot(data_geo, aes(x = dated, y = nomLabel.x, color = ADM0_A3)) +
-                 geom_segment(aes(xend = datef,  yend = nomLabel.x, color =  ADM0_A3), 
-                              size = 6)
-
+Mon_graph=ggplot(data_geo, aes(x = dated, y = musee)) +
+  geom_segment(aes(xend = datef, yend = musee, label=musee_label, color =  pays), size = 6)
 ```
 
 <br/>
@@ -1103,7 +1191,7 @@ Maintenant que la base du graphique a été réalisée, nous pouvons procéder �
 
 Mon_graph <-  Mon_graph +
               # Ajout d'une étiquette pour chaque segment représenté
-              geom_text(aes(label = nomLabel.y, hjust =1.05), size = 3.5, show.legend = FALSE) +
+              geom_text(aes(label = musee_label, hjust =1.05), size = 3.5, show.legend = FALSE) +
               # Modification de la palette de couleurs (pays)
   scale_color_manual(values = c("#7570b3", "#e7298a", "#66a61e", "#e6ab02", "#a6761d","#1b9e77", "#d95f02"))
 
