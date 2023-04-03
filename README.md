@@ -9,7 +9,7 @@ L'objectif de ce document computationnel (notebook *R* ou *R Markdown*) est de p
 Le notebook permet ainsi de présenter clairement, étape par étape, toute une chaîne de traitements de données réalisée avec *R* à un public qui ne maîtrise pas forcément ce langage. 
 Un certain nombre de métadonnées associées au notebook (information de session, liste et version de packages, bibliographie, glossaire, difficultés rencontrées...) fournit les informations nécessaires à la réutilisation d'une partie du code par les lecteurs et lectrices, voire de reproduire ce document et l'exécuter en local sur son propre ordinateur.
 
-Pour la consulter, cliquez [**ici**](https://madouck.github.io/wikidata_sparql_rzine/)
+Pour la consulter, cliquez [**ici**](rzine-reviews/wikidata_sparql_rzine)
 
 <br/>  
 

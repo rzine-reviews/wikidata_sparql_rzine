@@ -20,7 +20,7 @@ bibliography: biblio.bib
 nocite: |
   @*
 link-citations: true
-github: "Madouck/wikidata_sparql_rzine"
+github: "rzine-reviews/wikidata_sparql_rzine"
 # gitlab: "https://gitlab.huma-num.fr/gt-notebook/workshop/workshop_3_decembre_2021/atelier_notebooks"
 doi: "xx.xxx/xxxx.xxxxxxx"
 licence: "by-nc-sa"
