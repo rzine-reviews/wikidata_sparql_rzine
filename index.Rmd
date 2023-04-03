@@ -154,7 +154,8 @@ liste_packages <- c("WikidataQueryServiceR",
                   "av"
                   "patchwork",
                   "jpeg", 
-                  "DT")
+                  "DT",
+                  "dplyr")
 
 # Packages à installer
 liste_packages_to_install <- liste_packages[!(liste_packages %in% installed.packages()[,"Package"])]
@@ -164,7 +165,19 @@ install.packages(liste_packages_to_install)
 
 ```
 
+Pour Installer le package `glitter` :
+
+```{r install2, eval=FALSE, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
+
+install.packages("remotes")
+install.packages("remotes") #if remotes is not already installed
+
+
+```
+
 <div class="alert alert-success" role="alert">
+
+
 
 <b>L'ensemble des informations du système et des versions de *packages* utilisés pour générer ce document est fourni en</b> <a href="#info-session"><b>fin de document</b></a>.</div>    
 <br />
