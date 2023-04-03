@@ -112,7 +112,7 @@ Pour plus d'informations, il est possible de consulter l'[introduction à *Wikid
 
 ## Le langage SPARQL
 
-SPARQL (prononcé *sparkle*, en anglais : « étincelle ») est un langage de requête et un protocole qui permet de rechercher, d'ajouter, de modifier ou de supprimer des données RDF disponibles à travers Internet. Son nom est un acronyme récursif qui signifie **S**PARQL **P**rotocol and **R**DF **Q**uery **L**anguage. (@frwiki:194953405)
+SPARQL (prononcé *sparkle*, en anglais : « étincelle ») est un langage de requête et un protocole qui permet de rechercher, d'ajouter, de modifier ou de supprimer des données RDF disponibles à travers Internet. Son nom est un acronyme récursif qui signifie **S**PARQL **P**rotocol **A**nd **R**DF **Q**uery **L**anguage. (@frwiki:194953405)
 
 Plusieurs langages de requête destinés à interroger les graphes RDF ont été développés. Le langage SPARQL, développé par le W3C, est destiné à devenir le standard en ce domaine. Aujourd'hui, le Web des données (ou Linked Open Data) est constitué de centaines de services SPARQL qui mettent à disposition de plus en plus de données au travers d'Internet comme le fait le projet *Wikidata* (@frwiki:194953405).
 
@@ -151,7 +151,7 @@ liste_packages <- c("WikidataQueryServiceR",
                   "mapview",
                   "tmap",
                   "ggplot2",
-                  "av"
+                  "av",
                   "patchwork",
                   "jpeg", 
                   "DT",
@@ -193,7 +193,7 @@ Plusieurs sources de données sont utilisées pour ce travail exploratoire:
 
 **Afin de maximiser la reproductibilité du code présenté, les jeux de données 1 et 2 ont été archivés et sont disponibles au téléchargement :**
 <br/>
-<p class="center">[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span> <br/> Télécharger les données](https://github.com/Madouck/wikidata_sparql_rzine/raw/main/data.zip)</p>
+<p class="center">[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span> <br/> Télécharger les données](https://github.com/rzine-reviews/wikidata_sparql_rzine/raw/main/data.zip)</p>
 <br/>
 <div class="alert alert-danger" role="alert">
 <b>*Wikidata* est une base de données collaboratives, régulièrement mise à jour. Une requête réalisée à deux dates différentes est susceptible de renvoyer un résultat différent.</b></div>   
@@ -644,11 +644,22 @@ world <- ne_download(scale = "medium",
                      destdir = "data/world",
                      load = TRUE,
                      returnclass = "sf")
+
 ```
 
-```{r,  eval=TRUE, echo=FALSE, warning=FALSE, message=FALSE}
-world <- st_read("data/world/ne_50m_admin_0_countries.shp", quiet = TRUE ) %>% 
-  mutate(pays=ADM0_A3)
+
+```{r,  eval=TRUE, echo=FALSE, include=FALSE, warning=FALSE, message=FALSE}
+
+library(rnaturalearth)
+
+```
+
+Le fond de carte récupéré est également mis à disposition dans les [données téléchargeables](https://github.com/rzine-reviews/wikidata_sparql_rzine/raw/main/data.zip).
+Vous pouvez le charger dans R à l'aide du package `sf` et de sa fonction `st_read()` de la façon suivante :
+
+```{r,  eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
+
+world <- st_read("data/world/ne_50m_admin_0_countries.shp", quiet = TRUE ) %>% mutate(pays=ADM0_A3)
 ```
 
 **Affichage de la couche géographique :**
@@ -665,7 +676,7 @@ datatable(world)
 
 ```
 
-La couche géographique des musées ('musee_geo') et le fond de carte du monde ('world') sont géoréférencés dans le même système de coordonées^[Un **système de coordonnées** est un référentiel dans lequel on peut représenter des éléments dans l'espace. Ce système permet de se situer sur l'ensemble du globe terrestre grâce à un couple de coordonnées géographiques.] (le [WGS84](https://fr.wikipedia.org/wiki/WGS_84)). Nous pouvons donc réaliser une [jointure spatiale](https://www.emse.fr/tice/uved/SIG/Glossaire/co/Jointure_spatiale.html){target="_blank"} qui permet de récupérer pour chaque musée, le [code ISO3](https://fr.wikipedia.org/wiki/ISO_3166-1) du pays dans lequel il se situe. Pour cela, nous utilisons la fonction `st_intersection` du package `sf`.
+La couche géographique des musées ('musee_geo') et le fond de carte du monde ('world') sont géoréférencés dans le même système de coordonnées^[Un **système de coordonnées** est un référentiel dans lequel on peut représenter des éléments dans l'espace. Ce système permet de se situer sur l'ensemble du globe terrestre grâce à un couple de coordonnées géographiques.] (le [WGS84](https://fr.wikipedia.org/wiki/WGS_84)). Nous pouvons donc réaliser une [jointure spatiale](https://www.emse.fr/tice/uved/SIG/Glossaire/co/Jointure_spatiale.html){target="_blank"} qui permet de récupérer pour chaque musée, le [code ISO3](https://fr.wikipedia.org/wiki/ISO_3166-1) du pays dans lequel il se situe. Pour cela, nous utilisons la fonction `st_intersection` du package `sf`.
 
 **Jointure spatiale entre les musées (points) et les pays (polygones) :**
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning = FALSE}
@@ -1536,7 +1547,7 @@ Carte 6 : **Nombre d'œuvres d'Edvard Munch exposées par musée au cours du tem
 
 L'exemple de visualisations (*distant reading*) d'une trajectoire spatio-temporelle en histoire à partir de données collectées sur *Wikidata* propose ainsi de questionner les données utilisées (non supervisées).
 
-Notamment la circulation de l'oeuvre fait apparaître des espaces spatio-temporels où celle-ci est absente des lieux d'exposition. Ce constat engage à ré-interroger les données et le modèle associé. Par exemple, sur la période antérieur à 2004, l'étude de la donnée permet d'identifier la propriété [P195](https://www.wikidata.org/wiki/Property:P195) collection qui identifie la collection à laquelle appartient l'œuvre. Le [lien hypertexte](https://rkd.nl/nl/explore/images/62857) servant de référence à cette donnée (à savoir la propriété P195 collection appliquée à Q4660880 instanciée par *Leiden Collection*) donne alors accès aux informations de transfert de propriété en 2004 des héritiers du Baron Frédéric Rolin (Bruxelles) à un amériacin Steve Wynn qui lui-même la cède la même année à la société Otto Naumann Ltd. (New York), qui fait entrer l'œuvre dans son catalogue au sein de la *Leiden Collection*.
+Notamment la circulation de l'oeuvre fait apparaître des espaces spatio-temporels où celle-ci est absente des lieux d'exposition. Ce constat engage à ré-interroger les données et le modèle associé. Par exemple, sur la période antérieur à 2004, l'étude de la donnée permet d'identifier la propriété [P195](https://www.wikidata.org/wiki/Property:P195) collection qui identifie la collection à laquelle appartient l'œuvre. Le [lien hypertexte](https://rkd.nl/nl/explore/images/62857) servant de référence à cette donnée (à savoir la propriété P195 collection appliquée à Q4660880 instanciée par *Leiden Collection*) donne alors accès aux informations de transfert de propriété en 2004 des héritiers du Baron Frédéric Rolin (Bruxelles) à un américain Steve Wynn qui lui-même la cède la même année à la société Otto Naumann Ltd. (New York), qui fait entrer l'œuvre dans son catalogue au sein de la *Leiden Collection*.
 
 Le notebook sert de support du dialogue entre plusieurs disciplines, ici, l'histoire, la géographie et l'ingénierie des connaissances. 
 Le notebook est aussi le lieu d'un processus collaboratif productif de connaissances (synchrone ou asynchrone), devient un outil pédagogique - par la formation par la recherche grâce à sa transformation en fiche `rzine` et est susceptible de servir de méthodologie (ou "fil directeur") reproductible d'un processus similaire pour d'autres problématiques.
