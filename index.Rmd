@@ -4,7 +4,7 @@ subtitle: "Histoire de cadre : élaboration d'une *trajectoire* spatio-temporell
 date: "`r Sys.Date()`"
 author: 
  - name: Raphaëlle KRUMMEICH
-   affiliation: IRIHS, FED3147 - université de Rouen Normandie
+   affiliation: IDEES, UMR6266 - université de Rouen Normandie
  - name: Hugues PECOUT
    affiliation: Géographie-cités, UMR8504 - CNRS
  - name: Sébastien REY-COYREHOURCQ
@@ -29,7 +29,7 @@ licence: "by-nc-sa"
 # 5 possible choices : "by-nd", "by", "by-nc-sa", "by-nc","by-sa"
 ---
 
-```{r setup, include=FALSE}
+```{r configuration, include=FALSE}
 
 ## Global options
 knitr::opts_chunk$set(echo=TRUE,
@@ -44,40 +44,33 @@ knitr::opts_chunk$set(echo=TRUE,
 
 ```
 
-> Cette fiche est le fruit d'une collaboration interdisciplinaire de membres du [GT Notebook](https://gitlab.huma-num.fr/gt-notebook) dans le cadre d'un [atelier](https://gt-notebook.gitpages.huma-num.fr/workshop/workshop_3_decembre_2021/slide2html-3-dec/){target="_blank"} proposé aux [*Journées d’étude normande sur les données de la recherche*](https://www.unicaen.fr/evenement/journee-detude-normande-sur-les-donnees-de-la-recherche/) qui se sont déroulées en décembre 2021. L'association de plusieurs compétences et disciplines a abouti à ce notebook présentant une analyse exploratoire reproductible de données collaboratives *Wikidata*, mises à disposition au format RDF. Les enjeux d'un tel processus inter-disciplinaire sont esquissés en conclusion. Les requêtes SPARQL élaborées ont fait l'objet d'une présentation et d'échanges au sein des [Ateliers du Web Sémantique](https://les-ateliers-du-web-semantique.gitpages.huma-num.fr/les-ateliers-du-web-semantique/) au printemps 2021.
+> Cette fiche est le fruit d'un dialogue interdisciplinaire de membres du [GT Notebook](https://gitlab.huma-num.fr/gt-notebook) dans le cadre d'un [atelier](https://gt-notebook.gitpages.huma-num.fr/workshop/workshop_3_decembre_2021/slide2html-3-dec/){target="_blank"} proposé aux [*Journées d’étude normande sur les données de la recherche*](https://www.unicaen.fr/evenement/journee-detude-normande-sur-les-donnees-de-la-recherche/) qui se sont déroulées en décembre 2021. L'association de plusieurs compétences et disciplines a abouti à ce notebook présentant une analyse exploratoire reproductible de données ouvertes et liées du graphe *Wikidata*, interrogeables sous la forme de triplets au format RDF. Les enjeux d'un tel processus inter-disciplinaire sont esquissés en conclusion. L'ébauche des requêtes SPARQL élaborées a fait l'objet d'une présentation et d'échanges au sein des [Ateliers du Web Sémantique](https://les-ateliers-du-web-semantique.gitpages.huma-num.fr/les-ateliers-du-web-semantique/) au printemps 2021.
 
 # Introduction {-}
 
-Cette fiche présente une exploration de données collaboratives *Wikidata* mises à disposition au format RDF (cf. [partie 1.2](#standard-rdf-du-w3c)). Du requêtage en langage SPARQL (cf. [partie 3](#interrogation-de-wikidata)) au traitement et à la représentation graphique des données *Wikidata*, ce document présente, étape par étape, l'ensemble de la chaîne de traitement réalisée. Le processus exploratoire des données, parfois itératif, a été conservé. Cela permet de bien comprendre l'approche réflexive des auteurs et autrice et de retranscrire au mieux la démarche scientifique exploratoire.
+Cette fiche présente une exploration de données du graphe *Wikidata* (cf. [partie 1.2](#standard-rdf-du-w3c)). Du requêtage en langage SPARQL (cf. [partie 3](#interrogation-de-wikidata)) au traitement et à la représentation des données issues du graphe *Wikidata*, ce document présente, étape par étape, l'ensemble de la chaîne de traitement réalisée. Le processus exploratoire des données, parfois itératif, a été conservé. Cela permet de bien comprendre l'approche réflexive des auteurs et autrice et de retranscrire au mieux la démarche scientifique adoptée.
 
-Les données utilisées, issues de la base *Wikidata*, sont régulièrement mises en jour. La structure de ces données est présentée dans la [partie 1](#wikimédia-wikiproject-w3c). Les données automatiquement collectées (le `r format(Sys.time(), "%d %B %Y")`) et utilisées dans ce document sont mises à disposition ([partie 2.2](#données-collectées)) afin de permettre une reproduction des traitements et des résultats présentés. 
+Le schéma organisant ces données est esquissé dans la [partie 1](#wikimédia-wikiproject-w3c). Les données automatiquement collectées (le `r format(Sys.time(), "%d %B %Y")`) et utilisées dans ce document sont mises à disposition ([partie 2.2](#données-collectées)) afin de permettre une reproduction des traitements et des résultats présentés. L'idée de départ qui conduit à la démarche proposée est de requêter les données du graphe *Wikidata*, d'identifier leurs modalités pouvant comporter une dimension spatiale et temporelle et ainsi, de reconstruire une ou des trajectoires dans le temps et l'espace. Compte-tenu du [formalisme](https://www.wikidata.org/wiki/Wikidata:WikiProject_Ontology/Modelling) et de l'hétérogénéïté des données non supervisées de *Wikidata*, l'image de l'objet choisi pour l'étude est une peinture exposée au sein de musées ou d'institutions culturelles dans le monde.
 
-L'idée de départ qui conduit à la démarche proposée est de requêter des données *Wikidata* et leurs modalités pouvant comporter une dimension spatiale et temporelle, et ainsi reconstruire une ou des trajectoires dans le temps et l'espace. Compte-tenu du formalisme et de la spécificité des données non supervisées de *Wikidata*, l'objet choisi pour l'étude, après exploration, est une peinture, sur son support physique inséré dans un cadre, susceptible d'être exposée au sein d'un musée ou d'une institution culturelle dans le monde.
-
-Un exemple d'exploration de données *Wikidata*, aisément reproductible pour différentes entités (peintres), est présentée dans la [partie 7](#à-vous-dexplorer).
+Pour reproduire l'expérimentation, un exemple d'exploration du graphe *Wikidata* pour diverses images d'artistes-peintres est proposée dans la dernière partie. [partie 7](#à-vous-dexplorer).
 <br/>
 
-# Wikimédia, Wikiproject & W3C
-## Données *Wikidata*
+# Wikimédia, Wikidata & W3C
+## Données ouvertes et liées du graphe *Wikidata*
 *Wikidata* est une base de connaissances libre, éditée de manière collaborative et hébergée par la [*Wikimedia Foundation*](https://wikimediafoundation.org/fr/). Son contenu étant placé sous [licence CC0](https://creativecommons.org/publicdomain/zero/1.0/deed.fr) (« Transfert dans le Domaine Public »), elle permet de centraliser les données utilisées par différents [projets *Wikimedia*](https://www.wikimedia.fr/les-projets-wikimedia/) (@frwiki:186068284).
 
-Les informations saisies dans *Wikidata* sont des données “brutes” multilingues non-supervisées, qui sont liées aux informations accessibles dans le texte des articles de l'encyclopédie contributive *Wikipedia*. 
-*Wikidata* est à différencier de l'ontologie DBpédia qui est le moyen de *traduire* *Wikipedia* en dépôts de données définis dans le cadre de description des ressources du standard *Ressources Description Framework* (RDF) du *World Wide Web Consortium*^[Le **World Wide Web Consortium**, abrégé par le sigle **W3C**, est un organisme de standardisation à but non lucratif, fondé en octobre 1994 chargé de promouvoir la compatibilité des technologies du World Wide Web telles que HTML5, HTML, XHTML, XML, RDF, SPARQL, CSS, XSL, PNG, SVG, MathML et SOAP.] (W3C).
-```{r, out.width="100%",  fig.align = 'center',  echo=FALSE, purl = FALSE }
+Les informations saisies dans *Wikidata* sont des données ouvertes “brutes” multilingues non-supervisées, qui sont liées notamment aux informations accessibles dans le texte des articles de l'encyclopédie contributive *Wikipedia*. *Wikidata* est à différencier de l'ontologie DBpédia qui est le moyen de *traduire* *Wikipedia* en dépôts de données définis dans le cadre de description des ressources du standard *Ressources Description Framework* (RDF) du *World Wide Web Consortium*^[Le **World Wide Web Consortium**, abrégé par le sigle **W3C**, est un organisme de standardisation à but non lucratif, fondé en octobre 1994 chargé de promouvoir la compatibilité des technologies du World Wide Web telles que HTML5, HTML, XHTML, XML, RDF, SPARQL, CSS, XSL, PNG, SVG, MathML et SOAP.] (W3C).
+```{r figure1, out.width="100%",  fig.align = 'center',  echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/wikidata_vs_dbpedia.png')
 ```
 <center>
 Figure 1 : Principales différences entre des **données *Wikipedia* (*DBpedia*)** et des **données *Wikidata* **. Dbpédia est la façon dont *Wikipedia* est traduit en dépôts de triplets RDF statique. </br> *source : [Wikidata-Basics/Wikidata Hackathon event for the Festival of Creative Learning 2018](https://thinking.is.ed.ac.uk/wikidata-basics/faq-and-further-reading/)*
 </center>
 <br/>
-Cette base fournit un support à de nombreux autres sites et services au-delà des seuls projets *Wikimedia*. Son contenu est exporté dans des formats standards et peut être relié à d'autres ensembles de données ouvertes sur le web des données^[***Le Web des données*** (*linked data*, en anglais) est une initiative du W3C (Consortium World Wide Web) visant à favoriser la publication de données structurées sur le Web, non pas sous la forme de silos de données isolés les uns des autres, mais en les reliant entre elles pour constituer un réseau global d'informations.].
-
-*Wikidata* offre ainsi un large domaine d'informations générales sur notre univers et des liens vers d'autres bases de données. Il contient, à ce jour, plus de 100 millions d'items. 
+Cette base fournit un support à de nombreux autres sites et services au-delà des seuls projets *Wikimedia*. Son contenu est exporté dans des formats standards et peut être relié à d'autres ensembles de données ouvertes sur le web des données^[***Le Web des données*** (*linked data*, en anglais) est une initiative du W3C (Consortium World Wide Web) visant à favoriser la publication de données structurées sur le Web, non pas sous la forme de silos de données isolés les uns des autres, mais en les reliant entre elles pour constituer un réseau global d'informations.]. *Wikidata* offre ainsi un large domaine d'informations générales sur notre univers et des liens vers d'autres bases de données. Il contient, à ce jour, plus de 100 millions d'items. 
 <br/>
 
 ## Standard RDF du W3C 
-
-Il existe plusieurs méthodes pour accéder à ces données. Dans ce document, nous utilisons un accès à la base de données *Wikidata* mises à disposition au **format RDF** sans toutefois expliciter le langage de requête [SPARQL](https://www.w3.org/TR/sparql11-query/), qui n'est pas l'objet de la fiche. 
 
 Le RDF (Resource Description Framework) est un cadre général de modélisation utilisé pour décrire formellement les ressources Web et leurs métadonnées, afin de permettre le traitement par inférence de telles descriptions. Développé par le W3C, RDF est le formalisme de base du [Web sémantique](https://fr.wikipedia.org/wiki/Web_s%C3%A9mantique). 
 
@@ -88,7 +81,7 @@ Un document structuré en RDF est un ensemble de triplets^[Un **triplet** est un
 
 
 Par exemple, l'*assertion ou déclaration "Bob s'intéresse à Mona Lisa"* est formalisée de la manière suivante :
-```{r, out.width="75%", fig.align = 'center',  echo=FALSE, purl = FALSE }
+```{r figure2, out.width="75%", fig.align = 'center',  echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/triplet.png')
 ```
 <center>
@@ -109,6 +102,8 @@ Le sujet et l'objet, dans le cas où ce sont des ressources, peuvent être ident
 Pour plus d'informations, il est possible de consulter l'[introduction à *Wikidata*](https://www.wikidata.org/wiki/Wikidata:Introduction/fr){target="_blank"} ou la [page *Wikibase*](https://www.mediawiki.org/wiki/Wikibase/Indexing/RDF_Dump_Format){target="_blank"} dédiée à un formalisme du type *Ressource Description Framework* (RDF) du dépôt de données *Wikidata*.
 <br/>
 
+Il existe plusieurs méthodes pour accéder à ces données. Dans ce document, nous utilisons un accès au graphe de *Wikidata* mobilisant le langage de requête [SPARQL](https://www.w3.org/TR/sparql11-query/), qui n'est pas l'objet de la fiche. Ce langage de requête spécifique au cadre de description RDF des données est déployé à l'aide de deux packages. Le package `wikidataR` permet d'écrire la requête dans le langage SPARQL pour le déployer au sein du graphe Wikidata selon ses spécificités, le package `glitter`, actuellement en développement, permet d'écrire ces requêtes pour sonder divers graphes, dont Wikidata, sans connaître la syntaxe SPARQL.
+
 ## Le langage SPARQL
 
 SPARQL (prononcé *sparkle*, en anglais : « étincelle ») est un langage de requête et un protocole qui permet de rechercher, d'ajouter, de modifier ou de supprimer des données RDF disponibles à travers Internet. Son nom est un acronyme récursif qui signifie **S**PARQL **P**rotocol **A**nd **R**DF **Q**uery **L**anguage. (@frwiki:194953405)
@@ -119,15 +114,15 @@ Dans ce notebook, quelques requêtes de base permettant d'[interroger la base de
 - la clause [`SELECT ?data WHERE{}`](https://www.w3.org/TR/sparql11-query/#select) qui renvoit les variables spécifiques et leurs liens lorsqu'une liste de noms de variables est donnée,    
 - un service *WikiLabel* spécifique au point d'accès *Wikidata Query Service*,    
 - l'option de la clause `SELECT`, `OPTIONAL`, permettant de renvoyer les variables même si elles ne sont pas instanciées (noeuds vides) sur la liste de noms de variables,    
-- et les préfixes associés aux fragments de graphe RDF de *Wikidata* ([+d'info](https://linkeddatafragments.org/)). 
+- et les préfixes associés aux fragments de graphe de *Wikidata* ([+d'info](https://linkeddatafragments.org/)). 
 <br/>
 
 # Packages et données
 ## Packages utilisés
 
 Les packages utilisés pour réaliser l'ensemble de la chaîne de traitement présenté dans ce document sont:</br>
-- `WikidataQueryServiceR`: fournit une API client pour le [*Wikidata Query Service*](https://query.wikidata.org/){target="_blank"} (cf. [partie 3](#interrogation-de-wikidata));  
-- `glitter` : permet l'écriture et l'envoi de requêtes SPARQL;    
+- `WikidataR`: fournit une API client pour le [*Wikidata Query Service*](https://query.wikidata.org/){target="_blank"} (cf. [partie 3](#interrogation-de-wikidata));  
+- `glitter` : permet l'écriture et l'envoi de requêtes SPARQL sans en connaître la syntaxe;    
 - `rnaturalearth` : met à disposition les données géographiques de [*Natural Earth*](https://www.naturalearthdata.com/){target="_blank"};  
 - `sf` : permet la gestion et la manipulation de données géographiques;  
 - `dplyr` : facilite la manipulation de données;     
@@ -141,10 +136,11 @@ Les packages utilisés pour réaliser l'ensemble de la chaîne de traitement pr�
 
 Pour installer ces packages, vous pouvez utiliser les lignes de code suivantes, qui vérifient que les packages nécéssaires ne soient pas déjà installés sur votre machine :
 
-```{r install1, eval=FALSE, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
+```{r installationdespackages1, eval=FALSE, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
 
-# Liste des packages nécessaires
-liste_packages <- c("WikidataQueryServiceR",
+# Liste des packages du CRAN nécessaires
+liste_packages <- c("WikidataR",
+                    "WikidataQueryServiceR",
                   "rnaturalearth",
                   "sf",
                   "dplyr",
@@ -162,11 +158,7 @@ liste_packages_a_installer <- liste_packages[!(liste_packages %in% installed.pac
 # Installation des packages manquants
 install.packages(liste_packages_a_installer)
 
-```
-
-Pour installer le package `glitter` [mis à disposition sur GitHub](https://github.com/lvaudor/glitter/) :
-
-```{r install2, eval=FALSE, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
+# Pour installer le package `glitter` en cours de développement [mis à disposition sur GitHub](https://github.com/lvaudor/glitter/) :
 
 install.packages("remotes")
 remotes::install_github("lvaudor/glitter")
@@ -183,7 +175,7 @@ remotes::install_github("lvaudor/glitter")
 
 Plusieurs sources de données sont utilisées pour ce travail exploratoire:
 
-1) Données issues de la base *Wikidata* ;    
+1) Données issues du graphe *Wikidata* ;    
 2) Couche géographique [*Natural Earth*](https://www.naturalearthdata.com/){target="_blank"};      
 3) Fonds de carte mis à disposition par [*Leaflet*](https://rstudio.github.io/leaflet/basemaps.html){target="_blank"}.         
 
@@ -193,113 +185,108 @@ Plusieurs sources de données sont utilisées pour ce travail exploratoire:
 <p class="center">[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span> <br/> Télécharger les données](https://github.com/rzine-reviews/wikidata_sparql_rzine/raw/main/data.zip)</p>
 <br/>
 <div class="alert alert-danger" role="alert">
-<b>*Wikidata* est une base de données collaboratives, régulièrement mise à jour. Une requête réalisée à deux dates différentes est susceptible de renvoyer un résultat différent.</b></div>   
+<b>*Wikidata* est un graphe de données ouvertes et liées, régulièrement mise à jour. Une requête réalisée à deux dates différentes est susceptible de renvoyer un résultat différent.</b></div>   
 <br/>
 
-# Interrogation de *Wikidata*
+# Exploration du graphe *Wikidata*
 
-Un [service de collecte des données de *Wikidata* en langage SPARQL](https://query.wikidata.org/) est mis à disposition et offre une solution très complète en première approche (exemples, assistant de requêtes, diversité des représentations etc.). Toutefois, dans une dynamique d'exploration de la base de données *Wikidata*, l'utilisation de R facilite l'archivage et la reproductibilité des différentes requêtes réalisées. Pour cette raison, nous utilisons le package [`WikidataQueryServiceR`](https://github.com/wikimedia/WikidataQueryServiceR) qui fournit une Interface de Programmation d'Application (API) pour interroger le [*Wikidata Query Service*](https://query.wikidata.org/){target="_blank"} directement via *R*.
+Un [service de collecte des données de *Wikidata* en langage SPARQL](https://query.wikidata.org/) est mis à disposition et offre une solution très complète en première approche (exemples, assistant de requêtes, diversité des représentations etc.). Toutefois, dans une dynamique d'exploration du graphe *Wikidata*, l'utilisation de R facilite l'archivage et la reproductibilité des différentes requêtes réalisées. Pour cette raison, nous utilisons le package [`WikidataR`](https://www.rdocumentation.org/packages/WikidataR/versions/2.3.3) qui fournit une Interface de Programmation d'Application (API) pour interroger le [*dépôt du graphe Wikidata*](https://query.wikidata.org/){target="_blank"} directement via *R* ou alternativement [`WikidataQueryServiceR`]() qui est un package ayant des fonctionnalités plus développées.
 
-`WikidataQueryServiceR` a été développé par Mikhail Popov, membre de la Fondation Wikimédia. Il s'est inspiré des packages [`WikipediR`](https://cran.r-project.org/web/packages/WikipediR/index.html){target="_blank"} et [`WikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html){target="_blank"}. 
+[`WikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html) est développé par Thomas Shafee, Os Keyes, Serena Signorelli, Alex Lum, Christian Graul et Mikhail Popov, membre de la Fondation Wikimédia. Il est maintenu par Thomas Shafee de l'université australienne La Trobe de l'état Victoria. 
 <br />
 
-## Modèle des données ciblées
+## Modèle des données : des artistes-peintres et trajectoires des oeuvres
 
-L'objectif de cette analyse consiste à s'intéresser à un·e peintre et à la circulation de ses peintures. </br> Dans *Wikidata*, les peintres, peintures et lieux d'exposition sont modélisés selon les représentations schématiques ci-dessous (Figures 4 et 6.a à c), comprenant des entités liées entre elles et mobilisant [une syntaxe spécifique avec des préfixes^[Un **préfixe** est une modalité de simplification d'écriture faisant référence à un *espace de noms*, voir notamment, les préfixes *Wikidata* [ici](https://www.wikidata.org/wiki/EntitySchema:E49){target="_blank"}]](https://www.wikidata.org/wiki/EntitySchema:E49). Le fragment de graphe de données *Wikidata* utilisé ici est illustré en figure 6b, ci-dessous.
+Dans *Wikidata*, les peintres, peintures et lieux d'exposition sont modélisés selon les fragments de graphes ci-dessous (Figures 4 et 6.a à c), comprenant des classes instanciées, liées entre elles par des propriétés (prédicats) et mobilisant [une syntaxe spécifique avec des préfixes^[Un **préfixe** est une modalité de simplification d'écriture faisant référence à un *espace de noms*, voir notamment, les préfixes *Wikidata* [ici](https://www.wikidata.org/wiki/EntitySchema:E49){target="_blank"}]](https://www.wikidata.org/wiki/EntitySchema:E49). Le fragment de graphe de données *Wikidata* objet du processus exploratoire est illustré en figure 6b, ci-dessous.
 </br>
-Après plusieurs explorations, nous avons décidé de nous intéresser au peintre néerlandais du 17e siècle, **Johannes Vermeer**. 
-
-Pour construire la requête SPARQL permettant d'interroger les données brutes, il est nécessaire de connaître le graphe de données sous-jacent.
-
-
-Dans *Wikidata*, ce peintre est une entité donnée à trouver (toute entité *Wikidata* est désignée par le préfixe `wd:`), ayant pour propriété directe (préfixe `wdt:`) d'être une instance de *Wikidata* ayant les propriétés suivantes :  
-
-  - ([P31](https://www.wikidata.org/wiki/Property:P31))-de nature ([Q5](https://www.wikidata.org/wiki/Q5))-humaine;</br>
-  - ([P373](https://www.wikidata.org/wiki/Property:P373))-ayant pour catégorie commune le libellé sous la forme de chaîne de caractères "Johannes Vermeer";</br>
-  - celui-ci ([P18](https://www.wikidata.org/wiki/Property:P18){target="_blank"})-ayant pour image le résultat associé (ici, l'adresse URL de l'image).
-</br>
-
-```{r, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
-knitr::include_graphics('figures/modele_interroge.png')
-```  
-<center>
-Figure 4 : **Classes et propriétés générales de *Wikidata* mobilisées dans l'étude de cas proposée**
-</center>
-</br>    
+Après plusieurs explorations, nous avons décidé de nous intéresser au peintre néerlandais du 17e siècle, **Johannes Vermeer** et à l'une de ses oeuvres dont les données spatiales et temporelles semblent suffisamment renseignées.
 
 ## Première requête SPARQL
 
-Nous interrogeons donc la base *Wikidata* concernant le peintre Johannes Vermeer, instance de *Wikidata* (classe d'objet [P31](https://www.wikidata.org/wiki/Property:P31)), qui est un humain [Q5](https://www.wikidata.org/wiki/Q5) et qui répond au libellé ([P373](https://www.wikidata.org/wiki/Property:P373){target="_blank"}) "Johannes Vermeer".
+Nous interrogeons le graphe *Wikidata* concernant le peintre Johannes Vermeer, instance de *Wikidata* (classe d'objet [P31](https://www.wikidata.org/wiki/Property:P31)), qui est un humain [Q5](https://www.wikidata.org/wiki/Q5) et qui répond à la catégorie commune ([P373](https://www.wikidata.org/wiki/Property:P373){target="_blank"}) "Johannes Vermeer" selon le schéma simplifié proposé dans la figure 4.
 
-A l'aide de la fonction `query_wikidata` du package `WikidataQueryServiceR`, nous commençons dans un premier temps par obtenir l'illustration associée à Johannes Vermeer (renseignée par la propriété [P18](https://www.wikidata.org/wiki/Property:P18)), avec la requête SPARQL suivante :
+```{r figure4, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
+knitr::include_graphics('figures/modele_interroge.png')
+```  
+<center>
+Figure 4 : **schéma des triplets de données d'entrée et de sorties du fragment de graphe Wikidata exploré.**
+</center>
+</br> 
 
-```{r sparql1,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
-# Package API pour le 'wiki data service'
-# library(WikidataQueryServiceR)
+A l'aide de la fonction `query_wikidata` du package `WikidataR` et des fonctions du package `glitter`, nous commençons dans un premier temps par obtenir l'illustration associée à Johannes Vermeer (renseignée par la propriété [P18](https://www.wikidata.org/wiki/Property:P18)), avec la requête SPARQL suivante :
 
-# Recherche de l'artiste nommé 'Johannes Vermeer' et de(s) l'illustration(s) associée(s)
-# data1 <- query_wikidata('
-#           SELECT ?identifiant ?image  WHERE {
-#               SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". } 
-#               ?identifiant wdt:P31 wd:Q5 ; wdt:P373 "Johannes Vermeer" . 
-#               ?identifiant wdt:P18 ?image .
-#               }
-# ')
+```{r requetesparql1,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 
-
+# Package API du CRAN pour interroger le dépôt Wikidata : WikidataR
+ library(WikidataR)
+# Recherche de l'identifiant de l'artiste nommé 'Johannes Vermeer' et de(s) l'illustration(s) associée(s)
+ data1w <- query_wikidata('
+           SELECT ?identifiant ?image  WHERE {
+               ?identifiant wdt:P31 wd:Q5 ; wdt:P373 "Johannes Vermeer"; wdt:P18 ?image .
+               }
+ ')
+ # Packages API du CRAN pour interroger le dépôt Wikidata : WikidataQueryServiceR
+ library(WikidataQueryServiceR)
+# Recherche de l'identifiant de l'artiste nommé 'Johannes Vermeer' et de(s) l'illustration(s) associée(s)
+ data1ws <- query_wikidata('
+           SELECT ?identifiant ?image  WHERE {
+               ?identifiant wdt:P31 wd:Q5 ; wdt:P373 "Johannes Vermeer"; wdt:P18 ?image .
+               }
+ ')
+# Package API en développement pour interroger un dépôt RDF sans connaître la syntaxe SPARQL : glitter
 library(glitter)
-
+# Recherche de l'identifiant de l'artiste nommé 'Johannes Vermeer' et de(s) l'illustration(s) associée(s)
 data1 <- spq_init() |>
             spq_add("?identifiant wdt:P31 wd:Q5") |>
             spq_add(". wdt:P373 'Johannes Vermeer'") |>
             spq_add(". wdt:P18 ?image") |>
             spq_perform()
-
 ```
 
-```{r writedata1,  eval=TRUE, echo=FALSE, include=FALSE}
+```{r inscriptiondesdonnees1,  eval=TRUE, echo=FALSE, include=FALSE}
 write.csv(x = data1, file = "data/data1.csv", row.names = FALSE)
 data1 <- read.csv("data/data1.csv", row.names = NULL)
 ```
 
 **Affichage des données collectées en utilisant la fonction `datatable` de la library `DT` :**
-```{r displaydata,  eval=TRUE, echo=TRUE}
+```{r affichagedesdonnees,  eval=TRUE, echo=TRUE}
 library(DT)
-# Affichage dynamique de la table
+# Affichage dynamique des tables issues des deux manières d'interroger le graphe
+datatable(data1w)
+datatable(data1ws)
 datatable(data1)
 ```
 
-**Deux URL sont collectées, celles de :**    
-- l'[identifiant](http://www.wikidata.org/entity/Q41264){target="_blank"} : le lien vers la page *Wikidata* du peintre Johannes Vermeer ;    
-- l'[image](http://commons.wikimedia.org/wiki/Special:FilePath/Cropped%20version%20of%20Jan%20Vermeer%20van%20Delft%20002.jpg){target="_blank"} : le lien vers l'image associée à ce peintre dans *Wikidata*.
-
-Le résultat renvoyé par cette requête nous permet de constater que le peintre **Johannes Vermeer est directement identifié par une URI (*entity ID*)** [Q41264](https://www.wikidata.org/wiki/Q41264) **dans *Wikidata* **. 
-
-Dans une seconde requête, on liera l'entité trouvée comme ([P170](https://www.wikidata.org/wiki/Property:P170){target="_blank"})-créatrice des œuvres que l'on cherche à localiser dans l'espace et le temps.</br>
-<br />
-
-Pour **sauvegarder l'image** associée :
-```{r datafolder, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE}
+Le résultat renvoyé par cette requête nous permet de constater que l'image de l'objet Johannes Vermeer peintre est **identifiée par une entité [Q41264](https://www.wikidata.org/wiki/Q41264) dans *Wikidata* ** et/ou son URI. 
+```{r identifiant, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE}
+# Affichage de la valeur de l'URI de la variable entité identifiant collectée avec glitter (ou WikidataQueryService)
+data1$identifiant
+# Affichage de la valeur de l'entité identifiant collectée avec la package WikidataR
+data1ws$identifiant
+```
+Par ailleurs, on sauvegarde le fichier de l'image numérisée de son portrait en deux étapes à partir de son URI collectée avec la package `glitter` :
+```{r dossierimage, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE}
 # Création des sous-répertoires 'data' et 'data/image'
 dir.create("data")
 dir.create("data/images")
 ```
 
-```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
-# Téléchargement et sauvegarde de l'image
+```{r telechargement,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
+# Téléchargement et sauvegarde du fichier de l'image numérisée
 download.file(url = data1$image,
               destfile = 'data/images/portrait_artiste.jpg',
               mode = 'wb')
 ```
 
 
-```{r, echo=FALSE, out.width="45%", fig.align = 'center', purl = FALSE }
+```{r figure5, echo=FALSE, out.width="45%", fig.align = 'center', purl = FALSE }
 knitr::include_graphics('data/images/portrait_artiste.jpg')
 ```
 <center>
-Figure 5 : **Illustration de *Wikidata* pour identifier visuellement le peintre Johannes Vermeer**
+Figure 5 : **Elément visuel (url vers un fichier .jpg) de Wikidata permettant d'identifier le peintre Johannes Vermeer**
 </center>
 </br>    
+Dans une seconde requête, on liera l'identifiant de l'entité collectée comme ([P170](https://www.wikidata.org/wiki/Property:P170){target="_blank"}) - créatrice des œuvres que l'on cherche à localiser dans l'espace et le temps.</br>
 
 ## Seconde requête SPARQL
 
@@ -307,7 +294,7 @@ En second lieu, on propose donc de lister l'ensemble des œuvres de Johannes Ver
 
 Les coordonnées de la localisation (ici, une déclaration ou *statement*) associée à une œuvre sont obtenues via la propriété [P625]((https://www.wikidata.org/wiki/Property:P625){target="_blank"}) : `wdt:P625`.
 
-```{r, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
+```{r figure6, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/modele_interroge_qualifier_a.png')
 ```
 <center>
