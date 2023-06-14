@@ -1,6 +1,6 @@
 # Histoire de cadre : élaboration d'une *trajectoire* spatio-temporelle [<img src="https://rzine.fr/img/Rzine_logo.png"  align="right" width="120"/>](http://rzine.fr/)
 ### Exemple appliqué d'un notebook avec R sur des données Wikidata
-**Raphaëlle KRUMMEICH (Institut de Recherche Interdisciplinaire Homme et Société (FED 3147) - université de Rouen Normandie)**  
+**Raphaëlle KRUMMEICH (Identité et Différenciation de l''Espace, de l'Environnement et des Sociétés (UMR 6266) - université de Rouen Normandie, CNRS)**  
 **Hugues PECOUT (Collège International des Sciences Territoriales (FR 2007)- CNRS)**  
 **Sébastien REY-COYREHOURCQ (Identité et Différenciation de l''Espace, de l'Environnement et des Sociétés (UMR 6266) - université de Rouen Normandie, CNRS)**
 <br/>  
