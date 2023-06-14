@@ -593,7 +593,7 @@ chemins_du_graphe <- paste(chemin_primaire,".","OPTIONAL {",chemin_type_predicat
 
 ## Construire la requête
  query <- paste("SELECT",nom_proprietes_sujets_interrogees,comptage,"WHERE {",service,chemins_du_graphe,"}",groupe_et_ordonne)
-query
+
 ## Exécuter la requête
  metadonnees_relations_comme_objet <- query_wikidata(query)
 
@@ -698,8 +698,8 @@ chemins_du_graphe <- paste(chemin_declaratif,".",chemin_rang_declaration,".","OP
  #- Filtre de langue des noms
   filtre_langue <- paste0("FILTER(lang(",nom_id_oeuvre,")=\"en\")")
   query <- paste("SELECT",donnees_interrogees,"WHERE {",chemins_du_graphe,filtre_langue," }")
+
 ## Affectation du résultat
-  query
  resultats_oeuvres <- query_wikidata(query)
 
 
@@ -713,11 +713,10 @@ chemins_du_graphe <- paste(chemin_declaratif,".",chemin_rang_declaration,".","OP
 
 chemins_du_graphe <- paste(chemin_declaration,".",chemin_rang_qualification,".",chemin_qualificatif,".",chemin_direct,".",chemin_rdfs_label)
 
-
 ## Requête 
  query <- paste("SELECT ",donnees_interrogees,"WHERE {",chemins_du_graphe,filtre_langue,service," }",ordonne)
+
 ## Affectation du résultat
-query
   resultats_relations <- query_wikidata(query)
 
 ## Jointure de toutes les oeuvres liées directement ou indirectement à Johannes Vermeer
@@ -773,7 +772,7 @@ donnees_interrogees <- paste(donnee_url)
 
 ## Requête 
  query <- paste("SELECT",donnees_interrogees,"WHERE {",chemin_principal,".",chemin_provenance," . ",chemin_url," }")
-query
+
 ## Affectation & affichage du résultat et des sources citées dans wikidata
  resultats_sources <- query_wikidata(query)
  datatable(resultats_sources)
@@ -821,7 +820,7 @@ chemins_du_graphe <- paste(chemin_primaire,".",chemin_type)
 
 ## Construire la requête
  query <- paste("SELECT",nom_type_id_objet,comptage,"WHERE {",service,chemins_du_graphe,"}",groupe_et_ordonne)
-query
+
 ## Exécuter la requête
  metadonnees_collections_comme_objet <- query_wikidata(query)
 
@@ -897,9 +896,10 @@ chemins_du_graphe
 
 ## Construire la requête
  query <- paste("SELECT",donnees_interrogees,comptage,"WHERE {",chemins_du_graphe,service,"}",groupe_et_ordonne)
-query
+
 ## Exécuter la requête
  metadonnees_localisation_oeuvres <- query_wikidata(query)
+
 ## Affiche le résultat
  datatable(metadonnees_localisation_oeuvres)
 ```
@@ -924,7 +924,7 @@ Figure 6e : Classes et propriétés spécifiques de Wikidata mobilisées pour la
 </center>
 </br>    
 
-```{r requetesparql11,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
+```{r requetesparql11,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE , out.width="50%",fig.align = 'center', purl = FALSE}
 
 library(WikidataQueryServiceR)
 library(DT)
@@ -963,13 +963,15 @@ chemins_du_graphe <- paste(chemin_primaire,".",chemin_coord,".",chemin_date_debu
 
 ## Construire la requête
  query <- paste("SELECT",donnees_interrogees,"WHERE {",service,chemins_du_graphe,"}")
-
  query_image <- paste("SELECT",id_image,"WHERE {",chemin_image,"}")
+
 ## Exécuter la requête
  metadonnees_lieu_temps_oeuvre <- query_wikidata(query)
  url_image <- query_wikidata(query_image)
+
 ## Afficher le résultat
  datatable(metadonnees_lieu_temps_oeuvre)
+
  knitr::include_graphics(url_image$image)
 ```
 
