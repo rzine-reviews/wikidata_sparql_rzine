@@ -44,37 +44,37 @@ knitr::opts_chunk$set(echo=TRUE,
 
 ```
 
-> Cette fiche est le fruit d'un dialogue interdisciplinaire entre membres du [GT Notebook](https://gitlab.huma-num.fr/gt-notebook) initié dans le cadre d'un [atelier](https://gt-notebook.gitpages.huma-num.fr/workshop/workshop_3_decembre_2021/slide2html-3-dec/){target="_blank"} proposé à la [*Journée d’études normande sur les données de la recherche*](https://www.unicaen.fr/evenement/journee-detude-normande-sur-les-donnees-de-la-recherche/) qui s'est déroulée en décembre 2021. L'association de plusieurs compétences et disciplines a abouti à ce notebook présentant une analyse exploratoire reproductible de données ouvertes et liées d'un fragment de graphe Wikidata, interrogeables sous la forme de triplets RDF. Les enjeux d'un tel processus inter-disciplinaire sont esquissés en conclusion. Une ébauche des requêtes SPARQL élaborées a fait l'objet d'une présentation et d'échanges au sein des [Ateliers du Web Sémantique](https://les-ateliers-du-web-semantique.gitpages.huma-num.fr/les-ateliers-du-web-semantique/) au printemps 2021.
+> Cette fiche est le fruit d'un dialogue interdisciplinaire entre membres du [GT Notebook](https://gitlab.huma-num.fr/gt-notebook){target="_blank"} initié dans le cadre d'un [atelier](https://gt-notebook.gitpages.huma-num.fr/workshop/workshop_3_decembre_2021/slide2html-3-dec/){target="_blank"} proposé à la [*Journée d’études normande sur les données de la recherche*](https://www.unicaen.fr/evenement/journee-detude-normande-sur-les-donnees-de-la-recherche/){target="_blank"} qui s'est déroulée en décembre 2021. L'association de plusieurs compétences et disciplines a abouti à ce notebook présentant une analyse exploratoire reproductible de données ouvertes et liées d'un fragment de graphe Wikidata, interrogeables sous la forme de triplets RDF. Les enjeux d'un tel processus inter-disciplinaire sont esquissés en conclusion. Une ébauche des requêtes SPARQL élaborées a fait l'objet d'une présentation et d'échanges au sein des [Ateliers du Web Sémantique](https://les-ateliers-du-web-semantique.gitpages.huma-num.fr/les-ateliers-du-web-semantique/){target="_blank"} au printemps 2021.
 
 # Introduction {-}
 
-Cette fiche présente une exploration du graphe Wikidata (cf. [parties 1.2](#standard-rdf-du-w3c) et [3](#exploration_du_graphe_wikidata)) et le traitement des données extraites (cf. [parties 2](#packages_et_données) et [4](#exploration-spatiale)). 
+Cette fiche présente une exploration du graphe Wikidata (cf. [parties 1.2](#standard-rdf-du-w3c) et [3](#exploration-du-graphe-wikidata)) et le traitement des données extraites (cf. [parties 2](#packages-et-données) et [4](#exploration-spatiale)). 
 
-Du requêtage en langage SPARQL (cf. [partie 1.3](#le_langage_sparql)) au traitement et à la représentation des données issues du graphe Wikidata, ce document présente, étape par étape, l'ensemble de la chaîne de traitement réalisée. Le processus exploratoire, parfois itératif, a été conservé afin de mieux comprendre l'approche réflexive des auteurs et autrice. Le notebook retranscrit les démarches scientifique et méthodologique adoptées.
+Du requêtage en langage SPARQL (cf. [partie 1.3](#le-langage-sparql)) au traitement et à la représentation des données issues du graphe Wikidata, ce document présente, étape par étape, l'ensemble de la chaîne de traitement réalisée. Le processus exploratoire, parfois itératif, a été conservé afin de mieux comprendre l'approche réflexive des auteurs et autrice. Le notebook retranscrit les démarches scientifique et méthodologique adoptées.
 
-Le schéma organisant ces données est esquissé dans la [partie 1](#wikimédia-wikiproject-w3c). Afin de permettre une reproduction des traitements et des résultats présentés, les données automatiquement collectées au `r format(Sys.time(), "%d %B %Y")` et utilisées dans ce document sont mises à disposition (cf. [partie 2.2](#données-collectées)). L'idée de départ conduit à la démarche suivante en 3 étapes : 
+Le schéma organisant ces données est esquissé dans la [partie 1](#wikimédia-wikidata-w3c). Afin de permettre une reproduction des traitements et des résultats présentés, les données automatiquement collectées au `r format(Sys.time(), "%d %B %Y")` et utilisées dans ce document sont mises à disposition (cf. [partie 2.2](#données-collectées)). L'idée de départ conduit à la démarche suivante en 3 étapes : 
 
 - requêter les données (ou suivre des chemins) du graphe Wikidata,  
 - identifier certaines des modalités du graphe pouvant comporter une dimension spatiale et temporelle et ainsi,  
 - reconstruire et représenter une ou des trajectoires dans le temps et l'espace. 
 
-Compte-tenu du [formalisme](https://www.wikidata.org/wiki/Wikidata:WikiProject_Ontology/Modelling) et de l'hétérogénéïté des données non supervisées de Wikidata, deux images d'objet (@hui_induction_2015) sont choisies pour l'étude : un artiste-peintre et une de ses peintures, exposée au sein de musées ou d'institutions culturelles dans le monde. Pour reproduire partiellement l'expérimentation, un exemple d'exploration du graphe Wikidata pour diverses images d'artistes-peintres est proposée dans la [partie 7](#à-vous-dexplorer).
+Compte-tenu du [formalisme](https://www.wikidata.org/wiki/Wikidata:WikiProject_Ontology/Modelling){target="_blank"} et de l'hétérogénéïté des données non supervisées de Wikidata, deux images d'objet (@hui_induction_2015) sont choisies pour l'étude : un artiste-peintre et une de ses peintures, exposée au sein de musées ou d'institutions culturelles dans le monde. Pour reproduire partiellement l'expérimentation, un exemple d'exploration du graphe Wikidata pour diverses images d'artistes-peintres est proposée dans la [partie 7](#à-vous-dexplorer).
 <br/><br/>
-> NB : le terme "image" utilisé dans ce document correspond à une sémantique de l'objet physique dans l'espace numérique, sous la forme de données et de métadonnées en relation avec d'autres images d'objet (@hui_induction_2015). En ce sens, les œuvres elles-mêmes, photographiées ou scannées etc., sont désignées sous ces formes (fichiers .jpg .png etc.), par le terme d'"illustration" ou de fichiers. Pour simplifier le discours, l'image d'objet est désignée par l'objet lui-même : par exemple, l'image du peintre Johannes Vermeer, l'entité wikidata de valeur [`Q41264`](https://www.wikidata.org/wiki/Q41264) définie par ses relations, est identifiée au peintre lui-même.
+> NB : le terme "image" utilisé dans ce document correspond à une sémantique de l'objet physique dans l'espace numérique, sous la forme de données et de métadonnées en relation avec d'autres images d'objet (@hui_induction_2015). En ce sens, les œuvres elles-mêmes, photographiées ou scannées etc., sont désignées sous ces formes (fichiers .jpg .png etc.), par le terme d'"illustration" ou de fichiers. Pour simplifier le discours, l'image d'objet est désignée par l'objet lui-même : par exemple, l'image du peintre Johannes Vermeer, l'entité wikidata de valeur [`Q41264`](https://www.wikidata.org/wiki/Q41264){target="_blank"} définie par ses relations, est identifiée au peintre lui-même.
 
 # Wikimédia, Wikidata & W3C
 ## Données ouvertes et liées du graphe Wikidata
-Wikidata est une base de connaissances libre, éditée de manière collaborative et hébergée par la [fondation Wikimedia](https://wikimediafoundation.org/fr/). Son contenu étant placé sous [licence CC0](https://creativecommons.org/publicdomain/zero/1.0/deed.fr) (« Transfert dans le Domaine Public »), elle permet de centraliser l'accès aux données utilisées par différents [projets Wikimedia](https://www.wikimedia.fr/les-projets-wikimedia/) (@frwiki:186068284).
+Wikidata est une base de connaissances libre, éditée de manière collaborative et hébergée par la [fondation Wikimedia](https://wikimediafoundation.org/fr/){target="_blank"}. Son contenu étant placé sous [licence CC0](https://creativecommons.org/publicdomain/zero/1.0/deed.fr){target="_blank"} (« Transfert dans le Domaine Public »), elle permet de centraliser l'accès aux données utilisées par différents [projets Wikimedia](https://www.wikimedia.fr/les-projets-wikimedia/){target="_blank"} (@frwiki:186068284).
 
-Les informations saisies dans Wikidata sont des données ouvertes “brutes” multilingues non-supervisées qui sont liées, notamment aux articles de l'encyclopédie contributive Wikipedia. Wikidata est à différencier de l'ontologie DBpedia^[DBpedia est une ontologie permettant de traduire Wikipedia en dépôts de données définis dans le cadre de description des ressources du standard *Ressources Description Framework* (RDF) du *World Wide Web Consortium*^[Le **World Wide Web Consortium**, abrégé par le sigle **W3C**, est un organisme de standardisation à but non lucratif, fondé en octobre 1994 chargé de promouvoir la compatibilité des technologies du World Wide Web telles que HTML5, HTML, XHTML, XML, RDF, SPARQL, CSS, XSL, PNG, SVG, MathML et SOAP.] (W3C)] (voir figure 1).
+Les informations saisies dans Wikidata sont des données ouvertes “brutes” multilingues non-supervisées qui sont liées, notamment aux articles de l'encyclopédie contributive Wikipedia. Wikidata est à différencier de l'ontologie DBpedia^[**DBpedia** est une ontologie permettant de traduire Wikipedia en dépôts de données définis dans le cadre de description des ressources du standard *Ressources Description Framework* (RDF) du *World Wide Web Consortium*^[Le **World Wide Web Consortium**, abrégé par le sigle **W3C**, est un organisme de standardisation à but non lucratif, fondé en octobre 1994 chargé de promouvoir la compatibilité des technologies du World Wide Web telles que HTML5, HTML, XHTML, XML, RDF, SPARQL, CSS, XSL, PNG, SVG, MathML et SOAP.] (W3C)] (voir figure 1).
 ```{r figure1, out.width="80%",  fig.align = 'center',  echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/wikidata_vs_dbpedia.png')
 ```
 <center>
-*Figure 1 : Principales différences entre des données Wikipedia (DBpedia) et des données Wikidata. Dbpedia est la façon dont Wikipedia est traduit en dépôts de triplets RDF statique. <br/>Source : [Wikidata-Basics | Wikidata Hackathon event for the Festival of Creative Learning, 2018](https://thinking.is.ed.ac.uk/wikidata-basics/faq-and-further-reading/)*
+*Figure 1 : Principales différences entre des données Wikipedia (DBpedia) et des données Wikidata. Dbpedia est la façon dont Wikipedia est traduit en dépôts de triplets RDF statique. <br/>Source : [Wikidata-Basics | Wikidata Hackathon event for the Festival of Creative Learning, 2018](https://thinking.is.ed.ac.uk/wikidata-basics/faq-and-further-reading/){target="_blank"}*
 </center>
 <br/>
-La base Wikidata fournit un support à de nombreux autres sites et services au-delà des seuls projets de Wikimedia. Son contenu est exporté dans des formats standards et peut être lié ou aligné à d'autres ensembles de données ouvertes sur le Web des données^[Le Web de données (*linked data*, en anglais) est une initiative du W3C (*Consortium World Wide Web*) visant à favoriser la publication de données structurées sur le Web, non pas sous la forme de silos de données isolés les uns des autres, mais en les reliant entre elles pour constituer un réseau global d'informations.]. Wikidata offre ainsi un large domaine d'informations générales sur notre univers ou ses représentations et des liens vers d'autres graphes ou bases de données. Il contient à ce jour plus de 100 millions d'items. 
+La base Wikidata fournit un support à de nombreux autres sites et services au-delà des seuls projets de Wikimedia. Son contenu est exporté dans des formats standards et peut être lié ou aligné à d'autres ensembles de données ouvertes sur le Web des données^[Le Web de données (*linked data*, en anglais) est une initiative du World Wide Web Consortium^[Le **W3C** est un organisme de standardisation à but non lucratif, fondé en octobre 1994 chargé de promouvoir la compatibilité des technologies du World Wide Web telles que HTML5, HTML, XHTML, XML, RDF, SPARQL, CSS, XSL, PNG, SVG, MathML et SOAP.] visant à favoriser la publication de données structurées sur le Web, non pas sous la forme de silos de données isolés les uns des autres, mais en les reliant entre elles pour constituer un réseau global d'informations.]. Wikidata offre ainsi un large domaine d'informations générales sur notre univers ou ses représentations et des liens vers d'autres graphes ou bases de données. Il contient à ce jour plus de 100 millions d'items. 
 <br/>
 
 ## Standard RDF du W3C 
@@ -91,7 +91,7 @@ Par exemple, la déclaration "Bob s'intéresse à Mona Lisa" est formalisée de 
 knitr::include_graphics('figures/triplet.png')
 ```
 <center>
-*Figure 2 :  Exemple de représentation des composantes génériques d'un triplet RDF. </br> Source : [W3C](https://www.w3.org/TR/rdf11-primer/)*
+*Figure 2 :  Exemple de représentation des composantes génériques d'un triplet RDF. </br> Source : [W3C](https://www.w3.org/TR/rdf11-primer/){target="_blank"}*
 </center>
 </br>
 Un dépôt de triplets RDF ainsi formé correspond à un multigraphe orienté étiqueté : chaque triplet correspond alors à une arête orientée dont l'étiquette est le prédicat, le nœud source est le sujet et le nœud cible est l'objet (voir figure 3).
@@ -101,10 +101,10 @@ Un dépôt de triplets RDF ainsi formé correspond à un multigraphe orienté é
 knitr::include_graphics('figures/triplet_mona_lisa.png')
 ```
 <center>
-*Figure 3 : Exemple de graphe formé par plusieurs triplets RDF. </br> Source : [W3C](https://www.w3.org/TR/rdf11-primer/)*
+*Figure 3 : Exemple de graphe formé par plusieurs triplets RDF. </br> Source : [W3C](https://www.w3.org/TR/rdf11-primer/){target="_blank"}*
 </center>
 </br>
-Plusieurs méthodes permettent d'accéder à ces données. Dans ce notebook, nous utilisons un accès au graphe de Wikidata mobilisant quelques éléments du langage de requête [SPARQL](https://www.w3.org/TR/sparql11-query/). L'usage de ce langage de requête spécifique est déployé à l'aide de deux packages : 
+Plusieurs méthodes permettent d'accéder à ces données. Dans ce notebook, nous utilisons un accès au graphe de Wikidata mobilisant quelques éléments du langage de requête [SPARQL](https://www.w3.org/TR/sparql11-query/){target="_blank"}. L'usage de ce langage de requête spécifique est déployé à l'aide de deux packages : 
 
 - le package `wikidataR` (et son extension `WikidataQueryServiceR`) permet d'écrire la requête dans le langage SPARQL pour le déployer au sein du graphe Wikidata selon ses spécificités, 
 - le package `glitter` permet d'écrire ces requêtes pour sonder divers graphes, dont Wikidata, sans utiliser les termes de la syntaxe SPARQL.
@@ -113,13 +113,13 @@ Plusieurs méthodes permettent d'accéder à ces données. Dans ce notebook, nou
 
 SPARQL^[acronyme récursif qui signifie **S**PARQL **P**rotocol **A**nd **R**DF **Q**uery **L**anguage (@frwiki:194953405). Plusieurs langages de requête destinés à interroger les graphes RDF ont été développés, mais le langage SPARQL est développé par le W3C de sorte à devenir un standard.] (prononcé *sparkle*, en anglais : « étincelle ») est à la fois un langage de requête et un protocole qui permettent de rechercher, d'ajouter, de modifier ou de supprimer des triplets RDF disponibles à travers le Web. Aujourd'hui, le Web de données (représenté par le [nuage du *Linked Open Data*]((http://cas.lod-cloud.net/){target="_blank"}) ou [ses domaines]((http://cas.lod-cloud.net/#subclouds){target="_blank"})) est interrogeable via des centaines de services SPARQL qui mettent à disposition de plus en plus de graphes de données ouvertes et liées comme c'est le cas du projet plurilingue Wikidata (@frwiki:194953405).
 
-Dans ce notebook, quelques requêtes de base permettant d'[interroger la base de données Wikidata](https://www.wikidata.org/wiki/Wikidata:Data_access#How_can_I_get_data_out_of_Wikidata?) utilisent les éléments suivants :  
+Dans ce notebook, quelques requêtes de base permettant d'[interroger la base de données Wikidata](https://www.wikidata.org/wiki/Wikidata:Data_access#How_can_I_get_data_out_of_Wikidata?){target="_blank"} utilisent les éléments suivants :  
 
 - la clause [`SELECT `]((https://www.w3.org/TR/sparql11-query/#select){target="_blank"}) des données interrogées qui renvoit les variables spécifiques (ou avec `COUNT` qui renvoit le nombre des ces données ou `GROUP_CONCAT` qui les concatène au sein d'une collection, regroupées par `GROUP BY` et triées par `ORDER BY`),  
 - accompagnée de la clause [`WHERE { }`]((https://www.w3.org/TR/sparql11-query/#where){target="_blank"}) qui les lie à l'interrogation de propriétés et données associées, suivant les chemins du graphe,    
 - un service WikiLabel spécifique au point d'accès *Wikidata Query Service*,  du fait du caractère plurilingue de certaines données du graphe Wikidata, permettant de choisir la langue du label (`wikibase:language`) associé à l'entité ou la propriété recherchée,  
 - la fonctionnalité `OPTIONAL` de la clause `WHERE` qui permet de renvoyer les variables même si les données liées aux propriétés ne sont pas instanciées (noeuds vides),    
-- et les différents préfixes associés aux spécificités des propriétés simples, directes et indirectes etc. des fragments de graphe de Wikidata ([+d'info](https://linkeddatafragments.org/)). 
+- et les différents préfixes associés aux spécificités des propriétés simples, directes et indirectes etc. des fragments de graphe de Wikidata ([+d'info](https://linkeddatafragments.org/){target="_blank"}). 
 <br/>
 
 Afin de permettre une bonne compréhension des requêtes réalisées pour la collecte de données sans entrer dans le détail de la syntaxe propre à SPARQL, celles-ci soont formulées de la manière suivante (les éléments en italique ne sont pas nécessaires) : 
@@ -148,9 +148,9 @@ Les *packages* utilisés pour réaliser l'ensemble de la chaîne de traitement p
 - `rnaturalearth` : met à disposition les données géographiques de [Natural Earth](https://www.naturalearthdata.com/){target="_blank"};  
 - `sf` : permet la gestion et la manipulation de données géographiques;  
 - `dplyr` : facilite la manipulation de données;     
-- `mapview` : produit des cartes interactives en utilisant la librairie [JavaScript Leaflet](https://leafletjs.com/);  
+- `mapview` : produit des cartes interactives en utilisant la librairie [JavaScript Leaflet](https://leafletjs.com/){target="_blank"};  
 - `tmap` : produit de cartes thématiques;  
-- `ggplot2` : permet la production de graphiques basés sur la [grammaire graphique](https://link.springer.com/book/10.1007/0-387-28695-0);  
+- `ggplot2` : permet la production de graphiques basés sur la [grammaire graphique](https://link.springer.com/book/10.1007/0-387-28695-0){target="_blank"};  
 - `av` : génère des vidéos à partir d'images ou de graphiques R;  
 - `patchwork` : combine facilement plusieurs graphiques `ggplot2`;  
 - `jpeg` : importe, enregistre et affiche des images matricielles (format bitmap);  
@@ -217,9 +217,9 @@ Plusieurs sources de données sont utilisées pour ce travail exploratoire :
 
 # Exploration du graphe Wikidata
 
-Le [service de collecte des données de Wikidata en langage SPARQL](https://query.wikidata.org/) offre une solution très complète en première approche (exemples, assistant de requêtes, diversité des représentations etc.). Toutefois, dans une dynamique d'exploration du graphe Wikidata, l'utilisation de R facilite la compréhension, l'archivage et la reproductibilité des différentes requêtes spécifiques réalisées. Pour cette raison, nous utilisons le package [`WikidataR`](https://www.rdocumentation.org/packages/WikidataR/versions/2.3.3) ou alternativement [`WikidataQueryServiceR`](https://cran.r-project.org/web/packages/WikidataQueryServiceR/index.html) qui est un package ayant des fonctionnalités plus développées, ainsi que la version en développement de `glitter`.
+Le [service de collecte des données de Wikidata en langage SPARQL](https://query.wikidata.org/){target="_blank"} offre une solution très complète en première approche (exemples, assistant de requêtes, diversité des représentations etc.). Toutefois, dans une dynamique d'exploration du graphe Wikidata, l'utilisation de R facilite la compréhension, l'archivage et la reproductibilité des différentes requêtes spécifiques réalisées. Pour cette raison, nous utilisons le package [`WikidataR`](https://www.rdocumentation.org/packages/WikidataR/versions/2.3.3){target="_blank"} ou alternativement [`WikidataQueryServiceR`](https://cran.r-project.org/web/packages/WikidataQueryServiceR/index.html){target="_blank"} qui est un package ayant des fonctionnalités plus développées, ainsi que la version en développement de `glitter`.
 
-[`WikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html) est développé par Thomas Shafee, Os Keyes, Serena Signorelli, Alex Lum, Christian Graul et Mikhail Popov (développeur de `WikidataQueryServiceR`), membre de la Fondation Wikimédia. Il est maintenu par Thomas Shafee de l'université australienne La Trobe de l'état Victoria. `glitter`est développé notamment par Lise Vaudor, ingénieure de recherche à l'ENS Lyon.
+[`WikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html){target="_blank"} est développé par Thomas Shafee, Os Keyes, Serena Signorelli, Alex Lum, Christian Graul et Mikhail Popov (développeur de `WikidataQueryServiceR`), membre de la Fondation Wikimédia. Il est maintenu par Thomas Shafee de l'université australienne La Trobe de l'état Victoria. `glitter`est développé notamment par Lise Vaudor, ingénieure de recherche à l'ENS Lyon.
 <br />
 
 ## Modèle des données : artistes-peintres et trajectoires de leurs œuvres
@@ -262,7 +262,7 @@ Ces premières investigations du graphe permettent de comprendre que pour collec
 
 ## Trouver l'identifiant Wikidata d'un peintre (1ère requête SPARQL)
 
-Nous interrogeons le graphe Wikidata concernant le peintre Johannes Vermeer, instance de Wikidata (classe d'objet [P31](https://www.wikidata.org/wiki/Property:P31)), qui est un humain ([Q5]((https://www.wikidata.org/wiki/Q5){target="_blank"})) répondant à la catégorie commune ([P373](https://www.wikidata.org/wiki/Property:P373){target="_blank"}) "Johannes Vermeer" selon le schéma simplifié proposé dans la figure 4.
+Nous interrogeons le graphe Wikidata concernant le peintre Johannes Vermeer, instance de Wikidata (classe d'objet [P31](https://www.wikidata.org/wiki/Property:P31){target="_blank"}), qui est un humain ([Q5]((https://www.wikidata.org/wiki/Q5){target="_blank"})) répondant à la catégorie commune ([P373](https://www.wikidata.org/wiki/Property:P373){target="_blank"}) "Johannes Vermeer" selon le schéma simplifié proposé dans la figure 4.
 
 ```{r figure4, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/modele_interroge.png')
@@ -899,7 +899,7 @@ chemins_du_graphe <- paste(chemin_primaire,".",chemin_type)
 ## Afficher le résultat
  datatable(metadonnees_collections_comme_objet)
 ```
-Les modalités d'instanciation de ces assertions semblent hétérogènes au sein de Wikidata : en effet, on compte 15 types différents dont seulement 2 se réfèrent au terme collection, la majorité étant de type la valeur [`musée d'art`](https://www.wikidata.org/wiki/Q207694). Afin de cerner à quel type d'instance la propriété associant les œuvres à des collections fait référence, il est possible d'ajouter la description de ces types en utilisant le vocabulaire [schema.org](https://schema.org/) et en concatenant les résultats par type, par exemple :
+Les modalités d'instanciation de ces assertions semblent hétérogènes au sein de Wikidata : en effet, on compte 15 types différents dont seulement 2 se réfèrent au terme collection, la majorité étant de type la valeur [`musée d'art`](https://www.wikidata.org/wiki/Q207694){target="_blank"}. Afin de cerner à quel type d'instance la propriété associant les œuvres à des collections fait référence, il est possible d'ajouter la description de ces types en utilisant le vocabulaire [schema.org](https://schema.org/){target="_blank"} et en concatenant les résultats par type, par exemple :
 ```{r requetesparql9, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 
 library(WikidataQueryServiceR)
@@ -983,22 +983,22 @@ chemins_du_graphe <- paste(chemin_principal,".",chemin_lieu,".",chemin_coord)
  datatable(metadonnees_localisation_oeuvres)
 ```
 
-L’œuvre intitulée "Dame assise au virginal" (entité [Q4660880](http://www.wikidata.org/entity/Q4660880)) est, selon Wikidata, l'œuvre de Johannes Vermeer qui a le plus voyagé pour être exposée. Cela signifie que cette instance de la classe œuvres possède le plus grand nombre de valeurs associées au prédicat direct de "lieu" [P276](https://www.wikidata.org/wiki/Property:P276){target="_blank"} dans les déclarations exhaustives de localisation désignant des lieux, dont les coordonnées sont données par le prédicat simple [P625](https://www.wikidata.org/wiki/Property:P625){target="_blank"}.
+L’œuvre intitulée "Dame assise au virginal" (entité [Q4660880](http://www.wikidata.org/entity/Q4660880){target="_blank"}) est, selon Wikidata, l'œuvre de Johannes Vermeer qui a le plus voyagé pour être exposée. Cela signifie que cette instance de la classe œuvres possède le plus grand nombre de valeurs associées au prédicat direct de "lieu" [P276](https://www.wikidata.org/wiki/Property:P276){target="_blank"} dans les déclarations exhaustives de localisation désignant des lieux, dont les coordonnées sont données par le prédicat simple [P625](https://www.wikidata.org/wiki/Property:P625){target="_blank"}.
 
 Ce constat ouvre une nouvelle perspective en matière d'analyse exploratoire. Nous allons donc nous intéresser à la trajectoire spatio-temporelle de cette œuvre.
 <br/>
 
 ## Troisième requête SPARQL : déclaration spatiale et temporelle
 
-Comme illustré dans les figures 6b et 6e, la localisation spatio-temporelle d'une entité est déclarée au moyen d'un prédicat direct ([p:P276](https://www.wikidata.org/wiki/Property:P276)), qui permet l'accès à une localisation de l'œuvre :
+Comme illustré dans les figures 6b et 6e, la localisation spatio-temporelle d'une entité est déclarée au moyen d'un prédicat direct ([p:P276](https://www.wikidata.org/wiki/Property:P276){target="_blank"}), qui permet l'accès à une localisation de l'œuvre :
 - dans un lieu (géographique et institutionnel) avec la prédicat `ps:P276`, associé à l'ensemble des déclarations de localisations spatiales au moyen du prédicat `wdt:P625`,
-- liée dans le temps aux prédicats de type [*qualifiers*](https://www.wikidata.org/wiki/Help:Qualifiers) de la déclaration `?lieu` donnant une période temporelle (date de début : [`pq:P580`](https://www.wikidata.org/wiki/Property:P580), date de fin: [`pq:P582`](https://www.wikidata.org/wiki/Property:P582)) ou date/point dans le temps d'un événement [`pq:P585`](https://www.wikidata.org/wiki/Property:P585).
+- liée dans le temps aux prédicats de type [*qualifiers*](https://www.wikidata.org/wiki/Help:Qualifiers){target="_blank"} de la déclaration `?lieu` donnant une période temporelle (date de début : [`pq:P580`](https://www.wikidata.org/wiki/Property:P580){target="_blank"}, date de fin: [`pq:P582`](https://www.wikidata.org/wiki/Property:P582){target="_blank"}) ou date/point dans le temps d'un événement [`pq:P585`](https://www.wikidata.org/wiki/Property:P585){target="_blank"}.
 
 ```{r figure 6e, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/modele_interroge_qualifier_b.png')
 ```
 <center>
-Figure 6e : *Classes et propriétés spécifiques de Wikidata mobilisées pour la localisation spatio-temporelle dans le cas d'une déclaration (*statement*). Pour connaître les modalités de circulation de l'œuvre dans divers musées et institutions, la requête SPARQL ci-dessous collecte les noms des différents lieux d'exposition ([P276](https://www.wikidata.org/wiki/Property:P276){target="_blank"}), ainsi qu'une dimension spatio-temporelle associée, qui est composée de coordonnées géographiques ([P625](https://www.wikidata.org/wiki/Property:P625){target="_blank"}) et des dates de début et de fin ([P580](https://www.wikidata.org/wiki/Property:P580){target="_blank"} & [P582](https://www.wikidata.org/wiki/Property:P582){target="_blank"}) de la période pendant laquelle l'œuvre ([Q4660880](http://www.wikidata.org/entity/Q4660880)) semble avoir été présente dans les différents lieux. La requête permet également d'obtenir l'image (figure 7) de l'œuvre ciblée ([P18](https://www.wikidata.org/wiki/Property:P18)).*
+Figure 6e : *Classes et propriétés spécifiques de Wikidata mobilisées pour la localisation spatio-temporelle dans le cas d'une déclaration (*statement*). Pour connaître les modalités de circulation de l'œuvre dans divers musées et institutions, la requête SPARQL ci-dessous collecte les noms des différents lieux d'exposition ([P276](https://www.wikidata.org/wiki/Property:P276){target="_blank"}), ainsi qu'une dimension spatio-temporelle associée, qui est composée de coordonnées géographiques ([P625](https://www.wikidata.org/wiki/Property:P625){target="_blank"}) et des dates de début et de fin ([P580](https://www.wikidata.org/wiki/Property:P580){target="_blank"} & [P582](https://www.wikidata.org/wiki/Property:P582){target="_blank"}) de la période pendant laquelle l'œuvre ([Q4660880](http://www.wikidata.org/entity/Q4660880){target="_blank"}) semble avoir été présente dans les différents lieux. La requête permet également d'obtenir l'image (figure 7) de l'œuvre ciblée ([P18](https://www.wikidata.org/wiki/Property:P18){target="_blank"}).*
 </center>
 </br>    
 
@@ -1132,7 +1132,7 @@ Les données issues de la seconde requête SPARQL (*data2*) listent l'ensemble d
 
 ### Nettoyage des données
 
-Dans cette partie, nous allons uniquement nous intéresser à la dimension spatiale des données collectées, sans prendre en compte la dimension temporelle. Si aucune coordonnée géographique n'est renseignée (cf. [partie 3.3](#seconde-requête-sparql)), nous ne prendrons pas en compte le musée recensé. En revanche, nous considérons l'ensemble des localisations comportant des coordonnées géographiques, peu importe la temporalité qui leur est associée.
+Dans cette partie, nous allons uniquement nous intéresser à la dimension spatiale des données collectées, sans prendre en compte la dimension temporelle. Si aucune coordonnée géographique n'est renseignée (cf. [partie 3.3](#lister-les-œuvres-du-peintre-et-trouver-leurs-localisations-géographiques-2nde-requête-sparql)), nous ne prendrons pas en compte le musée recensé. En revanche, nous considérons l'ensemble des localisations comportant des coordonnées géographiques, peu importe la temporalité qui leur est associée.
 
 
 **Commençons par supprimer les localisations (musée ou institution) qui ne sont pas associées à des coordonnées géographiques dans Wikidata ** :
@@ -1156,7 +1156,7 @@ data2 <- data2[!duplicated(data2[, c("oeuvreLabel", "museeLabel")]), ]
 
 <div class="alert alert-danger" role="alert">
 
-En cas de doublons, seul un couple de coordonnées géographiques est retenu. Ce choix est justifié car, après vérification manuelle, **il s'agit en fait de coordonnées géographiques semblables (quelques mètres de différences), différenciées par un niveau de précision (nombre de chiffres après la virgule...)**. Exemple : voir les deux couples de coordonnées géographiques renseignées pour le [***Städel Museum***](https://www.wikidata.org/wiki/Q163804) dans Wikidata.</div>
+En cas de doublons, seul un couple de coordonnées géographiques est retenu. Ce choix est justifié car, après vérification manuelle, **il s'agit en fait de coordonnées géographiques semblables (quelques mètres de différences), différenciées par un niveau de précision (nombre de chiffres après la virgule...)**. Exemple : voir les deux couples de coordonnées géographiques renseignées pour le [***Städel Museum***](https://www.wikidata.org/wiki/Q163804){target="_blank"} dans Wikidata.</div>
 
 **Affichage des données filtrées : **
 
@@ -1213,7 +1213,7 @@ musee_geo  <- st_as_sf(nb_oeuvres_musee, geometry)
 
 ```
 
-La table de données a été transformée en couche géographique manipulable avec R ([objet `sf`](https://r-spatial.github.io/sf/articles/sf1.html){target="_blank"}), où chaque musée comporte une géométrie (point localisé dans l'espace, dans le [système géographique de référence WGS84](https://fr.wikipedia.org/wiki/WGS_84)).
+La table de données a été transformée en couche géographique manipulable avec R ([objet `sf`](https://r-spatial.github.io/sf/articles/sf1.html){target="_blank"}), où chaque musée comporte une géométrie (point localisé dans l'espace, dans le [système géographique de référence WGS84](https://fr.wikipedia.org/wiki/WGS_84){target="_blank"}).
 
 ```{r,  eval=TRUE, echo=FALSE, include=TRUE}
 datatable(musee_geo)
@@ -1275,7 +1275,7 @@ Carte 2 : **Nombre d'œuvres de Johannes Vermeer exposées au cours du temps, pa
 
 Au vue de la carte précédente, il semble intéressant d'explorer la répartition des œuvres de Johannes Vermeer à l'échelle des pays. Pour cela, il est nécessaire d'enrichir les données. Plusieurs étapes sont nécessaires :
 
-**Téléchargement d'un fond de carte pays mis à disposition par le package [`rnaturalearth`](https://cran.r-project.org/web/packages/rnaturalearth/):**
+**Téléchargement d'un fond de carte pays mis à disposition par le package [`rnaturalearth`](https://cran.r-project.org/web/packages/rnaturalearth/){target="_blank"}:**
 ```{r,  eval=FALSE, echo=TRUE, warning=FALSE, message=FALSE}
 # Package permettant d'utiliser l'API de Natural Earth
 library(rnaturalearth)
@@ -1318,7 +1318,7 @@ datatable(monde)
 
 ```
 
-La couche géographique des musées ('musee_geo') et le fond de carte du monde ('monde') sont géoréférencés dans le même système de coordonnées^[Un **système de coordonnées** est un référentiel dans lequel on peut représenter des éléments dans l'espace. Ce système permet de se situer sur l'ensemble du globe terrestre grâce à un couple de coordonnées géographiques.] (le [WGS84](https://fr.wikipedia.org/wiki/WGS_84)). Nous pouvons donc réaliser une [jointure spatiale](https://www.emse.fr/tice/uved/SIG/Glossaire/co/Jointure_spatiale.html){target="_blank"} qui permet de récupérer pour chaque musée, le [code ISO3](https://fr.wikipedia.org/wiki/ISO_3166-1) du pays dans lequel il se situe. Pour cela, nous utilisons la fonction `st_intersection` du package `sf`.
+La couche géographique des musées ('musee_geo') et le fond de carte du monde ('monde') sont géoréférencés dans le même système de coordonnées^[Un **système de coordonnées** est un référentiel dans lequel on peut représenter des éléments dans l'espace. Ce système permet de se situer sur l'ensemble du globe terrestre grâce à un couple de coordonnées géographiques.] (le [WGS84](https://fr.wikipedia.org/wiki/WGS_84){target="_blank"}). Nous pouvons donc réaliser une [jointure spatiale](https://www.emse.fr/tice/uved/SIG/Glossaire/co/Jointure_spatiale.html){target="_blank"} qui permet de récupérer pour chaque musée, le [code ISO3](https://fr.wikipedia.org/wiki/ISO_3166-1){target="_blank"} du pays dans lequel il se situe. Pour cela, nous utilisons la fonction `st_intersection` du package `sf`.
 
 **Jointure spatiale entre les musées (points) et les pays (polygones) :**
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning = FALSE}
@@ -1373,7 +1373,7 @@ Graphique 2 : **Représentation histographique du nombre de peintures de Johanne
 
 ## La 'Dame assise au virginal'
 
-Les données issues de la [troisième requête SPARQL](#troisième-requête-sparql) ('data') contiennent l'ensemble des localisations renseignées pour l'œuvre de Johannes Vermeer *A Young Woman Seated at the Virginals* (ou Dame assise au virginal en français). Nous allons donc réaliser un processus de nettoyage et de géoréférencement très semblable à celui de la [partie précédente](#les-œuvres-de-j--vermeer).
+Les données issues de la [troisième requête SPARQL](#troisième-requête-sparql-déclaration-spatiale-et-temporelle) ('data') contiennent l'ensemble des localisations renseignées pour l'œuvre de Johannes Vermeer *A Young Woman Seated at the Virginals* (ou Dame assise au virginal en français). Nous allons donc réaliser un processus de nettoyage et de géoréférencement très semblable à celui de la [partie précédente](#les-œuvres-de-johannes-vermeer).
 
 ### Nettoyage des données
 
@@ -1445,7 +1445,7 @@ Carte 3 : **Lieux d'exposition de l'œuvre** ***A Young Woman Seated at the Virg
 
 ### Enrichissement des données
 
-De la même manière que dans la [partie 4.1.5](#enrichissement_des_données), nous enrichissons ces données en obtenant le pays de localisation de chaque musée. Pour cela, nous réalisons une jointure spatiale en utilisant la fonction `st_intersection` du package `sf`.
+De la même manière que dans la [partie 4.1.5](#enrichissement-des-données), nous enrichissons ces données en obtenant le pays de localisation de chaque musée. Pour cela, nous réalisons une jointure spatiale en utilisant la fonction `st_intersection` du package `sf`.
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning = FALSE}
 # Jointure spatiale points/pays
@@ -1868,7 +1868,7 @@ Graphique 4 : **Trajectoire spatio-temporelle du tableau** ***A Young Woman Seat
 
 Nous vous proposons d'explorer vous-mêmes le contenu des données Wikidata. Le bout de code ci-dessous peut être adapté à n'importe quel·le artiste peintre renseigné·e dans Wikidata. Il suffit de **modifier l'identiant de l'artiste assigné·e dans l'objet `ID` et son nom dans l'objet `NOM`**.
 
-Vous pouvez retrouver l'identifiant Wikidata d'un·e artiste peintre sur la page [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page). Indiquez le nom de l'artiste peintre dont vous souhaitez localiser les œuvres dans le champ de recherche. Veillez à bien récupérer l'identifiant correspondant à l'entité 'artiste'.
+Vous pouvez retrouver l'identifiant Wikidata d'un·e artiste peintre sur la page [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page){target="_blank"}. Indiquez le nom de l'artiste peintre dont vous souhaitez localiser les œuvres dans le champ de recherche. Veillez à bien récupérer l'identifiant correspondant à l'entité 'artiste'.
 
 
 ## Code reproductible
@@ -1880,12 +1880,12 @@ Copiez-collez les lignes de code suivantes dans une session Rstudio. Indiquez l'
 
 Voici quelques exmples d'artistes peintres que vous pouvez requêter :    
 
-- Salvador Dalí [Q5577](https://www.wikidata.org/wiki/Q5577) ;    
-- Nandalal Bose [Q3348980](https://www.wikidata.org/wiki/Q3348980) ;       
-- Kalervo Palsa [Q320590](https://www.wikidata.org/wiki/Q320590) ;      
-- Katsushika Hokusai [Q5586](https://www.wikidata.org/wiki/Q5586) ;      
-- Edvard Munch [Q41406](https://www.wikidata.org/wiki/Q41406) ;        
-- Pablo Picasso [Q5593](https://www.wikidata.org/wiki/Q5593).  
+- Salvador Dalí [Q5577](https://www.wikidata.org/wiki/Q5577){target="_blank"} ;    
+- Nandalal Bose [Q3348980](https://www.wikidata.org/wiki/Q3348980){target="_blank"} ;       
+- Kalervo Palsa [Q320590](https://www.wikidata.org/wiki/Q320590){target="_blank"} ;      
+- Katsushika Hokusai [Q5586](https://www.wikidata.org/wiki/Q5586){target="_blank"} ;      
+- Edvard Munch [Q41406](https://www.wikidata.org/wiki/Q41406){target="_blank"} ;        
+- Pablo Picasso [Q5593](https://www.wikidata.org/wiki/Q5593){target="_blank"}.  
 
 ```{r exo1,  eval=FALSE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 
@@ -2016,7 +2016,7 @@ tm_symbols(size="nb_oeuvre",
 
 ## Données et graphiques produits
 
-Voici un exemple des données et graphiques produits avec l'artiste peintre et graveur norvégien [Edvard Munch](https://fr.wikipedia.org/wiki/Edvard_Munch), ayant pour identifiant Wikidata : [Q41406](https://www.wikidata.org/wiki/Q41406).
+Voici un exemple des données et graphiques produits avec l'artiste peintre et graveur norvégien [Edvard Munch](https://fr.wikipedia.org/wiki/Edvard_Munch){target="_blank"}, ayant pour identifiant Wikidata : [Q41406](https://www.wikidata.org/wiki/Q41406){target="_blank"}.
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 
@@ -2043,6 +2043,7 @@ datatable(my_data)
 
 
 **Les données sont ensuite nettoyées des doublons et des œuvres qui ne sont jamais associées à des coordonnées géographiques précises, puis regroupées par musée :**
+
 ```{r,  eval=TRUE, echo=FALSE, include=TRUE, warning=FALSE, message=FALSE}
 
 my_data <- my_data[!duplicated(my_data$oeuvreLabel), ]
@@ -2110,7 +2111,7 @@ Carte 6 : **Nombre d'œuvres d'Edvard Munch exposées par musée au cours du tem
 
 L'exemple de visualisations (*distant reading*) d'une trajectoire spatio-temporelle en histoire à partir de données collectées sur Wikidata propose ainsi de questionner les données utilisées (non supervisées).
 
-Notamment la circulation de l'œuvre fait apparaître des espaces spatio-temporels où celle-ci est absente des lieux d'exposition. Ce constat engage à ré-interroger les données et le modèle associé. Par exemple, sur la période antérieur à 2004, l'étude de la donnée permet d'identifier la propriété [P195](https://www.wikidata.org/wiki/Property:P195) collection qui identifie la collection à laquelle appartient l'œuvre. Le [lien hypertexte](https://rkd.nl/nl/explore/images/62857) servant de référence à cette donnée (à savoir la propriété P195 collection appliquée à Q4660880 instanciée par *Leiden Collection*) donne alors accès aux informations de transfert de propriété en 2004 des héritiers du Baron Frédéric Rolin (Bruxelles) à un américain Steve Wynn qui lui-même la cède la même année à la société Otto Naumann Ltd. (New York), qui fait entrer l'œuvre dans son catalogue au sein de la *Leiden Collection*.
+Notamment la circulation de l'œuvre fait apparaître des espaces spatio-temporels où celle-ci est absente des lieux d'exposition. Ce constat engage à ré-interroger les données et le modèle associé. Par exemple, sur la période antérieur à 2004, l'étude de la donnée permet d'identifier la propriété [P195](https://www.wikidata.org/wiki/Property:P195){target="_blank"} collection qui identifie la collection à laquelle appartient l'œuvre. Le [lien hypertexte](https://rkd.nl/nl/explore/images/62857){target="_blank"} servant de référence à cette donnée (à savoir la propriété P195 collection appliquée à Q4660880 instanciée par *Leiden Collection*) donne alors accès aux informations de transfert de propriété en 2004 des héritiers du Baron Frédéric Rolin (Bruxelles) à un américain Steve Wynn qui lui-même la cède la même année à la société Otto Naumann Ltd. (New York), qui fait entrer l'œuvre dans son catalogue au sein de la *Leiden Collection*.
 
 Le notebook sert de support du dialogue entre plusieurs disciplines, ici, l'histoire, la géographie et l'ingénierie des connaissances. 
 Le notebook est aussi le lieu d'un processus collaboratif productif de connaissances (synchrone ou asynchrone), devient un outil pédagogique - par la formation par la recherche grâce à sa transformation en fiche `rzine` et est susceptible de servir de méthodologie (ou "fil directeur") reproductible d'un processus similaire pour d'autres problématiques.
