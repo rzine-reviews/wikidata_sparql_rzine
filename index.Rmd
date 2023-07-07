@@ -105,7 +105,7 @@ knitr::include_graphics('figures/triplet_mona_lisa.png')
 *Figure 3 : Exemple de graphe formé par plusieurs triplets RDF. </br> Source : [W3C](https://www.w3.org/TR/rdf11-primer/){target="_blank"}*
 </center>
 </br>
-Plusieurs méthodes permettent d'accéder à ces données. Dans ce *notebook*, nous utilisons un accès au graphe de Wikidata mobilisant quelques éléments du langage de requête [SPARQL](https://www.w3.org/TR/sparql11-query/){target="_blank"}. Deux packages permettent l'usage de ce langage de requête spécifique : 
+Plusieurs méthodes permettent d'accéder à ces données. Dans ce *notebook*, nous utilisons un accès au graphe de Wikidata mobilisant quelques éléments du langage de requête [SPARQL](https://www.w3.org/TR/sparql11-query/){target="_blank"}. Nous présentons l'utilisation de deux différents packages qui permettent l'usage de ce langage de requête avec R : 
 
 - `wikidataR` (et son extension `WikidataQueryServiceR`) permet d'écrire une requête en langage SPARQL pour interroger le graphe de données Wikidata, 
 - `glitter` permet l'écriture de requêtes SPARQL sans maîtriser la syntaxe de ce langage, pour sonder divers graphes (dont Wikidata).
@@ -125,7 +125,7 @@ Voici quelques éléments basiques du langage SPARQL permettant d'[interroger la
 
 
 
-Afin de permettre une bonne compréhension des requêtes réalisées pour la collecte de données sans entrer dans le détail de la syntaxe propre à SPARQL, celles-ci soont formulées de la manière suivante (les éléments en italique ne sont pas nécessaires) : 
+Afin de permettre une bonne compréhension des requêtes réalisées pour la collecte de données sans entrer dans le détail de la syntaxe propre à SPARQL, celles-ci sont formulées de la manière suivante (les éléments en italique ne sont pas nécessaires) : 
 
 ---
 
@@ -145,21 +145,23 @@ A cette forme, s'ajoute une forme spécifique permettant d'interroger le graphe 
 
 ## *Packages* utilisés
 
-Les *packages* utilisés pour réaliser l'ensemble de la chaîne de traitement présenté dans ce document sont les suivants :</br>
-- `WikidataR` et `WikidataQueryServiceR`: fournissent une Interface de Programmation d’Application (API) pour le [service de requêtes Wikidata ]((https://query.wikidata.org/){target="_blank"});  
-- `glitter` : écrit et envoie des requêtes SPARQL sans en connaître la syntaxe;    
+Les *packages* utilisés pour réaliser l'ensemble de la chaîne de traitement présenté dans ce document sont les suivants :
+</br>
+
+- `WikidataR` et `WikidataQueryServiceR`: fournissent une Interface de Programmation d’Application (API) pour le [service de requêtes Wikidata ](https://query.wikidata.org/){target="_blank"};  
+- `glitter` : permet d'écrire et d'envoyer des requêtes SPARQL, sans en maitriser la syntaxe;    
 - `rnaturalearth` : met à disposition les données géographiques de [Natural Earth](https://www.naturalearthdata.com/){target="_blank"};  
-- `sf` : permet la gestion et la manipulation de données géographiques;  
-- `dplyr` : facilite la manipulation de données;     
-- `mapview` : produit des cartes interactives en utilisant la librairie [JavaScript Leaflet](https://leafletjs.com/){target="_blank"};  
-- `tmap` : produit de cartes thématiques;  
+- `sf` : permet la gestion et la manipulation de données géographiques vectorielles;  
+- `dplyr` : pour la manipulation des données;     
+- `mapview` : pour l'affichage interactif de données géographiques (repose sur la librairie [JavaScript Leaflet](https://leafletjs.com/){target="_blank"});  
+- `tmap` : pour la création de cartes thématiques;  
 - `ggplot2` : permet la production de graphiques basés sur la [grammaire graphique](https://link.springer.com/book/10.1007/0-387-28695-0){target="_blank"};  
 - `av` : génère des vidéos à partir d'images ou de graphiques R;  
-- `patchwork` : combine facilement plusieurs graphiques `ggplot2`;  
-- `jpeg` : importe, enregistre et affiche des images matricielles (format bitmap);  
-- `DT` : met en forme dynamique (HTML) des tableaux de données (bibliothèque javascript [DataTables](https://datatables.net/){target="_blank"}).  
+- `patchwork` : permet de combiner plusieurs graphiques `ggplot2` dans la fenêtre graphique;  
+- `jpeg` : permet l'import, l'enregistrement et l'affichage des images matricielles (format bitmap);  
+- `DT` : pour la mise en forme dynamique (HTML) de tableau de données (bibliothèque javascript [DataTables](https://datatables.net/){target="_blank"}).  
 
-Vous pouvez utiliser les lignes de code suivantes pour installer ces *packages* : elles permettent de n'installer que les *packages* nécéssaires qui ne sont pas déjà installés sur votre machine :
+Vous pouvez utiliser les lignes de code suivantes pour installer ces *packages* :
 
 ```{r installationdespackages1, eval=TRUE, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
 
@@ -185,16 +187,18 @@ liste_packages_a_installer <- liste_packages[!(liste_packages %in% installed.pac
 install.packages(liste_packages_a_installer)
 ```
 
-```{r installationdespackages2, eval=FALSE, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
-# Pour installer le *package* `glitter` sur GitHub (https://github.com/lvaudor/glitter/), mettre l'option eval = TRUE :
+L'installation du package `glitter`, qui n'est pas encore disponible sur le CRAN, se fait de la manière suivante :
 
+```{r installationdespackages2, eval=FALSE, echo=TRUE, include=TRUE, message=FALSE, warning=FALSE}
+
+# Dépôt GitHub : https://github.com/lvaudor/glitter/
 install.packages("remotes")
 remotes::install_github("lvaudor/glitter")
 
 ```
 
-<div class="alert alert-success" role="alert">
-<b>L'ensemble des informations du système et des versions de *packages* utilisés pour générer ce *notebook* est fourni en</b> <a href="#info-session"><b>fin de document</b></a>.</div>    
+
+L'ensemble des informations du système d"exploitation et des versions de *packages* utilisés pour générer ce *notebook* est disponible en <a href="#info-session">fin de document</a>.   
 <br />
 
 ## Données collectées 
@@ -203,18 +207,16 @@ Plusieurs sources de données sont utilisées pour ce travail exploratoire :
 
 1) des données issues du graphe Wikidata,    
 2) une couche géographique [Natural Earth](https://www.naturalearthdata.com/){target="_blank"},      
-3) et un fonds de carte mis à disposition par [Leaflet](https://rstudio.github.io/leaflet/basemaps.html){target="_blank"}.         
+3) et des fonds de carte accessibles via [Leaflet](https://rstudio.github.io/leaflet/basemaps.html){target="_blank"}.         
 
 **Afin de maximiser la reproductibilité du code présenté, les jeux de données 1 et 2 ont été archivés et sont disponibles au téléchargement :**
 <br/>
 <p class="center">[<span style="font-size: 230%;" class="glyphicon glyphicon-download-alt"></span> <br/> Télécharger les données](https://github.com/rzine-reviews/wikidata_sparql_rzine/raw/main/data.zip)</p>
 <br/>
 
----
+<div class="alert alert-success" role="alert"><b>Wikidata est un graphe de données ouvertes et liées, régulièrement mis à jour. Une requête réalisée à deux dates différentes est susceptible de renvoyer un résultat différent.</b></div> 
 
-<emph>Wikidata est un graphe de données ouvertes et liées, régulièrement mis à jour. Une requête réalisée à deux dates différentes est susceptible de renvoyer un résultat différent.</emph>
 
----
 
 <br/>
 
@@ -227,7 +229,7 @@ Le [service de collecte des données de Wikidata en langage SPARQL](https://quer
 
 ## Modèle des données : artistes-peintres et trajectoires de leurs œuvres
 
-Dans Wikidata, les peintres, peintures, collections et lieux d'exposition, et leurs coordonnées spatiales et temporelles sont modélisés selon les fragments de graphes (XML, json, turtle etc.) représentés ci-dessous (Figures 4 et 6). Ceux-ci comprennent des classes instanciées (domaine et co-domaine) liées entre elles par des prédicats, mobilisant une syntaxe spécifique associée à chaque [espace de nom]((https://www.w3.org/TR/REC-xml-names/#NT-Prefix){target="_blank"}), les [préfixes](https://www.wikidata.org/wiki/EntitySchema:E49){target="_blank"}^[Un **préfixe** est une modalité de simplification d'écriture faisant référence à un *espace de noms*, voir notamment, les préfixes Wikidata] : 
+Dans Wikidata, les peintres, peintures, collections et lieux d'exposition, et leurs coordonnées spatiales et temporelles sont modélisés selon les fragments de graphes (XML, json, turtle etc.) représentés ci-dessous (Figures 4 et 6). Ceux-ci comprennent des classes instanciées (domaine et co-domaine) liées entre elles par des prédicats, mobilisant une syntaxe spécifique associée à chaque [espace de nom](https://www.w3.org/TR/REC-xml-names/#NT-Prefix){target="_blank"}, les [préfixes](https://www.wikidata.org/wiki/EntitySchema:E49){target="_blank"}^[Un **préfixe** est une modalité de simplification d'écriture faisant référence à un *espace de noms*, voir notamment, les préfixes Wikidata] : 
 
 ---
 
@@ -239,31 +241,53 @@ domaine/co-domaine = préfixe:entité
 Le fragment de graphe de l'image Wikidata d'une peinture, objet du processus exploratoire, est illustré sous la forme d'un tableau en figure 6b. Pour plus d'informations, vous pouvez consulter l'[introduction à Wikidata](https://www.wikidata.org/wiki/Wikidata:Introduction/fr){target="_blank"} ou la [page Wikibase](https://www.mediawiki.org/wiki/Wikibase/Indexing/RDF_Dump_Format){target="_blank"} dédiée au formalisme du *Ressource Description Framework* (RDF) du dépôt de données Wikidata.
 
 
-Après plusieurs explorations, nous avons décidé de nous intéresser, dans une première étape, au peintre néerlandais du 17e siècle, **Johannes Vermeer**. Au sein du package `WikidataR`, une fonction simple permet d'interroger le graphe à partir d'une chaîne de caractère. Par exemple, il est possible de collecter les entités (*item*) correspondant à la chaîne de caractère "Johannes Vermeer" ou les propriétés (*properties*) associées à celle de "peintre" :
+Après plusieurs explorations, nous avons décidé de nous intéresser, dans une première étape, au peintre néerlandais du 17e siècle, **Johannes Vermeer**. Un fonction du package `WikidataR` permet d'interroger le graphe à partir d'une chaîne de caractère. Par exemple, il est possible de collecter les entités (*item*) correspondant à la chaîne de caractère "Johannes Vermeer" :
+
 ```{r requetesparql0,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
-# Package API du CRAN pour interroger le dépôt Wikidata : WikidataR
- library(WikidataR)
+
+# Package API pour interroger le dépôt Wikidata : WikidataR
+library(WikidataR)
+
 ## Chercher les entités du graphe Wikidata correspondant à "Johannes Vermeer"
 resultat_item <- find_item("Johannes Vermeer")
-## Chercher les propriétés du graphes correspondant à "peintre"
-resultat_property <- find_property("peintre")
-# Affiche le résultat
+
 resultat_item
-resultat_property
+
 ```
-Une seule entité de valeur `Q41264` parmi les dix collectées semble correspondre à l'image au sens de [@hui_induction_2015]) de l'objet Johannes Vermeer, le peintre recherché. Le résultat de la requête `find_item` est composé d'un ensemble d'informations (`$id`, `$repository` etc., voir ci-dessous). 
+
+Une seule entité de valeur `Q41264` parmi les dix collectées semble correspondre à l'image au sens de [@hui_induction_2015] de l'objet Johannes Vermeer, le peintre recherché. Le résultat de la requête `find_item` est composé d'un ensemble d'informations (`$id`, `$repository`, etc.). 
+
 ```{r affichage0entite,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 as(resultat_item[[1]],"list")
 ```
+
 Le champ `match` correspond à la chaîne de caractère recherchée : il est de `$type` label, en`$language` *en*, sous forme de `$text` *Johannes Vermeer*.  <br>
-La propriété associée au peintre (`P170`) semble être celle liant un créateur à son œuvre ou autre objet. Le champ `$match` est une forme textuelle, de type alias en langue française :
+
+Pour connaître les propriétés (*properties*) associées à celle de "peintre" :
+
+
+
 ```{r affichage0propriete,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
-resultat_property[[1]]$match
+
+## Chercher les propriétés du graphes correspondant à "peintre"
+resultat_property <- find_property("peintre")
+
+resultat_property
+
 ```
+
+La propriété associée au peintre (`P170`) semble être celle liant un créateur à son œuvre ou autre objet. Le champ `$match` est une forme textuelle, de type alias en langue française :
+
+```{r affichage0propriete2,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
+
+resultat_property[[1]]$match
+
+```
+
 
 Ces premières investigations du graphe permettent de comprendre que pour collecter de manière précise des données spatio-temporelles associées aux œuvres créées par Johannes Vermeer, les modalités d'interrogation du fragment de graphe se complexifient.
 
-## Trouver l'identifiant Wikidata d'un peintre (1ère requête SPARQL)
+## Trouver l'identifiant Wikidata d'un peintre {.tabset}
 
 Nous interrogeons le graphe Wikidata concernant le peintre Johannes Vermeer, instance de Wikidata (classe d'objet [P31](https://www.wikidata.org/wiki/Property:P31){target="_blank"}), qui est un humain ([Q5]((https://www.wikidata.org/wiki/Q5){target="_blank"})) répondant à la catégorie commune ([P373](https://www.wikidata.org/wiki/Property:P373){target="_blank"}) "Johannes Vermeer" selon le schéma simplifié proposé dans la figure 4.
 
@@ -275,10 +299,11 @@ knitr::include_graphics('figures/modele_interroge.png')
 </center>
 </br> 
 
-A l'aide de la fonction `query_wikidata` du package `WikidataR` ou alternativement des fonctions du package `glitter`, nous commençons dans un premier temps par obtenir l'illustration associée à Johannes Vermeer (renseignée par la propriété [P18]((https://www.wikidata.org/wiki/Property:P18){target="_blank"})), avec la requête SPARQL suivante :
+A l'aide de la fonction `query_wikidata` du package `WikidataR`, nous commençons dans un premier temps par obtenir l'illustration associée à Johannes Vermeer (renseignée par la propriété [P18]((https://www.wikidata.org/wiki/Property:P18){target="_blank"})). Il est possible de réaliser la requête équivalente de manière plus concise avec les fonctions du package `glitter`
 
 
 
+### **WikidataR** {-}
 
 ```{r requetesparql1,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 #---
@@ -327,7 +352,15 @@ query <- paste("SELECT",donnees_interrogees,"WHERE {",chemins_du_graphe,"}")
 ## Exécuter la requête
 data1w <- query_wikidata(query)
 
-#--- 
+## Affichage des données collectées 
+data1w 
+
+```
+
+### **glitter** {-}
+
+```{r requetesparql1b,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
+
 # Package API en développement pour interroger un dépôt RDF sans connaître la syntaxe SPARQL : glitter
 library(glitter)
   
@@ -339,6 +372,9 @@ library(glitter)
           spq_add(". wdt:P18 ?image") |>
 ## Executer la requête
           spq_perform()
+ 
+## Affichage des données collectées 
+data1 
 ```
 
 ```{r inscriptiondesdonnees1,  eval=TRUE, echo=FALSE, include=FALSE}
@@ -346,32 +382,21 @@ write.csv(x = data1, file = "data/data1.csv", row.names = FALSE)
 data1 <- read.csv("data/data1.csv", row.names = NULL)
 ```
 
-Les données collectées des deux manières distinctes sont affichées : 
-```{r affichagedesdonnees1,  eval=TRUE, echo=TRUE}
-# Affichage dynamique des tables issues des deux manières d'interroger le graphe
- library(DT)
-#--- avec WikidataR
- datatable(data1w)
-#--- avec glitteR
- datatable(data1)
-```
 
-et la valeur associée à l'image d'objet étudiée, Johannes Vermeer, est affectée à une variable `id_vermeer` :
-```{r affectationvariable1,  eval=TRUE, echo=TRUE}
-# Affectation à la variable 'id_vermeer' de la valeur de l'identifiant wikidata
- dataid <- strsplit(data1$identifiant,"/")
- id_vermeer <- dataid[[1]][5]
- id_vermeer
-```
-
-Le résultat renvoyé par cette requête nous permet de vérifier que l'**image de l'objet Johannes Vermeer est bien identifiée par une entité [**Q41264**]((https://www.wikidata.org/wiki/Q41264){target="_blank"}) dans Wikidata ** et/ou son URI. 
+Le résultat renvoyé par cette requête nous permet de vérifier que l'**image de l'objet Johannes Vermeer est bien identifiée par l'entité [**Q41264**]((https://www.wikidata.org/wiki/Q41264){target="_blank"}) dans Wikidata ** et/ou son URI. 
 </br>
-Le fichier associé à la peinture de son portrait est stocké en deux étapes (création de répertoire, téléchargement), à partir de son URI collectée avec le package `glitter` :
+
+A partir de l'URI récupérée, nous téléchargeons l'image associée au peintre en deux étapes.
+
+1. création d'un répertoire
+
 ```{r dossierimage, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE}
 # Création des sous-répertoires 'data' et 'data/image'
 dir.create("data")
 dir.create("data/images")
 ```
+
+2. Téléchargement et enregistrement
 
 ```{r telechargement,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 # Téléchargement et sauvegarde du fichier de l'image numérisée
@@ -385,12 +410,15 @@ download.file(url = data1$image,
  knitr::include_graphics('data/images/portrait_artiste.jpg')
 ```
 <center>
-*Figure 5 : Elément visuel (URI qui est une URL pointant vers un fichier .jpg) de Wikimédia permettant d'identifier le peintre Johannes Vermeer.*
+*Figure 5 : Elément visuel de Wikimédia permettant d'identifier le peintre Johannes Vermeer.*
 </center>
 </br>    
-Dans ce qui suit, l'identifiant trouvé permet de déterminer les images - au sens de [@hui_induction_2015], des œuvres de Johannes Vermeer par la propriété [`P170 a pour créateur`](https://www.wikidata.org/wiki/Property:P170){target="_blank"}.</br>
 
-## Lister les œuvres du peintre et trouver leurs localisations géographiques (2nde requête SPARQL)
+
+<!-- Dans ce qui suit, l'identifiant trouvé permet de déterminer les images - au sens de [@hui_induction_2015], des œuvres de Johannes Vermeer par la propriété [`P170 a pour créateur`](https://www.wikidata.org/wiki/Property:P170){target="_blank"}.</br> -->
+
+
+## Lister les œuvres du peintre et trouver leurs localisations géographiques  {.tabset}
 
 Dans cette seconde étape, on se propose de lister les œuvres de Johannes Vermeer avec leurs localisations. Au sein du graphe Wikidata, les coordonnées de la localisation (valeur `point(x,y)`) d'une œuvre sont celles du musée ou de l'institution au sein de laquelle l'œuvre est actuellement exposée ou située. Afin d'obtenir cette localisation à partir de l'identifiant du peintre, on trace un premier chemin du graphe tel qu'illustré dans la figure 6a. 
 
@@ -401,10 +429,13 @@ knitr::include_graphics('figures/modele_interroge_qualifier_a.png')
 *Figure 6a : Entités, valeurs et propriétés directes du graphe Wikidata mobilisées pour la localisation des œuvres de Johannes Vermeer : l'œuvre (`Q...`) a pour créateur ([`P170`]((https://www.wikidata.org/wiki/Property:P170){target="_blank"})) l'entité Johannes Vermeer (`id_vermeer`) et a pour lieu ([`P276`]((https://www.wikidata.org/wiki/Property:P276){target="_blank"})) l'entité musée (`Q...`) qui a pour coordonnées ([`P625`]((https://www.wikidata.org/wiki/Property:P625){target="_blank"})) la valeur `point(x,y)`, coordonnées géographiques du système de référence World Geodetic System ([WGS84](https://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf)). Le nom des œuvres et des musées (suffixe "Label") est obtenu par le service `wikibase:label` du package `WikidataQueryServiceR` dans la langue `wikibase:language` choisie.*
 </center>
 
+</br>
+
+### Avec **WikidataR** {-}
+
 ```{r requetesparql2, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 
-#--- avec WikidataR
- library(WikidataR)
+library(WikidataR)
 
 ## Chercher les entités du graphe Wikidata
  #- Définir les données recherchées
@@ -417,7 +448,7 @@ donnees_interrogees <- paste(id_oeuvre,id_lieu,val_pointxy)
 ## Construire les chemins du graphe pour les entités 
  
  #- Définir la classe wikidata utilisée
-  entite_vermeer <- paste0(prefixe_entite,id_vermeer)
+  entite_vermeer <- paste0(prefixe_entite, "Q41264")
 
  #- Définir les propriétés utilisées
   propriete_creepar <-  paste("P170")
@@ -441,10 +472,12 @@ chemins_du_graphe <- paste(chemin_principal,".","OPTIONAL {",chemin_lieu,".",che
 
 ## Exécuter la requête
  data2w <- query_wikidata(query)
- 
-#--- avec WikidataQueryService
- library(WikidataQueryServiceR)
- 
+```
+
+### Avec **WikidataQueryServiceR** {-}
+
+```{r requetesparql2b, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+
 ## Utiliser le service Wikidata de noms (`wikibase:label`) plurilingues des entités de Wikidata
  #- Définir la ou les langues choisies
   langue <-"fr,en"
@@ -467,13 +500,18 @@ chemins_du_graphe <- paste(chemin_principal,".","OPTIONAL {",chemin_lieu,".",che
 nom_donnees_interrogees <- paste(nom_id_oeuvre,nom_id_lieu,val_pointxy)
 
 ## Construire la requête avec le service de langue
- query_label <- paste("SELECT",nom_donnees_interrogees,"WHERE {",service,chemins_du_graphe,"}")
+query_label <- paste("SELECT",nom_donnees_interrogees,"WHERE {",service,chemins_du_graphe,"}")
 
 ## Exécuter la requête
- data2wl <- query_wikidata(query_label)
+data2wl <- query_wikidata(query_label)
  
-#---avec glitter
- library(glitter)
+```
+
+### Avec **glitter** {-}
+ 
+```{r requetesparql2t, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+
+library(glitter)
  
 ## Initier la requête et stocker le résultat dans data2
  data2 <- spq_init() |>
