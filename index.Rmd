@@ -44,13 +44,13 @@ knitr::opts_chunk$set(echo=TRUE,
 
 ```
 
-> Cette fiche est le fruit d'un dialogue interdisciplinaire entre membres du [GT Notebook](https://gitlab.huma-num.fr/gt-notebook){target="_blank"} initié dans le cadre d'un [atelier](https://gt-notebook.gitpages.huma-num.fr/workshop/workshop_3_decembre_2021/slide2html-3-dec/){target="_blank"} proposé à la [*Journée d’études normande sur les données de la recherche*](https://www.unicaen.fr/evenement/journee-detude-normande-sur-les-donnees-de-la-recherche/){target="_blank"} qui s'est déroulée en décembre 2021. L'association de plusieurs compétences et disciplines a abouti à ce notebook présentant une analyse exploratoire reproductible de données ouvertes et liées d'un fragment de graphe Wikidata, interrogeables sous la forme de triplets RDF. Les enjeux d'un tel processus inter-disciplinaire sont esquissés en conclusion. Une ébauche des requêtes SPARQL élaborées a fait l'objet d'une présentation et d'échanges au sein des [Ateliers du Web Sémantique](https://les-ateliers-du-web-semantique.gitpages.huma-num.fr/les-ateliers-du-web-semantique/){target="_blank"} au printemps 2021.
+> Cette fiche est le fruit d'un dialogue interdisciplinaire entre membres du [GT Notebook](https://gitlab.huma-num.fr/gt-notebook){target="_blank"} initié dans le cadre d'un [atelier](https://gt-notebook.gitpages.huma-num.fr/workshop/workshop_3_decembre_2021/slide2html-3-dec/){target="_blank"} proposé à la [*Journée d’études normande sur les données de la recherche*](https://www.unicaen.fr/evenement/journee-detude-normande-sur-les-donnees-de-la-recherche/){target="_blank"} qui s'est déroulée en décembre 2021. L'association de plusieurs compétences et disciplines a abouti à ce *notebook* présentant une analyse exploratoire reproductible de données ouvertes et liées d'un fragment de graphe Wikidata, interrogeables sous la forme de triplets RDF. Les enjeux d'un tel processus inter-disciplinaire sont esquissés en conclusion. Une ébauche des requêtes SPARQL élaborées a fait l'objet d'une présentation et d'échanges au sein des [Ateliers du Web Sémantique](https://les-ateliers-du-web-semantique.gitpages.huma-num.fr/les-ateliers-du-web-semantique/){target="_blank"} au printemps 2021.
 
 # Introduction {-}
 
 Cette fiche présente une exploration du graphe Wikidata (cf. [parties 1.2](#standard-rdf-du-w3c) et [3](#exploration-du-graphe-wikidata)) et le traitement des données extraites (cf. [parties 2](#packages-et-données) et [4](#exploration-spatiale)). 
 
-Du requêtage en langage SPARQL (cf. [partie 1.3](#le-langage-sparql)) au traitement et à la représentation des données issues du graphe Wikidata, ce document présente, étape par étape, l'ensemble de la chaîne de traitement réalisée. Le processus exploratoire, parfois itératif, a été conservé afin de mieux comprendre l'approche réflexive des auteurs et autrice. Le notebook retranscrit les démarches scientifique et méthodologique adoptées.
+Du requêtage en langage SPARQL (cf. [partie 1.3](#le-langage-sparql)) au traitement et à la représentation des données issues du graphe Wikidata, ce document présente, étape par étape, l'ensemble de la chaîne de traitement réalisée. Le processus exploratoire, parfois itératif, a été conservé afin de mieux comprendre l'approche réflexive des auteurs et autrice. Le *notebook* retranscrit les démarches scientifique et méthodologique adoptées.
 
 Le schéma organisant ces données est esquissé dans la [partie 1](#wikimédia-wikidata-w3c). Afin de permettre une reproduction des traitements et des résultats présentés, les données automatiquement collectées au `r format(Sys.time(), "%d %B %Y")` et utilisées dans ce document sont mises à disposition (cf. [partie 2.2](#données-collectées)). L'idée de départ conduit à la démarche suivante en 3 étapes : 
 
@@ -66,7 +66,7 @@ Compte-tenu du [formalisme](https://www.wikidata.org/wiki/Wikidata:WikiProject_O
 ## Données ouvertes et liées du graphe Wikidata
 Wikidata est une base de connaissances libre, éditée de manière collaborative et hébergée par la [fondation Wikimedia](https://wikimediafoundation.org/fr/){target="_blank"}. Son contenu étant placé sous [licence CC0](https://creativecommons.org/publicdomain/zero/1.0/deed.fr){target="_blank"} (« Transfert dans le Domaine Public »), elle permet de centraliser l'accès aux données utilisées par différents [projets Wikimedia](https://www.wikimedia.fr/les-projets-wikimedia/){target="_blank"} (@frwiki:186068284).
 
-Les informations saisies dans Wikidata sont des données ouvertes “brutes” multilingues non-supervisées qui sont liées, notamment aux articles de l'encyclopédie contributive Wikipedia. Wikidata est à différencier de l'ontologie DBpedia^[**DBpedia** est une ontologie permettant de traduire Wikipedia en dépôts de données définis dans le cadre de description des ressources du standard *Ressources Description Framework* (RDF) du *World Wide Web Consortium*^[Le **World Wide Web Consortium**, abrégé par le sigle **W3C**, est un organisme de standardisation à but non lucratif, fondé en octobre 1994 chargé de promouvoir la compatibilité des technologies du World Wide Web telles que HTML5, HTML, XHTML, XML, RDF, SPARQL, CSS, XSL, PNG, SVG, MathML et SOAP.] (W3C)] (voir figure 1).
+Les informations saisies dans Wikidata sont des données ouvertes “brutes” multilingues non-supervisées qui sont liées, notamment aux articles de l'encyclopédie contributive Wikipedia. Wikidata est à différencier de l'ontologie DBpedia^[**DBpedia** est une ontologie permettant de traduire Wikipedia en dépôts de données définis dans le cadre de description des ressources du standard *Ressources Description Framework* (RDF) du *World Wide Web Consortium*^[Le **World Wide Web Consortium**, abrégé par le sigle **W3C**, est un organisme de standardisation à but non lucratif, fondé en octobre 1994 chargé de promouvoir la compatibilité des technologies du World Wide Web telles que HTML5, HTML, XHTML, XML, RDF, SPARQL, CSS, XSL, PNG, SVG, MathML et SOAP.] (W3C)] (figure 1).
 ```{r figure1, out.width="80%",  fig.align = 'center',  echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/wikidata_vs_dbpedia.png')
 ```
@@ -74,17 +74,18 @@ knitr::include_graphics('figures/wikidata_vs_dbpedia.png')
 *Figure 1 : Principales différences entre des données Wikipedia (DBpedia) et des données Wikidata. Dbpedia est la façon dont Wikipedia est traduit en dépôts de triplets RDF statique. <br/>Source : [Wikidata-Basics | Wikidata Hackathon event for the Festival of Creative Learning, 2018](https://thinking.is.ed.ac.uk/wikidata-basics/faq-and-further-reading/){target="_blank"}*
 </center>
 <br/>
-La base Wikidata fournit un support à de nombreux autres sites et services au-delà des seuls projets de Wikimedia. Son contenu est exporté dans des formats standards et peut être lié ou aligné à d'autres ensembles de données ouvertes sur le Web des données^[Le Web de données (*linked data*, en anglais) est une initiative du World Wide Web Consortium^[Le **W3C** est un organisme de standardisation à but non lucratif, fondé en octobre 1994 chargé de promouvoir la compatibilité des technologies du World Wide Web telles que HTML5, HTML, XHTML, XML, RDF, SPARQL, CSS, XSL, PNG, SVG, MathML et SOAP.] visant à favoriser la publication de données structurées sur le Web, non pas sous la forme de silos de données isolés les uns des autres, mais en les reliant entre elles pour constituer un réseau global d'informations.]. Wikidata offre ainsi un large domaine d'informations générales sur notre univers ou ses représentations et des liens vers d'autres graphes ou bases de données. Il contient à ce jour plus de 100 millions d'items. 
+La base Wikidata fournit un support à de nombreux autres sites et services au-delà des seuls projets de Wikimedia. Son contenu est exporté dans des formats standards et peut être lié ou aligné à d'autres ensembles de données ouvertes sur le Web des données^[Le **Web de données** (*linked data*, en anglais) est une initiative du World Wide Web Consortium^[Le **W3C** est un organisme de standardisation à but non lucratif, fondé en octobre 1994 chargé de promouvoir la compatibilité des technologies du World Wide Web telles que HTML5, HTML, XHTML, XML, RDF, SPARQL, CSS, XSL, PNG, SVG, MathML et SOAP.] visant à favoriser la publication de données structurées sur le Web, non pas sous la forme de silos de données isolés les uns des autres, mais en les reliant entre elles pour constituer un réseau global d'informations.]. Wikidata offre ainsi un large domaine d'informations générales sur notre univers ou ses représentations et des liens vers d'autres graphes ou bases de données. Il contient à ce jour plus de 100 millions d'items. 
 <br/>
 
 ## Standard RDF du W3C 
 
-Le RDF est un cadre général de modélisation utilisé pour décrire formellement les ressources du Web via leurs métadonnées afin de permettre le traitement par inférence de telles descriptions. Développé par le W3C, le RDF est le formalisme de base du [Web sémantique]((https://fr.wikipedia.org/wiki/Web_s%C3%A9mantique){target="_blank"}). 
+Le RDF (Resource Data Framework) est un cadre général de modélisation utilisé pour décrire formellement les ressources du Web via leurs métadonnées afin de permettre le traitement par inférence de telles descriptions. Développé par le W3C^[Le **World Wide Web Consortium** (**W3C**) est un organisme de standardisation à but non lucratif fondé en 1994 et chargé de promouvoir la compatibilité des technologies du Web], le RDF est le formalisme de base du [Web sémantique]((https://fr.wikipedia.org/wiki/Web_s%C3%A9mantique){target="_blank"}). 
 
-Au sein de ce paradigme, un document ou une ressource consiste en un ensemble de triplets^[Un triplet est un groupe formé par trois éléments dont chacun appartient à un ensemble distinct.], chacun associant un sujet, un prédicat et un objet :  
+Au sein de ce paradigme, un document ou une ressource consiste en un ensemble de triplets^[Un **triplet** est un groupe formé par trois éléments dont chacun appartient à un ensemble distinct.], chacun associant un sujet, un prédicat et un objet :  
 - le «sujet» représente la ressource à décrire,  
 - le «prédicat» représente un type de propriété applicable à cette ressource,  
-- l'«objet» représente une donnée, une autre ressource ou une valeur associée à la propriété (ou prédicat).  
+- l'«objet» représente une donnée, une autre ressource ou une valeur associée à la propriété (ou prédicat). 
+
 Le sujet et l'objet, dans le cas où ce sont des ressources, peuvent être identifiés par un identifiant unique de la ressource (URI^[Un **URI** (*Uniform Resource Identifier*, en français *Identifiant unique de ressource*) est une chaîne qui fait référence à une ressource. Les plus courantes sont les URL, qui identifient une ressource en donnant son emplacement sur le Web. Au contraire, les URN font référence à une ressource grâce à son nom, dans un environnement donné, par exemple le code ISBN d'un livre.]), une valeur ou être des nœuds anonymes. Le prédicat est nécessairement identifié par un URI. 
 Par exemple, la déclaration "Bob s'intéresse à Mona Lisa" est formalisée de la manière suivante :
 ```{r figure2, out.width="70%", fig.align = 'center',  echo=FALSE, purl = FALSE }
@@ -94,7 +95,7 @@ knitr::include_graphics('figures/triplet.png')
 *Figure 2 :  Exemple de représentation des composantes génériques d'un triplet RDF. </br> Source : [W3C](https://www.w3.org/TR/rdf11-primer/){target="_blank"}*
 </center>
 </br>
-Un dépôt de triplets RDF ainsi formé correspond à un multigraphe orienté étiqueté : chaque triplet correspond alors à une arête orientée dont l'étiquette est le prédicat, le nœud source est le sujet et le nœud cible est l'objet (voir figure 3).
+Un dépôt de triplets RDF ainsi formé correspond à un multigraphe orienté étiqueté : chaque triplet correspond alors à une arête orientée dont l'étiquette est le prédicat, le sujet est le nœud source et l'objet est le nœud cible (figure 3).
 </br>
 ```{r figure3, out.width="70%", fig.align = 'center',  echo=FALSE, purl = FALSE }
 
@@ -104,16 +105,16 @@ knitr::include_graphics('figures/triplet_mona_lisa.png')
 *Figure 3 : Exemple de graphe formé par plusieurs triplets RDF. </br> Source : [W3C](https://www.w3.org/TR/rdf11-primer/){target="_blank"}*
 </center>
 </br>
-Plusieurs méthodes permettent d'accéder à ces données. Dans ce notebook, nous utilisons un accès au graphe de Wikidata mobilisant quelques éléments du langage de requête [SPARQL](https://www.w3.org/TR/sparql11-query/){target="_blank"}. L'usage de ce langage de requête spécifique est déployé à l'aide de deux packages : 
+Plusieurs méthodes permettent d'accéder à ces données. Dans ce *notebook*, nous utilisons un accès au graphe de Wikidata mobilisant quelques éléments du langage de requête [SPARQL](https://www.w3.org/TR/sparql11-query/){target="_blank"}. Deux packages permettent l'usage de ce langage de requête spécifique : 
 
-- le package `wikidataR` (et son extension `WikidataQueryServiceR`) permet d'écrire la requête dans le langage SPARQL pour le déployer au sein du graphe Wikidata selon ses spécificités, 
-- le package `glitter` permet d'écrire ces requêtes pour sonder divers graphes, dont Wikidata, sans utiliser les termes de la syntaxe SPARQL.
+- `wikidataR` (et son extension `WikidataQueryServiceR`) permet d'écrire une requête en langage SPARQL pour interroger le graphe de données Wikidata, 
+- `glitter` permet l'écriture de requêtes SPARQL sans maîtriser la syntaxe de ce langage, pour sonder divers graphes (dont Wikidata).
 
 ## Le langage SPARQL
 
-SPARQL^[acronyme récursif qui signifie **S**PARQL **P**rotocol **A**nd **R**DF **Q**uery **L**anguage (@frwiki:194953405). Plusieurs langages de requête destinés à interroger les graphes RDF ont été développés, mais le langage SPARQL est développé par le W3C de sorte à devenir un standard.] (prononcé *sparkle*, en anglais : « étincelle ») est à la fois un langage de requête et un protocole qui permettent de rechercher, d'ajouter, de modifier ou de supprimer des triplets RDF disponibles à travers le Web. Aujourd'hui, le Web de données (représenté par le [nuage du *Linked Open Data*]((http://cas.lod-cloud.net/){target="_blank"}) ou [ses domaines]((http://cas.lod-cloud.net/#subclouds){target="_blank"})) est interrogeable via des centaines de services SPARQL qui mettent à disposition de plus en plus de graphes de données ouvertes et liées comme c'est le cas du projet plurilingue Wikidata (@frwiki:194953405).
+SPARQL^[**SPARQL** est acronyme récursif qui signifie **S**PARQL **P**rotocol **A**nd **R**DF **Q**uery **L**anguage (@frwiki:194953405). Plusieurs langages de requête destinés à interroger les graphes RDF ont été développés, mais le langage SPARQL est développé par le W3C de sorte à devenir un standard.] (prononcé *sparkle*, en anglais : « étincelle ») est à la fois un langage de requête et un protocole qui permettent de rechercher, d'ajouter, de modifier ou de supprimer des triplets RDF disponibles à travers le Web. Aujourd'hui, le Web de données (représenté par le [nuage du *Linked Open Data*](http://cas.lod-cloud.net/){target="_blank"} ou [ses domaines](http://cas.lod-cloud.net/#subclouds){target="_blank"}) est interrogeable via des centaines de services SPARQL qui mettent à disposition de plus en plus de graphes de données ouvertes et liées comme c'est le cas du projet plurilingue Wikidata (@frwiki:194953405).
 
-Dans ce notebook, quelques requêtes de base permettant d'[interroger la base de données Wikidata](https://www.wikidata.org/wiki/Wikidata:Data_access#How_can_I_get_data_out_of_Wikidata?){target="_blank"} utilisent les éléments suivants :  
+Voici quelques éléments basiques du langage SPARQL permettant d'[interroger la base de données Wikidata](https://www.wikidata.org/wiki/Wikidata:Data_access#How_can_I_get_data_out_of_Wikidata?){target="_blank"} 
 
 - la clause [`SELECT `]((https://www.w3.org/TR/sparql11-query/#select){target="_blank"}) des données interrogées qui renvoit les variables spécifiques (ou avec `COUNT` qui renvoit le nombre des ces données ou `GROUP_CONCAT` qui les concatène au sein d'une collection, regroupées par `GROUP BY` et triées par `ORDER BY`),  
 - accompagnée de la clause [`WHERE { }`]((https://www.w3.org/TR/sparql11-query/#where){target="_blank"}) qui les lie à l'interrogation de propriétés et données associées, suivant les chemins du graphe,    
@@ -121,6 +122,8 @@ Dans ce notebook, quelques requêtes de base permettant d'[interroger la base de
 - la fonctionnalité `OPTIONAL` de la clause `WHERE` qui permet de renvoyer les variables même si les données liées aux propriétés ne sont pas instanciées (noeuds vides),    
 - et les différents préfixes associés aux spécificités des propriétés simples, directes et indirectes etc. des fragments de graphe de Wikidata ([+d'info](https://linkeddatafragments.org/){target="_blank"}). 
 <br/>
+
+
 
 Afin de permettre une bonne compréhension des requêtes réalisées pour la collecte de données sans entrer dans le détail de la syntaxe propre à SPARQL, celles-ci soont formulées de la manière suivante (les éléments en italique ne sont pas nécessaires) : 
 
@@ -164,16 +167,16 @@ Vous pouvez utiliser les lignes de code suivantes pour installer ces *packages* 
 liste_packages <- c("WikidataR",
                     "WikidataQueryServiceR",
                     "remotes",
-                  "rnaturalearth",
-                  "sf",
-                  "dplyr",
-                  "mapview",
-                  "tmap",
-                  "ggplot2",
-                  "av",
-                  "patchwork",
-                  "jpeg", 
-                  "DT")
+                    "rnaturalearth",
+                    "sf",
+                    "dplyr",
+                    "mapview",
+                    "tmap",
+                    "ggplot2",
+                    "av",
+                    "patchwork",
+                    "jpeg", 
+                    "DT")
 
 # Packages à installer
 liste_packages_a_installer <- liste_packages[!(liste_packages %in% installed.packages()[,"Package"])]
@@ -191,7 +194,7 @@ remotes::install_github("lvaudor/glitter")
 ```
 
 <div class="alert alert-success" role="alert">
-<b>L'ensemble des informations du système et des versions de *packages* utilisés pour générer ce notebook est fourni en</b> <a href="#info-session"><b>fin de document</b></a>.</div>    
+<b>L'ensemble des informations du système et des versions de *packages* utilisés pour générer ce *notebook* est fourni en</b> <a href="#info-session"><b>fin de document</b></a>.</div>    
 <br />
 
 ## Données collectées 
@@ -224,7 +227,7 @@ Le [service de collecte des données de Wikidata en langage SPARQL](https://quer
 
 ## Modèle des données : artistes-peintres et trajectoires de leurs œuvres
 
-Dans Wikidata, les peintres, peintures, collections et lieux d'exposition, et leurs coordonnées spatiales et temporelles sont modélisés selon les fragments de graphes (XML, json, turtle etc.) représentés ci-dessous (Figures 4 et 6). Ceux-ci comprennent des classes instanciées (domaine et co-domaine) liées entre elles par des prédicats, mobilisant une syntaxe spécifique associée à chaque [espace de nom]((https://www.w3.org/TR/REC-xml-names/#NT-Prefix){target="_blank"}), les [préfixes](https://www.wikidata.org/wiki/EntitySchema:E49){target="_blank"}^[Un préfixe est une modalité de simplification d'écriture faisant référence à un *espace de noms*, voir notamment, les préfixes Wikidata] : 
+Dans Wikidata, les peintres, peintures, collections et lieux d'exposition, et leurs coordonnées spatiales et temporelles sont modélisés selon les fragments de graphes (XML, json, turtle etc.) représentés ci-dessous (Figures 4 et 6). Ceux-ci comprennent des classes instanciées (domaine et co-domaine) liées entre elles par des prédicats, mobilisant une syntaxe spécifique associée à chaque [espace de nom]((https://www.w3.org/TR/REC-xml-names/#NT-Prefix){target="_blank"}), les [préfixes](https://www.wikidata.org/wiki/EntitySchema:E49){target="_blank"}^[Un **préfixe** est une modalité de simplification d'écriture faisant référence à un *espace de noms*, voir notamment, les préfixes Wikidata] : 
 
 ---
 
@@ -273,6 +276,9 @@ knitr::include_graphics('figures/modele_interroge.png')
 </br> 
 
 A l'aide de la fonction `query_wikidata` du package `WikidataR` ou alternativement des fonctions du package `glitter`, nous commençons dans un premier temps par obtenir l'illustration associée à Johannes Vermeer (renseignée par la propriété [P18]((https://www.wikidata.org/wiki/Property:P18){target="_blank"})), avec la requête SPARQL suivante :
+
+
+
 
 ```{r requetesparql1,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 #---
@@ -525,7 +531,7 @@ Pourquoi ? Plusieurs hypothèses peuvent être esquissées :
 
 Ces constats sont liés non seulement au caractère non supervisé et collectif (hétérogène, voire lacunaire) de la production des données, mais aussi à la complexité de la saisie des données dans le graphe Wikidata. En conséquence, les modalités d'interrogation du graphe Wikidata sont multiples, en fonction notamment de la profondeur du graphe qui est sondée et de la qualité de l'affectation de valeurs à ses instances.  
 
-La série de requêtes présentées jusqu'à présent interroge les entités Wikidata renseignées au moyen des propriétés simples de localisation, c'est à dire avec le préfixe `wdt`. Pour aller plus en profondeur dans le graphe, vérifier la localisation et déterminer sa composante temporelle, il est nécessaire d'entrer plus en détail dans une autre forme d'instanciation du graphe, spécifique à Wikidata, à savoir les déclarations (voir figure 6b).
+La série de requêtes présentées jusqu'à présent interroge les entités Wikidata renseignées au moyen des propriétés simples de localisation, c'est à dire avec le préfixe `wdt`. Pour aller plus en profondeur dans le graphe, vérifier la localisation et déterminer sa composante temporelle, il est nécessaire d'entrer plus en détail dans une autre forme d'instanciation du graphe, spécifique à Wikidata, à savoir les déclarations (figure 6b).
 <br/>
 
 ```{r figure6b, out.width="80%", fig.align = 'center', echo=FALSE, purl=FALSE}
@@ -538,7 +544,7 @@ knitr::include_graphics("figures/wikidata_page_description.png")
 </br>    
 
 ### Préciser les chemins du graphe de données associé au peintre
-Cette représentation tabulaire du graphe permet de comprendre que les modalités d'accès aux données peuvent prendre d'autres chemins du graphe que celui 'de premier niveau' des relations entre entités et propriétés simples (préfixe `wdt`). Dans un premier temps, afin de mieux cerner la profondeur du graphe Wikidata, il est possible de l'interroger pour connaître toutes les relations (arêtes du graphe) associées à l'objet Johannes Vermeer conduisant à au moins une instance du graphe*. L'image d'objet `id_vermeer` peut alors prendre la position de "sujet" des prédicats et objets recherchés ou celle d'"objet" des prédicats et sujets (voir figure 6c).
+Cette représentation tabulaire du graphe permet de comprendre que les modalités d'accès aux données peuvent prendre d'autres chemins du graphe que celui 'de premier niveau' des relations entre entités et propriétés simples (préfixe `wdt`). Dans un premier temps, afin de mieux cerner la profondeur du graphe Wikidata, il est possible de l'interroger pour connaître toutes les relations (arêtes du graphe) associées à l'objet Johannes Vermeer conduisant à au moins une instance du graphe*. L'image d'objet `id_vermeer` peut alors prendre la position de "sujet" des prédicats et objets recherchés ou celle d'"objet" des prédicats et sujets (figure 6c).
 
 *on exclut ici les noeuds vides.
 ```{r figure6c, out.width="70%", fig.align = 'center', echo=FALSE, purl=FALSE}
@@ -664,7 +670,7 @@ En sondant les propriétés dont Vermeer est l'objet, le résultat du 3.4.2.2 re
 - dans le premier cas `prop/statement/P170` correspondant aux déclarations exhaustives, le graphe compte 43 œuvres, 
 - dans le second cas `prop/direct/P170` correspondant aux relations simples (ou "quasi-vérités"), on compte 37 œuvres, soit un écart de 6 œuvres.
 
-En différenciant les modalités d'interrogation associées aux prédicats (préfixes `p:`, `ps:` et `wdt`:), il est possible de connaître la liste de ces œuvres objets d'une déclaration exhaustive au sein du fragment de graphe Wikidata qui ne sont pas des "quasi-vérités" (voir notamment la figure 6d) :
+En différenciant les modalités d'interrogation associées aux prédicats (préfixes `p:`, `ps:` et `wdt`:), il est possible de connaître la liste de ces œuvres objets d'une déclaration exhaustive au sein du fragment de graphe Wikidata qui ne sont pas des "quasi-vérités" (figure 6d) :
 
 ```{r requetesparql5, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 
@@ -790,7 +796,7 @@ chemins_du_graphe <- paste(chemin_declaration,".",chemin_rang_qualification,".",
  datatable(resultats_qualified)
 ```
 
-On esquisse ici l'approche qui, interrogeant le fragment de graphe Wikidata de manière plus approfondie, permet d'analyser la qualité des données issues des interrogations simplifiées ou "quasi-vérités" (voir figure 6d.) mais aussi d'appréhender la complexité de la modélisation conceptuelle d'une œuvre à travers sa genèse et le discours associé. Il semble que l'écart entre les "quasi-vérités" (avec le préfixe `wdt:`) et les déclarations exhaustives (avec le préfixe `ps:`) de la relation de Johannes Vermeer à se œuvres s'explique par le rang de celles-ci. En complément, on note que : 
+On esquisse ici l'approche qui, interrogeant le fragment de graphe Wikidata de manière plus approfondie, permet d'analyser la qualité des données issues des interrogations simplifiées ou "quasi-vérités" (figure 6d.) mais aussi d'appréhender la complexité de la modélisation conceptuelle d'une œuvre à travers sa genèse et le discours associé. Il semble que l'écart entre les "quasi-vérités" (avec le préfixe `wdt:`) et les déclarations exhaustives (avec le préfixe `ps:`) de la relation de Johannes Vermeer à se œuvres s'explique par le rang de celles-ci. En complément, on note que : 
 
 - en tout 58 œuvres sont liées à Vermeer comme créateur,
 - 20 d'entre elles semblent ne pas être "de sa main",
@@ -942,7 +948,7 @@ chemins_du_graphe <- paste(chemin_primaire,".",chemin_type,".",chemin_descriptio
 ## Afficher le résultat
  datatable(metadonnees_description_collections_comme_objet)
 ```
-Le résultat donne la description des types d'instances de Wikidata répondant à la question des collections au sein desquelles les œuvres de Vermeer se trouvent. Il confirme le caractère hétérogène et donc l'impossibilité d'exploiter ce chemin du graphe. L'investigation du notebook revient alors aux œuvres elles-mêmes.
+Le résultat donne la description des types d'instances de Wikidata répondant à la question des collections au sein desquelles les œuvres de Vermeer se trouvent. Il confirme le caractère hétérogène et donc l'impossibilité d'exploiter ce chemin du graphe. L'investigation du *notebook* revient alors aux œuvres elles-mêmes.
 
 ### Choisir l'œuvre de Vermeer qui a le plus voyagé
 
@@ -2113,8 +2119,8 @@ L'exemple de visualisations (*distant reading*) d'une trajectoire spatio-tempore
 
 Notamment la circulation de l'œuvre fait apparaître des espaces spatio-temporels où celle-ci est absente des lieux d'exposition. Ce constat engage à ré-interroger les données et le modèle associé. Par exemple, sur la période antérieur à 2004, l'étude de la donnée permet d'identifier la propriété [P195](https://www.wikidata.org/wiki/Property:P195){target="_blank"} collection qui identifie la collection à laquelle appartient l'œuvre. Le [lien hypertexte](https://rkd.nl/nl/explore/images/62857){target="_blank"} servant de référence à cette donnée (à savoir la propriété P195 collection appliquée à Q4660880 instanciée par *Leiden Collection*) donne alors accès aux informations de transfert de propriété en 2004 des héritiers du Baron Frédéric Rolin (Bruxelles) à un américain Steve Wynn qui lui-même la cède la même année à la société Otto Naumann Ltd. (New York), qui fait entrer l'œuvre dans son catalogue au sein de la *Leiden Collection*.
 
-Le notebook sert de support du dialogue entre plusieurs disciplines, ici, l'histoire, la géographie et l'ingénierie des connaissances. 
-Le notebook est aussi le lieu d'un processus collaboratif productif de connaissances (synchrone ou asynchrone), devient un outil pédagogique - par la formation par la recherche grâce à sa transformation en fiche `rzine` et est susceptible de servir de méthodologie (ou "fil directeur") reproductible d'un processus similaire pour d'autres problématiques.
+Le *notebook* sert de support du dialogue entre plusieurs disciplines, ici, l'histoire, la géographie et l'ingénierie des connaissances. 
+Le *notebook* est aussi le lieu d'un processus collaboratif productif de connaissances (synchrone ou asynchrone), devient un outil pédagogique - par la formation par la recherche grâce à sa transformation en fiche `rzine` et est susceptible de servir de méthodologie (ou "fil directeur") reproductible d'un processus similaire pour d'autres problématiques.
 
 
 # Bibliographie {-}
