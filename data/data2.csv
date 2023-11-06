@@ -20,20 +20,20 @@
 "Girl with a Red Hat","National Gallery of Art","Point(-77.02 38.891388888)"
 "A Lady Writing a Letter","National Gallery of Art","Point(-77.02 38.891388888)"
 "Woman Holding a Balance","National Gallery of Art","Point(-77.02 38.891388888)"
-"Diana and her Nymphs","Mauritshuis","Point(4.314305555 52.080388888)"
 "Girl with a Pearl Earring","Mauritshuis","Point(4.314305555 52.080388888)"
 "View of Delft","Mauritshuis","Point(4.314305555 52.080388888)"
 "The Astronomer","Führermuseum","Point(14.292 48.2901)"
 "Lady with a Guitar","Philadelphia Museum of Art","Point(-75.181388888 39.965833333)"
 "The Girl with the Wine Glass","Herzog Anton Ulrich Museum","Point(10.533 52.2635)"
 "The Girl with the Wine Glass","Herzog Anton Ulrich Museum","Point(10.533116 52.26352)"
-"Officer and Laughing Girl","The Frick Collection","Point(-73.963836944 40.773411111)"
-"Girl Interrupted at her Music","The Frick Collection","Point(-73.963836944 40.773411111)"
-"Mistress and Maid","The Frick Collection","Point(-73.963836944 40.773411111)"
+"Officer and Laughing Girl","The Frick Collection","Point(-73.967254578 40.771115045)"
+"Girl Interrupted at her Music","The Frick Collection","Point(-73.967254578 40.771115045)"
+"Mistress and Maid","The Frick Collection","Point(-73.967254578 40.771115045)"
 "The Guitar Player","Kenwood House","Point(-0.167654 51.5713)"
 "Christ in the House of Martha and Mary","Scottish National Gallery","Point(-3.195686 55.950902)"
 "Christ in the House of Martha and Mary","Scottish National Gallery","Point(-3.195660636 55.950899738)"
 "The Astronomer","Munich Central Collecting Point",NA
+"Q121798590","Musée de la musique","Point(2.39389 48.88972)"
 "Saint Praxedis","National Museum of Western Art","Point(139.775677 35.71546)"
 "Saint Praxedis","National Museum of Western Art","Point(139.7758498 35.7153567)"
 "Lady Writing a Letter with her Maid","National Gallery of Ireland","Point(-6.25255 53.34091)"
@@ -43,4 +43,5 @@
 "The Milkmaid","Gallery of Honour","Point(4.885286111 52.360025)"
 "The Art of Painting","Q110991859",NA
 "The Astronomer","Jeu de Paume Nazi sorting house",NA
+"Diana and her Nymphs","Q112457145",NA
 "The Concert","http://www.wikidata.org/.well-known/genid/03899e820fcaece3ffa5b36ba6830875",NA
