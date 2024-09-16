@@ -58,12 +58,12 @@ Le schéma organisant ces données est esquissé dans la [partie 1](#wikimédia-
 - identifier certaines des modalités du graphe pouvant comporter une dimension spatiale et temporelle et ainsi,  
 - reconstruire et représenter une ou des trajectoires dans le temps et l'espace. 
 
-Compte-tenu du [formalisme](https://www.wikidata.org/wiki/Wikidata:WikiProject_Ontology/Modelling){target="_blank"} et de l'hétérogénéïté des données non supervisées de Wikidata, deux images d'objet sont choisies pour l'étude : un artiste-peintre et une de ses peintures, exposée au sein de musées ou d'institutions culturelles dans le monde. Pour reproduire partiellement l'expérimentation, un exemple d'exploration du graphe Wikidata pour diverses images d'artistes-peintres est proposée dans la [partie 7](#à-vous-dexplorer).
+Compte-tenu du [formalisme](https://www.wikidata.org/wiki/Wikidata:WikiProject_Ontology/Modelling){target="_blank"} et de l’hétérogénéité des données non supervisées de Wikidata, deux images d'objet sont choisies pour l'étude : un artiste-peintre et une de ses peintures, exposée au sein de musées ou d'institutions culturelles dans le monde. Pour reproduire partiellement l'expérimentation, un exemple d'exploration du graphe Wikidata pour diverses images d'artistes-peintres est proposée dans la [partie 7](#à-vous-dexplorer).
 <br/><br/>
 
 ---
 
-*NB : le terme "image" utilisé dans ce document correspond à une sémantique de l'individu présent dans l'espace numérique sous la forme de données et de métadonnées en relation avec d'autres images d'objet, selon @hui_induction_2015. En ce sens, les œuvres elles-mêmes, photographiées ou scannées etc. sous les formes de fichiers d'extension .jpg .png etc. sont désignées par le terme d'"illustration" ou de fichiers. Pour simplifier le discours, l'image d'individu est désignée par l'individu lui-même : par exemple, l'image du peintre Johannes Vermeer, l'entité Wikidata de valeur [`Q41264`](https://www.wikidata.org/wiki/Q41264){target="_blank"} définie par ses relations dans l'espace numérique, est désignée par Johannes Vermeer ou Vermeer. Le fichier .jpg Wikidmédia de son auto-portrait supposé, fragment de l'oeuvre intitulée «l'Entremetteuse», est une illustration représentant le peintre.*
+*NB : le terme "image" utilisé dans ce document correspond à une sémantique de l'individu présent dans l'espace numérique sous la forme de données et de métadonnées en relation avec d'autres images d'objet, selon @hui_induction_2015. En ce sens, les œuvres elles-mêmes, photographiées ou scannées etc. sous les formes de fichiers d'extension .jpg .png etc. sont désignées par le terme d'"illustration" ou de fichiers. Pour simplifier le discours, l'image d'individu est désignée par l'individu lui-même : par exemple, l'image du peintre Johannes Vermeer, l'entité Wikidata de valeur [`Q41264`](https://www.wikidata.org/wiki/Q41264){target="_blank"} définie par ses relations dans l'espace numérique, est désignée par Johannes Vermeer ou Vermeer. Le fichier .jpg Wikidmédia de son auto-portrait supposé, fragment de l’œuvre intitulée «l'Entremetteuse», est une illustration représentant le peintre.*
 
 ---
 
@@ -71,7 +71,7 @@ Compte-tenu du [formalisme](https://www.wikidata.org/wiki/Wikidata:WikiProject_O
 ## Données ouvertes et liées du graphe Wikidata
 Wikidata est une base de connaissances libre, éditée de manière collaborative et hébergée par la [fondation Wikimedia](https://wikimediafoundation.org/fr/){target="_blank"}. Son contenu étant placé sous [licence CC0](https://creativecommons.org/publicdomain/zero/1.0/deed.fr){target="_blank"} (« Transfert dans le Domaine Public »), elle permet de centraliser l'accès aux données utilisées par différents [projets Wikimedia](https://www.wikimedia.fr/les-projets-wikimedia/){target="_blank"} (@frwiki:186068284).
 
-Les informations saisies dans Wikidata sont des données ouvertes “brutes” multilingues non-supervisées qui sont liées, notamment aux articles de l'encyclopédie contributive Wikipedia. Wikidata est à différencier de l'ontologie DBpedia^[DBpedia est une ontologie permettant de traduire Wikipedia en dépôts de données définis dans le cadre de description des ressources du standard *Ressources Description Framework* (RDF) du *World Wide Web Consortium*^[Le **World Wide Web Consortium**, abrégé par le sigle **W3C**, est un organisme de standardisation à but non lucratif, fondé en octobre 1994 chargé de promouvoir la compatibilité des technologies du World Wide Web telles que HTML5, HTML, XHTML, XML, RDF, SPARQL, CSS, XSL, PNG, SVG, MathML et SOAP.] (W3C)] (figure 1) au sens où l'ontologie sous-jacente de Wikidata n'est pas formalisée à priori - ce qui est le cas de DBpedia, mais elle émerge des usages et pratiques de la communauté Wikidata. En effet, les deux dispositifs à vocation encyclopédique diffèrent dans leurs finalités initiales. DBpedia est un effort de la communauté scientifique pour extraire des informations structurées  du projet encyclopédique Wikipedia et les lier à d'autres formalismes de données du web sémantique. Wikidata est un dispositif de *curation*^[Le terme de *curation* est un anglicisme désignant une activité de type archivistique ou de conservation muséale ou patrimoniale qui a pour objectif de décrire et de classer des objets pour les conserver et les rendre accessibles, le cas échéant. Le terme est issu du domaine médical au sens de prendre soin en opérant une stratégie curative. La curation de données peut-être décrite comme une activité de description d'une donnée ou plus précisément d'une ressource du web au moyen de métadonnées, c'est à dire de produire des données sur des données. Cette activité s'appuie en général sur des normes ou des règles de l'art des divers métiers. Dans le champ du catalogage informatique, une des plus anciennes normes est le Dublin Core.] ou d'annotation de données par les contributeurs et contributrices de Wikipedia ou Wikidata.
+Les informations saisies dans Wikidata sont des données ouvertes “brutes” multilingues non-supervisées qui sont liées, notamment aux articles de l'encyclopédie contributive Wikipedia. Wikidata est à différencier de l'ontologie DBpedia^[DBpedia est une ontologie permettant de traduire Wikipedia en dépôts de données définis dans le cadre de description des ressources du standard *Ressources Description Framework* (RDF) du *World Wide Web Consortium*^[Le **World Wide Web Consortium**, abrégé par le sigle **W3C**, est un organisme de standardisation à but non lucratif, fondé en octobre 1994 chargé de promouvoir la compatibilité des technologies du *World Wide Web* telles que HTML5, HTML, XHTML, XML, RDF, SPARQL, CSS, XSL, PNG, SVG, MathML et SOAP.] (W3C)] (figure 1) au sens où l'ontologie sous-jacente de Wikidata n'est pas formalisée à priori - ce qui est le cas de DBpedia, mais elle émerge des usages et pratiques de la communauté Wikidata. En effet, les deux dispositifs à vocation encyclopédique diffèrent dans leurs finalités initiales. DBpedia est un effort de la communauté scientifique pour extraire des informations structurées  du projet encyclopédique Wikipedia et les lier à d'autres formalismes de données du web sémantique. Wikidata est un dispositif de *curation*^[Le terme de *curation* est un anglicisme désignant une activité de type archivistique ou de conservation muséale ou patrimoniale qui a pour objectif de décrire et de classer des objets pour les conserver et les rendre accessibles, le cas échéant. Le terme est issu du domaine médical au sens de prendre soin en opérant une stratégie curative. La *curation* de données peut-être décrite comme une activité de description d'une donnée ou plus précisément d'une ressource du web au moyen de métadonnées, c'est à dire de produire des données sur des données. Cette activité s'appuie en général sur des normes ou des règles de l'art des divers métiers. Dans le champ du catalogage informatique, une des plus anciennes normes est le Dublin Core.] ou d'annotation de données par les contributeurs et contributrices de Wikipedia ou Wikidata.
 ```{r figure 1, out.width="80%",  fig.align = 'center',  echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/wikidata_vs_dbpedia.png')
 ```
@@ -80,14 +80,14 @@ knitr::include_graphics('figures/wikidata_vs_dbpedia.png')
 *Figure 1 : Principales différences entre des données Wikipedia (DBpedia) et des données Wikidata. Dbpedia est la façon dont Wikipedia est traduit en dépôts de triplets RDF statique. <br/>Source : [Wikidata-Basics | Wikidata Hackathon event for the Festival of Creative Learning, 2018](https://thinking.is.ed.ac.uk/wikidata-basics/faq-and-further-reading/){target="_blank"}*
 </center>
 <br/>
-La base Wikidata fournit un support à de nombreux autres sites et services au-delà des seuls projets de Wikimedia. Son contenu est exporté dans des formats standards et peut être lié ou aligné à d'autres ensembles de données ouvertes sur le Web des données^[Le **Web de données** (*linked data*, en anglais) est une initiative du World Wide Web Consortium^[Le **W3C** est un organisme de standardisation à but non lucratif, fondé en octobre 1994 chargé de promouvoir la compatibilité des technologies du World Wide Web telles que HTML5, HTML, XHTML, XML, RDF, SPARQL, CSS, XSL, PNG, SVG, MathML et SOAP.] visant à favoriser la publication de données structurées sur le Web, non pas sous la forme de silos de données isolés les uns des autres, mais en les reliant entre elles pour constituer un réseau global d'informations.]. Wikidata offre ainsi un large domaine d'informations générales sur notre univers ou ses représentations et des liens vers d'autres graphes ou bases de données. Il contient à ce jour plus de 100 millions d'items. 
+La base Wikidata fournit un support à de nombreux autres sites et services au-delà des seuls projets de Wikimedia. Son contenu est exporté dans des formats standards et peut être lié ou aligné à d'autres ensembles de données ouvertes sur le Web des données^[Le **Web de données** (*linked data*, en anglais) est une initiative du *World Wide Web* Consortium^[Le **W3C** est un organisme de standardisation à but non lucratif, fondé en octobre 1994 chargé de promouvoir la compatibilité des technologies du *World Wide Web* telles que HTML5, HTML, XHTML, XML, RDF, SPARQL, CSS, XSL, PNG, SVG, MathML et SOAP.] visant à favoriser la publication de données structurées sur le Web, non pas sous la forme de silos de données isolés les uns des autres, mais en les reliant entre elles pour constituer un réseau global d'informations.]. Wikidata offre ainsi un large domaine d'informations générales sur notre univers ou ses représentations et des liens vers d'autres graphes ou bases de données. Il contient à ce jour plus de 100 millions d'items. 
 <br/>
 La dynamique de création collective de ce projet encyclopédique peut être [saisie à l'oreille](http://listen.hatnote.com/#wikidata){target="_blank"} grâce à l'application développée par Stephen LaPorte et Mahmoud Hashemi.
 <br/>
 
 ## Standard RDF du W3C 
 
-Le RDF (Resource Data Framework) est un cadre général de modélisation utilisé pour décrire formellement les ressources du Web via leurs métadonnées afin de permettre le traitement par inférence de telles descriptions. Développé par le W3C^[Le **World Wide Web Consortium** (**W3C**) est un organisme de standardisation à but non lucratif fondé en 1994 et chargé de promouvoir la compatibilité des technologies du Web], le RDF est le formalisme de base du [Web sémantique]((https://fr.wikipedia.org/wiki/Web_s%C3%A9mantique){target="_blank"}). 
+Le RDF (*Resource Data Framework*) est un cadre général de modélisation utilisé pour décrire formellement les ressources du Web via leurs métadonnées afin de permettre le traitement par inférence de telles descriptions. Développé par le W3C^[Le **World Wide Web Consortium** (**W3C**) est un organisme de standardisation à but non lucratif fondé en 1994 et chargé de promouvoir la compatibilité des technologies du Web], le RDF est le formalisme de base du [Web sémantique](https://fr.wikipedia.org/wiki/Web_s%C3%A9mantique){target="_blank"}. 
 
 Au sein de ce paradigme, un document ou une ressource consiste en un ensemble de triplets^[Un **triplet** est un groupe formé par trois éléments dont chacun appartient à un ensemble distinct.], chacun associant un sujet, un prédicat et un objet :  
 
@@ -95,7 +95,7 @@ Au sein de ce paradigme, un document ou une ressource consiste en un ensemble de
 - le «prédicat» représente un type de propriété applicable à cette ressource,  
 - l'«objet» représente une donnée, une autre ressource ou une valeur associée à la propriété (ou prédicat). 
 
-Le sujet et l'objet, dans le cas où ce sont des ressources, peuvent être identifiés par un identifiant unique de la ressource (URI^[Un **URI** (*Uniform Resource Identifier*, en français *Identifiant unique de ressource*) est une chaîne qui fait référence à une ressource. Les plus courantes sont les URL, qui identifient une ressource en donnant son emplacement sur le Web. Au contraire, les URN font référence à une ressource grâce à son nom, dans un environnement donné, par exemple le code ISBN d'un livre.]), une valeur ou être des nœuds anonymes. Le prédicat est nécessairement identifié par un URI. 
+Le sujet et l'objet, dans le cas où ce sont des ressources, peuvent être identifiés par un identifiant unique de la ressource (URI^[Un **URI** (*Uniform Resource Identifier*, en français "Identifiant unique de ressource") est une chaîne qui fait référence à une ressource. Les plus courantes sont les URL, qui identifient une ressource en donnant son emplacement sur le Web. Au contraire, les URN font référence à une ressource grâce à son nom, dans un environnement donné, par exemple le code ISBN d'un livre.]), une valeur ou être des nœuds anonymes. Le prédicat est nécessairement identifié par un URI. 
 Par exemple, la déclaration "Bob s'intéresse à Mona Lisa" est formalisée de la manière suivante :
 ```{r figure 2, out.width="70%", fig.align = 'center',  echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/triplet.png')
@@ -119,7 +119,7 @@ knitr::include_graphics('figures/triplet_mona_lisa.png')
 
 ## Le langage SPARQL
 
-SPARQL^[**SPARQL** est acronyme récursif qui signifie **S**PARQL **P**rotocol **A**nd **R**DF **Q**uery **L**anguage (@frwiki:194953405). Plusieurs langages de requête destinés à interroger les graphes RDF ont été développés, mais le langage SPARQL est développé par le W3C de sorte à devenir un standard.] (prononcé *sparkle*, en anglais : « étincelle ») est à la fois un langage de requête et un protocole qui permettent de rechercher, d'ajouter, de modifier ou de supprimer des triplets RDF disponibles à travers le Web. Aujourd'hui, le Web de données (représenté par le [nuage du *Linked Open Data*](http://cas.lod-cloud.net/){target="_blank"} ou [ses domaines](http://cas.lod-cloud.net/#subclouds){target="_blank"}) est interrogeable via des centaines de services SPARQL qui mettent à disposition de plus en plus de graphes de données ouvertes et liées comme c'est le cas du projet plurilingue Wikidata (@frwiki:194953405).
+SPARQL^[**SPARQL** est acronyme récursif qui signifie **S**PARQL **P**rotocol **A**nd **R**DF **Q**uery **L**anguage (@frwiki:194953405). Plusieurs langages de requête destinés à interroger les graphes RDF ont été développés, mais le langage SPARQL est développé par le W3C de sorte à devenir un standard.] (prononcé *sparkle*, en anglais : « étincelle ») est à la fois un langage de requête et un protocole qui permettent de rechercher, d'ajouter, de modifier ou de supprimer des triplets RDF disponibles à travers le Web. Aujourd'hui, le Web de données (représenté par le [nuage du *Linked Open Data*](http://lod-cloud.net/){target="_blank"} ou [ses domaines](http://lod-cloud.net/#subclouds){target="_blank"}) est interrogeable via des centaines de services SPARQL qui mettent à disposition de plus en plus de graphes de données ouvertes et liées comme c'est le cas du projet plurilingue Wikidata (@frwiki:194953405).
 
 **Vocabulaire ou espace de noms**
 
@@ -131,7 +131,7 @@ L'espace de nom de l'ontologie de Wikipedia, DBpedia est accessible à cette URL
 
 **Préfixes et requêtes**
 
-À chaque vocabulaire utilisé pour construire la requête sont associés différents préfixes^[Un **préfixe** est une modalité de simplification d'écriture faisant référence à un *espace de noms* (qui est une page HTML ou un fichier en turtle par exemple), voir notamment https://www.w3.org/wiki/TheUsualPrefixes]. Dans le cas présenté, la déclaration du vocabulaire mobilisé (celui de Wikidata notamment) est intégrée aux packages utilisés. Toutefois, en général, il est nécessaire de le préciser dans l'entête de la requête SPARQL, sous une certaine forme :
+À chaque vocabulaire utilisé pour construire la requête sont associés différents préfixes^[Un **préfixe** est une modalité de simplification d'écriture faisant référence à un *espace de noms* (qui est une page HTML ou un fichier en turtle par exemple), voir notamment https://www.w3.org/wiki/TheUsualPrefixes]. Dans le cas présenté, la déclaration du vocabulaire mobilisé (celui de Wikidata notamment) est intégrée aux *packages* utilisés. Toutefois, en général, il est nécessaire de le préciser dans l'entête de la requête SPARQL, sous une certaine forme :
 ```!sparql
 PREFIX préfixe: <espace de nom>
 ```
@@ -177,7 +177,7 @@ Avec la déclaration des espaces de noms et la simplification de la syntaxe util
 
 Dans la suite, plusieurs  [préfixes Wikidata](https://www.wikidata.org/wiki/EntitySchema:E49){target="_blank"} spécifiques aux entités et aux types de propriétés sont utilisés. Dans le cadre de notre étude, le tableau suivant récapitule les classes et propriétés utilisées, ainsi que quelques préfixes du schéma Wikidata utilisés pour former les triplets :
 
-| classe ou propriété | préfixe |  exemple(s) de chemin | label wikidata |
+| classe ou propriété | préfixe |  exemple(s) de chemin | label Wikidata |
 |-|-|------|----|
 | P31 | `wdt` | ?identifiant **wdt:P31** ?naturedelelement | [nature de l’élément](https://www.wikidata.org/wiki/Property:P31){target="_blank"} |
 | Q5 | `wd` | ?identifiant wdt:P31 **wd:Q5** | [être humain](https://www.wikidata.org/wiki/Q5){target="_blank"} |
@@ -190,7 +190,7 @@ Dans la suite, plusieurs  [préfixes Wikidata](https://www.wikidata.org/wiki/Ent
 | P582 | `pq` | ?lieuSt **pq:P582** ?datef | [a pour date de fin](https://www.wikidata.org/wiki/Property:P582){target="_blank"} |
 | label, language | `wikibase` | SERVICE wikibase:label { <br> bd:serviceParam wikibase:language "[AUTO_LANGUAGE], fr,en".} | *syntaxe du service de nom et de langue de l'API WikidataQueryService* |
 
-Dans le cas où le prédicat de wikidata est utilisé avec le préfixe `p`, `ps` ou `pq`, la donnée associée est une assertion (spécifiée dans la tableau par le suffixe -St), c'est à dire un autre triplet. Ces spécificités du graphe wikidata sont abordées dans la partie [3](#exploration-du-graphe-wikidata).
+Dans le cas où le prédicat de Wikidata est utilisé avec le préfixe `p`, `ps` ou `pq`, la donnée associée est une assertion (spécifiée dans la tableau par le suffixe -St), c'est à dire un autre triplet. Ces spécificités du graphe Wikidata sont abordées dans la [partie 3](#exploration-du-graphe-wikidata).
 
 # *Packages* et données
 
@@ -199,7 +199,7 @@ Dans le cas où le prédicat de wikidata est utilisé avec le préfixe `p`, `ps`
 Les *packages* utilisés pour réaliser l'ensemble de la chaîne de traitement présenté dans ce document sont les suivants :
 </br>
 
-- `wikidataR`^[[`WikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html){target="_blank"} est développé par Thomas Shafee, Os Keyes, Serena Signorelli, Alex Lum, Christian Graul et Mikhail Popov (développeur de `WikidataQueryServiceR`), membre de la Fondation Wikimédia. Il est maintenu par Thomas Shafee de l'université australienne La Trobe de l'état Victoria.] (et son extension `WikidataQueryServiceR`) : permet d'écrire une requête pour interroger le graphe de données Wikidata au moyen d'une Interface de Programmation d’Application (API) pour le service de requêtes Wikidata en langage SPARQL^[ Le [service de collecte des données de Wikidata en langage SPARQL](https://query.wikidata.org/){target="_blank"} offre une solution très complète en première approche (exemples, assistant de requêtes, diversité des représentations etc.). Toutefois, dans une dynamique d'exploration du graphe Wikidata, l'utilisation de R facilite la compréhension, l'archivage et la reproductibilité des différentes requêtes spécifiques réalisées. Pour cette raison, nous utilisons le package [`WikidataR`](https://www.rdocumentation.org/packages/WikidataR/versions/2.3.3){target="_blank"} ou alternativement [`WikidataQueryServiceR`](https://cran.r-project.org/web/packages/WikidataQueryServiceR/index.html){target="_blank"} qui est un package ayant des fonctionnalités plus développées.] ;  
+- `wikidataR`^[[`WikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html){target="_blank"} est développé par Thomas Shafee, Os Keyes, Serena Signorelli, Alex Lum, Christian Graul et Mikhail Popov (développeur de `WikidataQueryServiceR`), membre de la Fondation Wikimédia. Il est maintenu par Thomas Shafee de l'université australienne La Trobe de l'état Victoria.] (et son extension `WikidataQueryServiceR`) : permet d'écrire une requête pour interroger le graphe de données Wikidata au moyen d'une Interface de Programmation d’Application (API) pour le service de requêtes Wikidata en langage SPARQL^[ Le [service de collecte des données de Wikidata en langage SPARQL](https://query.wikidata.org/){target="_blank"} offre une solution très complète en première approche (exemples, assistant de requêtes, diversité des représentations etc.). Toutefois, dans une dynamique d'exploration du graphe Wikidata, l'utilisation de R facilite la compréhension, l'archivage et la reproductibilité des différentes requêtes spécifiques réalisées. Pour cette raison, nous utilisons le *package* [`WikidataR`](https://www.rdocumentation.org/packages/WikidataR/versions/2.3.3){target="_blank"} ou alternativement [`WikidataQueryServiceR`](https://cran.r-project.org/web/packages/WikidataQueryServiceR/index.html){target="_blank"} qui est un *package* ayant des fonctionnalités plus développées.] ;  
 - `rnaturalearth` : met à disposition les données géographiques de [Natural Earth](https://www.naturalearthdata.com/){target="_blank"} ;  
 - `sf` : permet la gestion et la manipulation de données géographiques vectorielles ;  
 - `dplyr` : pour la manipulation des données ;     
@@ -236,7 +236,7 @@ liste_packages_a_installer <- liste_packages[!(liste_packages %in% installed.pac
 install.packages(liste_packages_a_installer)
 ```
 
-<div class="alert alert-info" role="alert">Le package `glitter`  développé par Lise Vaudor permet l'écriture de requêtes SPARQL dans un formalisme proche de pratiques associées au langage R sans maîtriser la syntaxe SPARQL, pour sonder divers graphes (dont Wikidata). Celui-ci n'est pas disponible sur le CRAN.</div> 
+<div class="alert alert-info" role="alert">Le *package* `glitter`  développé par Lise Vaudor permet l'écriture de requêtes SPARQL dans un formalisme proche de pratiques associées au langage R sans maîtriser la syntaxe SPARQL, pour sonder divers graphes (dont Wikidata). Celui-ci n'est pas disponible sur le CRAN.</div> 
 
 
 L'ensemble des informations du système d"exploitation et des versions de *packages* utilisés pour générer ce *notebook* est disponible en <a href="#info-session">fin de document</a>.   
@@ -265,10 +265,10 @@ Plusieurs sources de données sont utilisées pour ce travail exploratoire :
 
 Voici quelques éléments basiques du langage SPARQL permettant d'[interroger la base de données Wikidata](https://www.wikidata.org/wiki/Wikidata:Data_access#How_can_I_get_data_out_of_Wikidata?){target="_blank"} :
 
-- la clause [`SELECT `]((https://www.w3.org/TR/sparql11-query/#select){target="_blank"}) des données interrogées renvoit les variables spécifiques (avec `COUNT`, renvoit le nombre des ces données ou avec `GROUP_CONCAT`, les concatène au sein d'une collection, regroupées par `GROUP BY` et triées par `ORDER BY`),  
+- la clause [`SELECT `]((https://www.w3.org/TR/sparql11-query/#select){target="_blank"}) des données interrogées renvoies les variables spécifiques (avec `COUNT`, renvoi le nombre des ces données ou avec `GROUP_CONCAT`, les concatène au sein d'une collection, regroupées par `GROUP BY` et triées par `ORDER BY`),  
 - qui, accompagnée de la clause [`WHERE { }`]((https://www.w3.org/TR/sparql11-query/#where){target="_blank"}), les lie à l'interrogation de propriétés et données associées, suivant les chemins du graphe,    
 - avec un service WikiLabel spécifique au point d'accès *Wikidata Query Service*,  du fait du caractère plurilingue de certaines données du graphe Wikidata, permettant de limiter le résultat à la langue choisie (`wikibase:language`) du label (`wikibase:label`) associé à l'entité ou la propriété recherchée,  
-- ou encore avec la fonctionnalité `OPTIONAL` de la clause `WHERE` qui permet de renvoyer les variables même si les données liées aux propriétés ne sont pas instanciées (noeuds vides),    
+- ou encore avec la fonctionnalité `OPTIONAL` de la clause `WHERE` qui permet de renvoyer les variables même si les données liées aux propriétés ne sont pas instanciées (nœuds vides),    
 - et les différents préfixes associés aux spécificités des propriétés simples, directes et indirectes etc. des fragments de graphe de Wikidata ([+d'info](https://linkeddatafragments.org/){target="_blank"}). 
 <br/>
 
@@ -303,7 +303,7 @@ Pour plus d'informations, vous pouvez consulter l'[introduction à Wikidata](htt
 
 Après plusieurs explorations, nous avons décidé de nous intéresser, dans une première étape, au peintre néerlandais du 17e siècle, **Johannes Vermeer**. 
 
-Les fonctions `find_item` et `find_property` du package `WikidataR` permet d'interroger le graphe à partir d'une chaîne de caractère. 
+Les fonctions `find_item` et `find_property` du *package* `WikidataR` permet d'interroger le graphe à partir d'une chaîne de caractère. 
 
 ```{r load_wikidataR,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 # Chargement du package WikidataR
@@ -368,7 +368,7 @@ knitr::include_graphics('figures/modele_interroge.png')
 ```  
 
 <center>
-*Figure 5 : Schéma des triplets de données d'entrée et de sortie du fragment de graphe Wikidata exploré. La clause `SELECT` s'applique aux éléments figurés en données en sortie. Les propriétés et objets associés (en entrée ou sortie), c'est-à-dire les chemins du graphe, sont insérés dans l'accollade de `WHERE`.*
+*Figure 5 : Schéma des triplets de données d'entrée et de sortie du fragment de graphe Wikidata exploré. La clause `SELECT` s'applique aux éléments figurés en données en sortie. Les propriétés et objets associés (en entrée ou sortie), c'est-à-dire les chemins du graphe, sont insérés dans l’accolade de `WHERE`.*
 </center>
 </br> 
 
@@ -394,7 +394,7 @@ query <- "SELECT ?identifiant  WHERE \
 ```
 
 
-A l'aide de la fonction `query_wikidata` du package `WikidataR`, nous commençons dans un premier temps par obtenir l'identifiant wikidata du peintre. Il est possible de réaliser la même requête avec le package `WikidataQueryServiceR`.
+A l'aide de la fonction `query_wikidata` du *package* `WikidataR`, nous commençons dans un premier temps par obtenir l'identifiant Wikidata du peintre. Il est possible de réaliser la même requête avec le *package* `WikidataQueryServiceR`.
 
 ```{r packageSPARQL sparql wikidataR,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 
@@ -443,7 +443,7 @@ data1_WQSR <- read.csv("data/data1_WQSR.csv", row.names = NULL)
 
 <div class="alert alert-success" role="alert">Le résultat renvoyé par cette requête nous permet de vérifier que l'image de l'objet Johannes Vermeer est bien identifiée dans Wikidata :
 
-- par la valeur "Q41264", résultat de la requête réalisée avec le package `WikidataR` ;  
+- par la valeur "Q41264", résultat de la requête réalisée avec le *package* `WikidataR` ;  
 - et par l'identifiant uniforme de ressource [https://www.wikidata.org/wiki/Q41264](https://www.wikidata.org/wiki/Q41264){target="_blank"} pour `WikidataQueryServiceR`.   
 
 
@@ -462,7 +462,7 @@ knitr::include_graphics('figures/modele_interroge_qualifier_a.png')
 ```
 
 <center>
-*Figure 6 : Entités, valeurs et propriétés simples du graphe Wikidata mobilisées pour la localisation des œuvres de Johannes Vermeer. La valeur `point(x,y)` donne les coordonnées géographiques dans le système de référence World Geodetic System ([WGS84](https://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf)). Le nom des œuvres et des musées (suffixe "Label") est obtenu par le service `wikibase:label` du package `WikidataQueryServiceR`, dans la langue `wikibase:language` choisie ou la fonction `sqp_label`  du package `glitter`.*
+*Figure 6 : Entités, valeurs et propriétés simples du graphe Wikidata mobilisées pour la localisation des œuvres de Johannes Vermeer. La valeur `point(x,y)` donne les coordonnées géographiques dans le système de référence World Geodetic System ([WGS84](https://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf)). Le nom des œuvres et des musées (suffixe "Label") est obtenu par le service `wikibase:label` du package `WikidataQueryServiceR`, dans la langue `wikibase:language` choisie ou la fonction `sqp_label` du package `glitter`.*
 </center>
 
 </br>
@@ -615,7 +615,7 @@ query_valeur_simple <- "SELECT  ?oeuvre ?oeuvreLabel WHERE \
 resultats_oeuvres_valeur_simple <- WikidataQueryServiceR::query_wikidata(query_valeur_simple)
 ```
 
-Nombre d'oeuvres associées avec une valeur simple :
+Nombre d’œuvres associées avec une valeur simple :
 
 ```{r Nombre oeuvres associées avec une valeur simple, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 nrow(resultats_oeuvres_valeur_simple)
@@ -646,14 +646,14 @@ query_declaration <- "SELECT ?oeuvre ?oeuvreLabel WHERE \
 resultats_oeuvres_exhaustif <- WikidataQueryServiceR::query_wikidata(query_declaration)
 ```
 
-Nombre d'oeuvres associées avec une assertion exhaustive :
+Nombre d’œuvres associées avec une assertion exhaustive :
 
 ```{r nombre d oeuvres attribuées à Vermeer par asertion, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 nrow(resultats_oeuvres_exhaustif)
 ```
 
 ### {-}
-La requête effectuée sur le graphe renvoit 2 résultats différents : 
+La requête effectuée sur le graphe renvoie 2 résultats différents : 
 
 - le premier cas correspond à la propriété `prop/direct/P170` qui associe l'identifiant aux valeurs simples (préfixe `wd`), c'est à dire avec le préfixe `wdt`: on compte 38 œuvres pour Vermeer (Q41264);
 - le second cas correspond à la propriété `prop/statement/P170` (préfixe `p`) qui associe l'identifiant à une assertion (préfixe `wds`, soient un ou plusieurs triplets) dont les termes sont acheminés au moyen du préfixe `ps` : le graphe compte alors 44 œuvres pour Vermeer, soit un écart de 6 œuvres.
@@ -663,7 +663,7 @@ En différenciant les modalités d'interrogation associées aux différents type
 ```{r identification des oeuvres attribuées par assertion et non par valeur simple, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 subset(resultats_oeuvres_exhaustif, !oeuvre %in% resultats_oeuvres_valeur_simple$oeuvre)
 ```
-Cette différence de résultat peut conduire à poursuivre l'investigation du corpus tel que modélisé et instancié dans le graphe wikidata. Par exemple, pour connaître la nature de la relation de ces œuvres au peintre Johannes Vermeer (sont-elles réellement de Vermeer ?), il est possible de sonder le fragment de graphe sur d'autres valeurs, notamment au moyen :
+Cette différence de résultat peut conduire à poursuivre l'investigation du corpus tel que modélisé et instancié dans le graphe Wikidata. Par exemple, pour connaître la nature de la relation de ces œuvres au peintre Johannes Vermeer (sont-elles réellement de Vermeer ?), il est possible de sonder le fragment de graphe sur d'autres valeurs, notamment au moyen :
 
 - de prédicats qualifiant l'attribution de l'œuvre  dans le champ d'histoire de l'art (dits *qualifiers* avec le préfixe `pq:`) comme par exemple : `P1777 à la manière de`, `P1778 faux imitant`, `P1778 d'après une œuvre de`, `P1774 atelier de` et `P1775 suiveur de` Johannes Vermeer,
 - mais aussi d'autres chemins du graphe Wikidata qui permettent de préciser la qualité de l'information non supervisée comme par exemple le rang (`wikibase:rank`) de l'assertion d'attribution (`ps:P170`) de l'œuvre à Vermeer. 
@@ -676,7 +676,7 @@ La pertinence de l'usage des prédicats de qualification sera démontrée dans l
 
 
 ### Choisir l'œuvre de Vermeer qui a le plus voyagé {.tabset}
-La qualité de l'information de localisation est déterminante dans notre démarche. Celle-ci peut avoir plusieurs valeurs dans le graphe wikidata, comme nous l'avons montré dans le tableau au [paragraphe précédent](#quelques-constats-sur-le-graphe-et-les-données). Elle peut avoir des formes différentes, dont celle d'une assertion, c'est à dire une localisation complexe dans l'espace et le temps, selon le modèle de Wikidata. 
+La qualité de l'information de localisation est déterminante dans notre démarche. Celle-ci peut avoir plusieurs valeurs dans le graphe Wikidata, comme nous l'avons montré dans le tableau au [paragraphe précédent](#quelques-constats-sur-le-graphe-et-les-données). Elle peut avoir des formes différentes, dont celle d'une assertion, c'est à dire une localisation complexe dans l'espace et le temps, selon le modèle de Wikidata. 
 
 Pour choisir l'œuvre de Vermeer qui a le plus voyagé, nous allons voir ici que des modalités d'interrogation avec deux prédicats de lieu, c'est à dire ceux construits à partir de la propriété `P276`, donnent des résultats très différents.
 
@@ -761,7 +761,7 @@ DT::datatable(metadonnees_localisation_oeuvres)
 
 On le comprend ici, dans le cas d'une requête limitée aux valeurs simples, il n'est pas possible d'identifier les localisations réelles successives des œuvres. Les valeurs associées sont d'une autre nature.
 
-Par contre, en mobilisant l'information de localisation complexe "réelle", c'est à dire fondée sur des chemins adaptés du graphe, l’œuvre intitulée "Dame assise au virginal" (entité [Q4660880](http://www.wikidata.org/entity/Q4660880){target="_blank"}) est, selon Wikidata, l'œuvre de Johannes Vermeer qui a le plus voyagé pour être exposée. Cela signifie que cette instance de la classe œuvres possède le plus grand nombre de valeurs associées au prédicat "a pour lieu" [p:P276/ps:P276](https://www.wikidata.org/wiki/Property:P276){target="_blank"} dans les déclarations exhaustives de localisation désignant des musées ou institutions. Leurs coordonnées sont des valeurs simples données par le prédicat [wdt:P625](https://www.wikidata.org/wiki/Property:P625){target="_blank"}.
+Par contre, en mobilisant l'information de localisation complexe "réelle", c'est à dire fondée sur des chemins adaptés du graphe, l'œuvre intitulée "Dame assise au virginal" (entité [Q4660880](http://www.wikidata.org/entity/Q4660880){target="_blank"}) est, selon Wikidata, l'œuvre de Johannes Vermeer qui a le plus voyagé pour être exposée. Cela signifie que cette instance de la classe œuvres possède le plus grand nombre de valeurs associées au prédicat "a pour lieu" [p:P276/ps:P276](https://www.wikidata.org/wiki/Property:P276){target="_blank"} dans les déclarations exhaustives de localisation désignant des musées ou institutions. Leurs coordonnées sont des valeurs simples données par le prédicat [wdt:P625](https://www.wikidata.org/wiki/Property:P625){target="_blank"}.
 
 Ce constat ouvre une nouvelle perspective en matière d'analyse exploratoire. Nous allons donc nous intéresser à la trajectoire spatio-temporelle de cette œuvre.
 
@@ -772,7 +772,7 @@ Ce constat ouvre une nouvelle perspective en matière d'analyse exploratoire. No
 Comme illustré dans la figure 8, la localisation spatio-temporelle d'une entité est déclarée au moyen d'un prédicat direct ([p:P276](https://www.wikidata.org/wiki/Property:P276){target="_blank"}), qui permet l'accès à une forme complexe de localisation de l'œuvre choisie :
 
 - dont les valeurs du prédicat `ps:P276` sont des lieux (géographiques et institutionnels) caractérisés par l'ensemble des déclarations de localisations spatiales `point(x,y)`, valeurs du prédicat `wdt:P625` ;  
-- dont les valeurs des prédicats de type [*qualifiers*](https://www.wikidata.org/wiki/Help:Qualifiers){target="_blank"} de la déclaration `?lieu` donnent des périodes temporelles (date de début : [`pq:P580`](https://www.wikidata.org/wiki/Property:P580){target="_blank"}, date de fin: [`pq:P582`](https://www.wikidata.org/wiki/Property:P582){target="_blank"}) ou date/point dans le temps de l'événement associé [`pq:P585`](https://www.wikidata.org/wiki/Property:P585){target="_blank"}.
+- dont les valeurs des prédicats de type [*qualifiers*](https://www.wikidata.org/wiki/Help:Qualifiers){target="_blank"} de la déclaration `?lieu` donnent des périodes temporelles (date de début : [`pq:P580`](https://www.wikidata.org/wiki/Property:P580){target="_blank"}, date de fin: [`pq:P582`](https://www.wikidata.org/wiki/Property:P582){target="_blank"}) ou date/point dans le temps de l’évènement associé [`pq:P585`](https://www.wikidata.org/wiki/Property:P585){target="_blank"}.
 
 ```{r figure 8, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/modele_interroge_qualifier_b.png')
@@ -957,9 +957,10 @@ Histogramme de répartition des musées en fonction du nombre d'œuvres de J.V. 
 library(ggplot2)
 
 ggplot(nb_oeuvres_musee, aes(x = nb_oeuvres)) +
-  geom_histogram(breaks = 0:max(nb_oeuvres_musee$nb_oeuvres), col = "white") +
-  xlab("Nombre d'œuvres exposées") +
-  ylab("Nombre de musées")
+    geom_histogram(binwidth=1, color="white")  + 
+    scale_y_continuous(n.breaks = 8) +
+    xlab("Nombre d'œuvres exposées") +
+    ylab("Nombre de musées")
 ```
 <center>
 Graphique 1 : **Distribution du nombre d'œuvres de Johannes Vermeer exposées par musée**
@@ -967,7 +968,7 @@ Graphique 1 : **Distribution du nombre d'œuvres de Johannes Vermeer exposées p
 
 ### Géoréférencement
 
-La variable 'coords' stocke les coordonnées géographiques des musées dans le format **WKT**^[Le format **Well-known text,** abrégé en **WKT**, peut se traduire par « texte bien lisible ». C'est un format standard en mode texte utilisé pour représenter des objets géométriques vectoriels issus des systèmes d’informations géographiques (SIG), mais aussi des informations s’y rattachant, tels les références de systèmes de coordonnées.]. En utilisant le package `sf`, il est simple de construire des données géographiques vectorielles permettant l'analyse spatiale avec R. Pour cela, nous utilisons les fonctions `st_as_sfc` et `st_as_sf`.  
+La variable 'coords' contient les coordonnées géographiques des musées dans le format **WKT**^[Le format **Well-known text**, abrégé en **WKT**, peut se traduire par « texte bien lisible ». C'est un format standard en mode texte utilisé pour représenter des objets géométriques vectoriels issus des systèmes d’information géographique (SIG), mais aussi des informations s’y rattachant, tels les références de systèmes de coordonnées.]. En utilisant le *package* `sf`, il est simple de construire des données géographiques vectorielles. Pour cela, nous utilisons les fonctions `st_as_sfc` et `st_as_sf`.  
 ```{r georéférencement,  eval=TRUE, echo=TRUE, include=TRUE}
 library(sf)
 
@@ -984,7 +985,7 @@ La table de données a été transformée en couche géographique manipulable av
 DT::datatable(musee_geo)
 ```
 
-Nous pouvons désormais cartographier les points créés (musées) sur une carte interactive, en utilisant le package `mapview`. Cela permet, entre autres, de vérifier la qualité des données et du géoréférencement effectué.
+Nous pouvons désormais cartographier les points créés (musées) sur une carte interactive, en utilisant le *package* `mapview`. Cela permet, entre autres, de vérifier la qualité des données et du géoréférencement effectué.
 
 ```{r affichage de la carte des musees,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 library(mapview)
@@ -1034,7 +1035,7 @@ Carte 2 : **Nombre d'œuvres de Johannes Vermeer exposées au cours du temps, pa
 
 Au vue de la carte précédente, il semble intéressant d'explorer la répartition des œuvres de Johannes Vermeer à l'échelle des pays. Pour cela, il est nécessaire d'enrichir les données. 
 
-Nous commençons par télécharger un fond de carte pays mis à disposition par le package [`rnaturalearth`](https://cran.r-project.org/web/packages/rnaturalearth/){target="_blank"} :
+Nous commençons par télécharger un fond de carte pays mis à disposition par le *package* [`rnaturalearth`](https://cran.r-project.org/web/packages/rnaturalearth/){target="_blank"} :
 ```{r téléchargement d un fond de carte,  eval=FALSE, echo=TRUE, warning=FALSE, message=FALSE}
 library(rnaturalearth)
 
@@ -1048,13 +1049,13 @@ monde <- ne_download(scale = "medium",
 ```
 
 Le fond de carte récupéré est également mis à disposition dans les [données téléchargeables](https://github.com/rzine-reviews/wikidata_sparql_rzine/raw/main/data.zip).
-Vous pouvez le charger dans R à l'aide du package `sf` et de sa fonction `st_read()` de la façon suivante :
+Vous pouvez le charger dans R à l'aide du *package* `sf` et de sa fonction `st_read()` de la façon suivante :
 
 ```{r chargement du fond de carte dans R,  eval=TRUE, echo=TRUE, warning=FALSE, message=FALSE}
 monde <- sf::st_read("data/world/ne_50m_admin_0_countries.shp", quiet = TRUE ) 
 ```
 
-Nous pouvons utiliser la fonction `plot()` associée à la fonction `st_geometry()` du package `sf` pour afficher les données dans le fenêtre graphique :
+Nous pouvons utiliser la fonction `plot()` associée à la fonction `st_geometry()` de `sf` pour afficher les données dans le fenêtre graphique :
 
 ```{r affichage de la couche géographique,  eval=TRUE, echo=TRUE, include=TRUE, message = FALSE}
 plot(st_geometry(monde))
@@ -1066,7 +1067,7 @@ Les attributs des entités (pays) de la couche géographique récupérée sont l
 DT::datatable(monde)
 ```
 
-La couche géographique des musées ('musee_geo') et le fond de carte du monde ('monde') sont géoréférencés dans le même système de coordonnées^[Un **système de coordonnées** est un référentiel dans lequel on peut représenter des éléments dans l'espace. Ce système permet de se situer sur l'ensemble du globe terrestre grâce à un couple de coordonnées géographiques.] ([WGS84](https://fr.wikipedia.org/wiki/WGS_84){target="_blank"}). Nous pouvons alors réaliser une [jointure spatiale](https://www.emse.fr/tice/uved/SIG/Glossaire/co/Jointure_spatiale.html){target="_blank"} qui permet de récupérer pour chaque musée, le [code ISO3](https://fr.wikipedia.org/wiki/ISO_3166-1){target="_blank"} du pays dans lequel il est situé. Pour cela, nous utilisons la fonction `st_intersection` du package `sf`.
+La couche géographique des musées ('musee_geo') et le fond de carte du monde ('monde') sont géoréférencés dans le même système de coordonnées^[Un **système de coordonnées** est un référentiel dans lequel on peut représenter des éléments dans l'espace. Ce système permet de se situer sur l'ensemble du globe terrestre grâce à un couple de coordonnées géographiques.] ([WGS84](https://fr.wikipedia.org/wiki/WGS_84){target="_blank"}). Nous pouvons alors réaliser une [jointure spatiale](https://www.emse.fr/tice/uved/SIG/Glossaire/co/Jointure_spatiale.html){target="_blank"} qui permet de récupérer pour chaque musée, le [code ISO3](https://fr.wikipedia.org/wiki/ISO_3166-1){target="_blank"} du pays dans lequel il est situé. Pour cela, nous utilisons la fonction `st_intersection` du *package* `sf`.
 
 ```{r jointure entre musées et pays,  eval=TRUE, echo=TRUE, include=TRUE, warning = FALSE}
 musee_geo <- st_intersection(musee_geo, monde[, "ADM0_A3"])
@@ -1081,7 +1082,7 @@ DT::datatable(st_drop_geometry(musee_geo)[1:4])
 
 ### Répartition par pays
 
-Nous pouvons réaliser une représentation graphique de la distibution spatiale des musées. Pour cela, nous calculons le nombre total d'œuvres exposées par pays :
+Nous pouvons réaliser une représentation graphique de la distribution spatiale des musées. Pour cela, nous calculons le nombre total d'œuvres exposées par pays :
 ```{r nombre d oeuvres par_pays,  eval=TRUE, echo=TRUE, include=TRUE}
 nb_oeuvres_pays <- musee_geo |> 
                       group_by(ADM0_A3) |> 
@@ -1095,6 +1096,7 @@ Nous pouvons ensuite construire le graphique :
 ggplot(data = nb_oeuvres_pays, 
        aes(x = reorder(ADM0_A3, -nb_oeuvres), y = nb_oeuvres, fill = ADM0_A3)) +
   geom_bar(stat = "identity") +
+  scale_y_continuous(n.breaks=8) +
   ggtitle("Nombre d'œuvres de Johannes Vermeer exposées, par pays") +
   xlab("") +
   ylab("") +
@@ -1185,14 +1187,14 @@ Carte 3 : **Lieux d'exposition de l'œuvre** ***A Young Woman Seated at the Virg
 
 ### Enrichissement des données
 
-De la même manière que dans la [partie 4.1.5](#enrichissement-des-données), nous enrichissons ces données en obtenant le pays de localisation de chaque musée. Pour cela, nous réalisons une jointure spatiale en utilisant la fonction `st_intersection` du package `sf`.
+De la même manière que dans la [partie 4.1.5](#enrichissement-des-données), nous enrichissons ces données en obtenant le pays de localisation de chaque musée. Pour cela, nous réalisons une jointure spatiale en utilisant la fonction `st_intersection` du *package*`sf`.
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning = FALSE}
 # Jointure spatiale points/pays
 data_geo <-st_intersection(data_geo, monde[,"ADM0_A3"])
 ```
 
-On vérifie que le code ISO3 du pays a bien été collecté pour chaque point (musée) :
+On vérifie que le code ISO3 du pays a bien été collecté pour chaque musée :
 
 ```{r,  eval=TRUE, echo=FALSE, include=TRUE}
 # Affichage du résultat
@@ -1202,7 +1204,7 @@ DT::datatable(st_drop_geometry(data_geo[c("museeLabel", "coord", "ADM0_A3")]))
 
 # Trajectoire spatio-temporelle
 
-Nous allons mainenant prendre en compte la dimension temporelle des données collectées, c'est à dire la période d'exposition du tableau *A Young Woman Seated at the Virginals* dans chaque musée, comme renseigné dans Wikidata.
+Nous allons maintenant prendre en compte la dimension temporelle des données collectées, c'est à dire la période d'exposition du tableau *A Young Woman Seated at the Virginals* dans chaque musée, comme renseigné dans Wikidata.
 
 
 ## Période d'exposition du tableau
@@ -1229,7 +1231,7 @@ data_musee <- data_geo |>
 ```
 
 
-Plusieurs informations collectées peuvent être cartographiées. Voici un exemple de carte interactive réalisée avec le package `tmap`, qui représente le nombre de jours d'exposition du tableau dans les différents musées. 
+Plusieurs informations collectées peuvent être cartographiées. Voici un exemple de carte interactive réalisée avec `tmap`, qui représente le nombre de jours d'exposition du tableau dans les différents musées. 
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 # Activation du mode de cartographie interactive
@@ -1264,7 +1266,7 @@ La carte précédente ne permet pas de rendre compte de la trajectoire spatio-te
 
 Pour cela, nous devons dans un premier temps choisir un pas de temps. La période de temps analysée est de presque 20 ans et le tableau peut avoir été exposé dans deux musées différents au cours d'un même mois. Nous choisissons donc de construire une carte animée réglée sur un pas de temps hebdomadaire, ce qui laissera le temps aux lecteur·rice·s de lire les informations affichées. 
 
-Un partir de ce pas de temps, nous créons un `data.frame` où chaque ligne représente une semaine calendaire située entre le 8 mars 2001 et le 13 Janvier 2019 à l'aide de la fonction `seq()`. Nous créons également des colonnes vides qui permettront de stocker l'ensemble des informations de localisation de l'œuvre pour chaque semaine. 
+Un partir de ce pas de temps, nous créons un `data.frame` où chaque ligne représente une semaine calendaire située entre le 8 mars 2001 et le 13 Janvier 2019 à l'aide de la fonction `seq()`. Nous créons également des colonnes vides qui permettront de conserver l'ensemble des informations de localisation de l'œuvre pour chaque semaine. 
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 data_semaine <- data.frame(semaine = seq(min(data_geo$dated), max(data_geo$datef), "week"),
@@ -1304,20 +1306,20 @@ data_semaine <- data_semaine |>
 
 ```
 
-**Affichage du tableau *data_semaine* crée :**
+**Affichage du `data.frame` *data_semaine* :**
 
 ```{r,  eval=TRUE, echo=FALSE, include=TRUE}
 # Affichage du tableau
 DT::datatable(data_semaine)
 ```
 
-Bien que ce tableau possède une colonne `geometry`, il s'agit d'un simple `data.frame`. Nous le convertissons en objet `sf` (couche géographique).
+Les coordonnées contenus dans la colonne `geometry` nous permettre de convertir ce `data.frame` en objet `sf` (couche géographique).
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 data_semaine <-st_as_sf(data_semaine)
 ```
 
-Les données sont prêtes pour créer une carte animée qui représente la localisation de l'œuvre pour chaque semaine calendaire de 2001 à 2019. Pour cela, nous utilisons le package `tmap`, son mode `plot` (cartographique statique), sa fonction `tm_facet` (génère plusieurs cartes en fonction d'une variable) et sa fonction `tmap_animation` pour créer une carte animée en format vidéo.
+Les données sont prêtes pour construire une carte animée qui représente la localisation de l'œuvre pour chaque semaine calendaire de 2001 à 2019. Pour cela, nous utilisons le *package* `tmap`, son mode `plot` (cartographique statique), sa fonction `tm_facet` (génère plusieurs cartes en fonction d'une variable) et sa fonction `tmap_animation` pour créer une carte animée en format vidéo.
 
 ```{r,  eval=FALSE, echo=TRUE, include=TRUE}
 # Cartographie en mode statique  
@@ -1353,9 +1355,19 @@ CARTE  <- tm_shape(monde) +                      # Ajout fond de carte monde
 
 Avec la fonction `tm_facet`, ce bout de code crée autant de cartes qu'il y a de lignes dans le tableau `data_semaine`.
 
-Il est ensuite très facile de convertir cet objet `list` qui contient l'ensemble des cartes produites en fichier mp4 avec la fonction `tmap_animation`. **Attention, la création d'un GIF ou d'une vidéo peut prendre plusieurs minutes.**
+Il est ensuite très facile de convertir cet objet `list` qui contient l'ensemble des cartes produites en fichier mp4 avec la fonction `tmap_animation`. 
+
+
+<div class="alert alert-danger" role="alert">
+
+<b> Attention, la création d'un GIF ou d'une vidéo peut prendre plusieurs minutes. L'installation du *package* `av` est nécessaire pour créer des vidéos avec la fonction `tmap_animation()`. Cette fonction permet également de créer des GIFs animés, mais il vous sera nécessaire d'installer le *package* `gifski` pour profiter de cette fonctionnalité</b>
+.</div>    
 
 ```{r,  eval=FALSE, echo=TRUE, include=TRUE}
+# Installation du package av
+install.packages("av")
+
+# Création du GIF
 tmap_animation(tm = CARTE, 
                filename = "figures/peinture_en_voyage.mp4", 
                width=800, 
@@ -1364,10 +1376,6 @@ tmap_animation(tm = CARTE,
                outer.margins = 0)
 ```
 
-<div class="alert alert-danger" role="alert">
-
-<b> L'installion du package `av` est nécessaire pour créer des vidéos avec la fonction `tmap_animation()`. Cette fonction permet également de créer des GIFs animés, mais il vous sera nécessaire d'installer le package `gifski` pour profiter de cette fonctionnalité</b>
-.</div>    
 
 **Voilà le résultat  !**
 
@@ -1383,7 +1391,7 @@ Carte 5 : **Carte animée de circulation de l'œuvre de Johannes Vermeer *A Youn
 
 Bien que la carte animée soit une représentation techniquement aboutie, elle ne transmet pas efficacement les informations sur la trajectoire spatio-temporelle du tableau de Johannes Vermeer au monde des musées. Une représentation statique et axée sur la dimension temporelle, comme une frise chronologique, nous semblerait plus appropriée.
 
-Il existe des packages spécialisés dans la construction de frise chronologique, comme par exemple [`vistime`](https://cran.r-project.org/web/packages/vistime/vignettes/vistime-vignette.html){target="_blank"}. Cependant, afin de s'assurer d'une certaine liberté pour la mise en forme de la frise, nous utilisons le package `ggplot2` pour concevoir et construire cette représentation graphique.
+Il existe des *packages* spécialisés dans la construction de frise chronologique, comme par exemple [`vistime`](https://cran.r-project.org/web/packages/vistime/vignettes/vistime-vignette.html){target="_blank"}. Cependant, afin de s'assurer d'une certaine liberté pour la mise en forme de la frise, nous utilisons le *package* `ggplot2` pour concevoir et construire cette représentation graphique.
 
 ## Préparation des données
 
@@ -1431,7 +1439,7 @@ DT::datatable(data_geo[, c(1,3,6,8)])
 Les variables utilisées pour l'axe des abscisses (x) et des ordonnées (y) sont définies comme suit dans la fonction `ggplot` :
 
 - X = date d'arrivée dans le musée ('dated');
-- y = nom du musée ('museeLabel.x').
+- y = nom du musée ('museeLabel.x');
 
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
@@ -1441,7 +1449,7 @@ ggplot(data_geo, aes(x = dated, y = museeLabel.x))
 
 La bibliothèque `ggplot2` fonctionne avec une syntaxe particulière (basée sur la [grammaire graphique](https://www.cultura.com/the-grammar-of-graphics-9780387987743.html){target="_blank"}). Il est possible d'ajouter des éléments de mise en forme du graphique au fur et à mesure.
 
-Nous commençons par préciser le type de géometrie (ici `geom_segment`) et les variables à représenter :
+Nous commençons par préciser le type de géométrie (ici `geom_segment`) et les variables à représenter :
 
 - color = pays de localisation ('ADM0_A3');
 - xend =  date de fin ('datef'), limite du segment en x ;
@@ -1449,11 +1457,11 @@ Nous commençons par préciser le type de géometrie (ici `geom_segment`) et les
 
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
-Frise <- ggplot(data_geo, aes(x = dated, y = museeLabel.x, color = pays)) +
+frise <- ggplot(data_geo, aes(x = dated, y = museeLabel.x, color = pays)) +
                     geom_segment(aes(xend = datef, yend = museeLabel.x, color =  pays), size = 6)
 
 # Affichage du graphique
-Frise
+frise
 ```
 
 
@@ -1463,17 +1471,17 @@ Frise
 Maintenant que la base du graphique a été réalisée, nous pouvons procéder à l'amélioration de sa mise en forme en plusieurs étapes :
 
 1. ajout des labels avec la fonction `geom_text` ;
-2. modification de la palette de couleurs avec la fonction `scale_color_manual` ;
+2. modification de la palette de couleurs avec la fonction `scale_color_manual`.
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE}
-Frise <-  Frise +
+frise <-  frise +
           # Ajout d'une étiquette pour chaque segment représenté
           geom_text(aes(label = museeLabel.y, hjust =1.05), size = 3.5, show.legend = FALSE) +
           # Modification de la palette de couleurs (ADM0_A3)
           scale_color_manual(values = c("#7570b3", "#e7298a", "#66a61e", "#e6ab02", "#a6761d","#1b9e77", "#d95f02"))
 
 # Affichage du graphique
-Frise
+frise
 ```
 
 Puis, à l'aide des fonctions `scale_x_date` `labs` et `theme` :
@@ -1483,7 +1491,7 @@ Puis, à l'aide des fonctions `scale_x_date` `labs` et `theme` :
 5. paramétrage de plusieurs éléments du 'thème' (repère, légende, axes, couleur de fond...).
 
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE}
-Frise <- Frise +
+frise <- frise +
   
           # Modification de l'axe des abscisses
           scale_x_date(date_labels = "%Y", date_breaks = "2 year", minor_breaks = "1 year",
@@ -1514,14 +1522,15 @@ Frise <- Frise +
                 plot.margin=unit(c(1,1,0.5,1),"cm"))
 
 # Affichage du graphique
-Frise
+frise
 ```
+
+<br />
 
 ### Finalisation de la mise en page
 
 Pour terminer la mise en forme de cette frise chronologique, l'illustration du tableau et son intitulé sont superposés au graphique. Les bibliothèques `jpeg` et `patchwork` nous permettent d'importer, puis d'insérer une image sur la représentation graphique.
 
-**Import de l'image du tableau dans *R* **
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 
 library(jpeg)
@@ -1529,12 +1538,12 @@ library(jpeg)
 img <- readJPEG("data/images/Q4660880.jpg", native = TRUE)
 ```
 
-**Superposition de l'image et de la représentation graphique**
+Superposition de l'image sur la représentation graphique :
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE}
 
 library(patchwork)
 
-Frise +
+frise +
   
   # Titre de l'image
   annotate("text", 
@@ -1554,24 +1563,23 @@ Frise +
 ```
 
 <center>
-Graphique 4 : **Trajectoire spatio-temporelle du tableau** ***A Young Woman Seated at the Virginals*** **au pays des musées, entre 2001 et 2019**
+Graphique 3 : **Trajectoire spatio-temporelle du tableau** ***A Young Woman Seated at the Virginals*** **au pays des musées, entre 2001 et 2019**
 </center>
 
 
 # À vous d'explorer !
 
-Nous vous proposons d'explorer vous-mêmes le contenu des données Wikidata. Le bout de code ci-dessous peut être adapté à n'importe quel·le artiste peintre renseigné·e dans Wikidata. Il suffit de **modifier l'identiant de l'artiste assigné·e dans l'objet `ID` et son nom dans l'objet `NOM`**.
+Nous vous proposons d'explorer vous-mêmes le contenu des données Wikidata. Le bout de code ci-dessous peut être adapté à n'importe quel·le artiste peintre renseigné·e dans Wikidata. **Il suffit de modifier l'identifiant de l'artiste assigné·e dans l'objet `ID` et son nom dans l'objet `NOM`**.
 
-Vous pouvez retrouver l'identifiant Wikidata d'un·e artiste peintre sur la page [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page){target="_blank"}. Indiquez le nom de l'artiste peintre dont vous souhaitez localiser les œuvres dans le champ de recherche. Veillez à bien récupérer l'identifiant correspondant à l'entité 'artiste'.
+<div class="alert alert-success" role="alert">
+Vous pouvez retrouver l'identifiant Wikidata d'un·e artiste peintre sur la page [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page){target="_blank"}. Indiquez le nom de l'artiste peintre dont vous souhaitez localiser les œuvres dans le champ de recherche. Veillez à bien récupérer l'identifiant correspondant à l'entité 'artiste'.</div>
 
 ## Code reproductible
 
-<div class="alert alert-success" role="alert">
-
-Copiez-collez les lignes de code suivantes dans une session Rstudio. Indiquez l'identifiant Wikidata de l'artiste de peintre de votre choix ainsi que son nom en début de programme, puis exécutez !</div>    
+Copiez-collez les lignes de code suivantes dans une session Rstudio. Indiquez l'identifiant Wikidata de l'artiste de peintre de votre choix ainsi que son nom en début de programme, puis exécutez !    
    
 
-Voici quelques exmples d'artistes peintres que vous pouvez requêter :    
+Voici quelques exemples d'artistes peintres que vous pouvez requêter :    
 
 - Salvador Dalí [Q5577](https://www.wikidata.org/wiki/Q5577){target="_blank"} ;    
 - Nandalal Bose [Q3348980](https://www.wikidata.org/wiki/Q3348980){target="_blank"} ;       
@@ -1601,27 +1609,18 @@ Voici quelques exmples d'artistes peintres que vous pouvez requêter :
 
 ######################################### CHOIX DE L'ARTISTE ######################################
 
+
 ID <- "Q5593"
 NOM <- "Pablo Picasso"
 
 
 #---------------------------------------------- REQUETE ------------------------------------------#
 
+library(WikidataQueryServiceR)
+
 # Construction de la requête SPARQL avec l'identifiant (ID) indiqué
-
- library(WikidataQueryServiceR)
-
-# Sélectionner les noms des oeuvres et musées et leurs coordonnées telles que
-#  { 
-#   l'oeuvre a pour peintre l'entité peintre ;             # chemin principal
-#     en option
-#      {
-#             l'oeuvre est localisée dans un musee .        # chemin optionnel
-#             ce musée a pour localisation les coordonnées  # chemin optionnel
-#      }
-#     en langue française et anglaise
-#  } 
- entite_peintre <- paste0("wd:",ID)
+entite_peintre <- paste0("wd:",ID)
+ 
  query <-  "SELECT ?oeuvreLabel ?museeLabel ?coord WHERE \
 {\
   ?oeuvre wdt:P170",entite_peintre," . \
@@ -1636,44 +1635,43 @@ NOM <- "Pablo Picasso"
     }\
 }"
 
- my_data <- query_wikidata(query)
+# Requête SPARQL
+my_data <- query_wikidata(query)
 
 
 #----------------------------------------- NETTOYAGE DONNEES -------------------------------------#
 
 # Suppression des doublons
- my_data <- my_data[!duplicated(my_data$oeuvreLabel), ]
+my_data <- my_data[!duplicated(my_data$oeuvreLabel), ]
 
 # Suppression entités (musées et institutions) sans coordonnées renseignées
- my_data <- my_data[!is.na(my_data$coord), ]
+my_data <- my_data[!is.na(my_data$coord), ]
+
 
 #-------------------------------------- REGROUPEMENT PAR MUSEE -----------------------------------#
 
- nb_oeuvre <- aggregate(oeuvreLabel ~ coord + museeLabel, data = my_data, FUN = length)
- colnames(nb_oeuvre)[3] <- "nb_oeuvre"
+nb_oeuvre <- aggregate(oeuvreLabel ~ coord + museeLabel, data = my_data, FUN = length)
+colnames(nb_oeuvre)[3] <- "nb_oeuvre"
+
 
 #----------------------------------------- GEOREFERENCEMENT --------------------------------------#
 
-
-# Chargement de la librairie sf
-
- library(sf)
+library(sf)
 
 # Création d'objets géographiques ponctuels à partir des coordonnées stockées en WKT
- geometry <- st_as_sfc(nb_oeuvre$coord, crs = 4326)
+geometry <- st_as_sfc(nb_oeuvre$coord, crs = 4326)
 
 # Création d'une couche géographique vectorielle (attributs des musées + géométries)
- nb_oeuvre_by_museum <- st_as_sf(nb_oeuvre, geometry)
+nb_oeuvre_by_museum <- st_as_sf(nb_oeuvre, geometry)
 
 
 
 #------------------------------- ENRICHISSEMENT - JOINTURE SPATIALE -----------------------------#
 
-#### Import de la couche géographique des pays
-
- library(rnaturalearth)
-
- monde <- ne_download(scale = "medium",
+library(rnaturalearth)
+ 
+# Import de la couche géographique des pays
+monde <- ne_download(scale = "medium",
                      type = "countries",
                      category = "cultural",
                      destdir = "data/world",
@@ -1682,19 +1680,17 @@ NOM <- "Pablo Picasso"
 
 
 
-#### Jointure spatiale
- nb_oeuvre_by_museum <-st_intersection(nb_oeuvre_by_museum , monde[,"ADM0_A3"])
+# Jointure spatiale
+nb_oeuvre_by_museum <-st_intersection(nb_oeuvre_by_museum , monde[,"ADM0_A3"])
 
 
 #---------------------------------- GRAPHIQUE NOMBRE ŒUVRES PAR PAYS ----------------------------#
 
-#### Regroupement par pays 
+# Regroupement par pays 
+by_country <- aggregate(nb_oeuvre ~ ADM0_A3 , data = nb_oeuvre_by_museum, FUN = sum)
 
- by_country <- aggregate(nb_oeuvre ~ ADM0_A3 , data = nb_oeuvre_by_museum, FUN = sum)
 
-
-#### Graphique 
-
+# Graphique 
 library(ggplot2)
 
  ggplot(data = by_country, aes(x = ADM0_A3, y = nb_oeuvre) )  +
@@ -1738,17 +1734,17 @@ NOM <- "Edvard Munch"
 
 ```
 
-Dans un premier temps, **le code permet de collecter l'ensemble des œuvres créees par l'artiste, ainsi que leurs localisations associées via une requête SPARQL**. Voici par exemple les données collectées pour Edvard Munch :
+Dans un premier temps, le code permet de collecter l'ensemble des œuvres créées par l'artiste, ainsi que leurs localisations associées via une requête SPARQL :
 
 ```{r,  eval=TRUE, echo=FALSE, include=TRUE, warning=FALSE, message=FALSE}
 ID <- "Q41406"
 NOM <- "Edvard Munch"
-# Sélectionner les noms des oeuvres et musées et leurs coordonnées telles que
+# Sélectionner les noms des œuvres et musées et leurs coordonnées telles que
 #  { 
-#   l'oeuvre a pour peintre l'entite_peintre ;              # chemin principal
+#   l’œuvre a pour peintre l’entité_peintre ;              # chemin principal
 #     en option
 #      {
-#             l'oeuvre est localisée dans un musee .        # chemin optionnel
+#             l’œuvre est localisée dans un musée .        # chemin optionnel
 #             ce musée a pour localisation les coordonnées  # chemin optionnel
 #      }
 #     en langue française et anglaise
@@ -1774,9 +1770,9 @@ DT::datatable(my_data)
 ```
 
 
-**Les données sont ensuite nettoyées des doublons et des œuvres qui ne sont jamais associées à des coordonnées géographiques précises, puis regroupées par musée :**
 
-```{r,  eval=TRUE, echo=FALSE, include=TRUE, warning=FALSE, message=FALSE}
+
+```{r,  eval=TRUE, echo=FALSE, include=FALSE, warning=FALSE, message=FALSE}
 
 my_data <- my_data[!duplicated(my_data$oeuvreLabel), ]
 my_data <- my_data[!is.na(my_data$coord), ]
@@ -1788,8 +1784,9 @@ DT::datatable(nb_oeuvre)
 ```
 
 
-**Les musées sont alors géoréférencés, ce qui permet de réaliser une jointure spatiale avec une couche géographique des pays, et ainsi d'obtenir leur pays de localisation. Le code produit également une représentation graphique de la répartition des expositions des œuvres par pays :** 
+<br />
 
+Les données collectées font ensuite l'objet de deux représentations graphiques :
 
 ```{r,  eval=TRUE, echo=FALSE, include=TRUE, warning=FALSE, message=FALSE}
 
@@ -1802,7 +1799,7 @@ library(ggplot2)
 
 ggplot(data = by_country, aes(x = ADM0_A3, y = nb_oeuvre) )  +
   geom_bar(stat="identity") +
-  ggtitle(paste0("Nombre d'œuvres de ", NOM ,", par pays")) +
+  ggtitle(paste0("Nombre d'œuvres de ", NOM ," exposé, par pays")) +
   xlab("") +
   ylab("") +
   theme(legend.position = "none",
@@ -1810,6 +1807,11 @@ ggplot(data = by_country, aes(x = ADM0_A3, y = nb_oeuvre) )  +
         axis.text.y = element_text(size=11))
 ```
 
+<center>
+Graphique 4 : **Nombre d'œuvres d'Edvard Munch exposé par pays, selon la base de données Wikidata (2024)**
+</center>
+
+<br />
 
 **Enfin, le code construit une carte interactive représentant le nombre d'œuvres exposées par musée :**
 ```{r,  eval=TRUE, echo=FALSE, include=TRUE, warning=FALSE, message=FALSE}
@@ -1831,7 +1833,7 @@ tm_symbols(size="nb_oeuvre",
 ```
 
 <center>
-Carte 6 : **Nombre d'œuvres d'Edvard Munch exposées par musée au cours du temps**
+Carte 6 : **Nombre d'œuvres d'Edvard Munch exposé par musée au cours du temps**
 </center>
 
 # Conclusion - Enjeux interdisciplinaires
@@ -1881,11 +1883,11 @@ query <- "SELECT DISTINCT ?url WHERE \
 WikidataQueryServiceR::query_wikidata(query)
 ```
 
-On remarquera qu'à la date de publication de ce notebook, la dernière date d'exposition mentionnée dans la source n'est pas encore reportée dans les données de wikidata.
+On remarquera qu'à la date de publication de cet article, la dernière date d'exposition mentionnée dans la source n'est pas encore reportée dans les données de Wikidata.
 
 Ainsi, le *notebook* sert de support du dialogue entre plusieurs disciplines, ici, l'histoire, la géographie et l'ingénierie des connaissances. 
 
-Le *notebook* est aussi le lieu d'un processus collaboratif productif de connaissances (synchrone ou asynchrone), devient un outil pédagogique - par la formation par la recherche grâce à sa transformation en artcle de méthode `rzine` et est susceptible de servir de méthodologie (ou "fil directeur") reproductible d'un processus similaire pour d'autres problématiques.
+Le *notebook* est aussi le lieu d'un processus collaboratif productif de connaissances (synchrone ou asynchrone), devient un outil pédagogique - par la formation par la recherche grâce à sa transformation en article de méthode `rzine` et est susceptible de servir de méthodologie (ou "fil directeur") reproductible d'un processus similaire pour d'autres problématiques.
 
 # Bibliographie {-}
 
