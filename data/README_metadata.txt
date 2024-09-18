@@ -13,21 +13,26 @@ Trois types de données sont mis à disposition :
 
 1. Les fichiers csv
 
-1.a. 'data1.csv' contient :  
-- "identifiant" : URL de la page wikidata de Johannes Vermeer (Q41264)
-- "image" : image Wikimédia associée Johannes Vermeer (autoportrait présumé de l'artiste)
+1.a. 'data1_WR.csv' contient :  
+- l'identifiant de l'artiste Johannes Vermeer (Q41264) - chaîne de caractères
 
-1.b. 'data2.csv' contient :  
+1.b. 'data1_WQSR.csv' contient :  
+- "identifiant" : URL de la page wikidata de Johannes Vermeer (Q41264) - chaîne de caractères
+
+2.a. 'data2_WR.csv' contient :  
+- "oeuvre" : identifiant wikidata des oeuvres - chaîne de caractères,
+- "musee" : identifiant wikidata des musées - chaîne de caractères,
+- "coord" : coordonnées des lieux d'exposition - chaîne de caractères au format WKT.  
+
+2.b. 'data2_WQSR.csv' contient :  
 - "oeuvreLabel" : intitulé des œuvres de Johannes Vermeer - chaîne de caractères,  
 - "museeLabel" : nom des différents lieux d'exposition (musées) des œuvres - chaîne de caractères,  
 - "coord" : coordonnées des lieux d'exposition - chaîne de caractères au format WKT.  
 
-1.c. 'data.csv' contient :
-- "image" : url de l'image de l’œuvre - chaîne de caractères,  
-- "nomLabel" : nom du lieu d'exposition de l’œuvre (musée) - chaîne de caractères, 
+3. 'data3_WQSR' contient :
+- "museeLabel" :  nom des différents lieux d'exposition (musées) des œuvres - chaîne de caractères,
 - "dated" et "datef" : dates respectivement de début et de fin de l'exposition de l’œuvre - chaîne de caractères au format date 'JJJJ-MM-AA',  
 - "coord" : coordonnées du lieu d'exposition - chaîne de caractères au format WKT.  
-
 
 
 

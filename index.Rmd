@@ -205,7 +205,7 @@ Les *packages* utilisés pour réaliser l'ensemble de la chaîne de traitement p
 - `dplyr` : pour la manipulation des données ;     
 - `mapview` : pour l'affichage interactif de données géographiques (repose sur la librairie [JavaScript Leaflet](https://leafletjs.com/){target="_blank"}) ;  
 - `tmap` : pour la création de cartes thématiques ;  
-- `ggplot2` : permet la production de graphiques basés sur la [grammaire graphique](https://link.springer.com/book/10.1007/0-387-28695-0){target="_blank"} ;  
+- `ggplot2` : permet la production de graphiques basés sur la grammaire graphique [@wilkinson05] ;  
 - `av` : génère des vidéos à partir d'images ou de graphiques R ;  
 - `patchwork` : permet de combiner plusieurs graphiques `ggplot2` dans la fenêtre graphique ;  
 - `jpeg` : permet l'import, l'enregistrement et l'affichage des images matricielles (format bitmap) ;  
@@ -236,7 +236,7 @@ liste_packages_a_installer <- liste_packages[!(liste_packages %in% installed.pac
 install.packages(liste_packages_a_installer)
 ```
 
-<div class="alert alert-info" role="alert">Le *package* `glitter`  développé par Lise Vaudor permet l'écriture de requêtes SPARQL dans un formalisme proche de pratiques associées au langage R sans maîtriser la syntaxe SPARQL, pour sonder divers graphes (dont Wikidata). Celui-ci n'est pas disponible sur le CRAN.</div> 
+<div class="alert alert-danger" role="alert">Le *package* `glitter`  développé par Lise Vaudor permet l'écriture de requêtes SPARQL dans un formalisme proche de pratiques associées au langage R sans maîtriser la syntaxe SPARQL, pour sonder divers graphes (dont Wikidata). Celui-ci n'est pas disponible sur le CRAN.</div> 
 
 
 L'ensemble des informations du système d"exploitation et des versions de *packages* utilisés pour générer ce *notebook* est disponible en <a href="#info-session">fin de document</a>.   
@@ -420,6 +420,13 @@ data1_WR <- WikidataR::query_wikidata(query)
 DT::datatable(data1_WR)
 ```
 
+
+```{r inscription des donnees relatives au peintre 1,  eval=TRUE, echo=FALSE, include=FALSE}
+write.csv(x = data1_WR, file = "data/data1_WR.csv", row.names = FALSE)
+data1_WR <- read.csv("data/data1_WR.csv", row.names = NULL)
+```
+
+
 ### WikidataQueryServiceR {-}
 
 Exécution de la requête avec `WikidataQueryServiceR` :
@@ -504,17 +511,23 @@ DT::datatable(data2_WR)
 ```
 
 
+
+```{r inscription des données sur les oeuvres 1,  eval=TRUE, echo=FALSE, include=FALSE}
+write.csv(x = data2_WR, file = "data/data2_WR.csv", row.names = FALSE)
+data2_WR <- read.csv("data/data2_WR.csv", row.names = NULL)
+```
+
 #### WikidataQueryServiceR {-}
 
 
 ```
 Sélectionner les noms des données oeuvre, musée et les coordonnées telles que { 
-      l'oeuvre a pour peintre Johannes Vermeer;               # chemin principal
-      en option {
-                  l'oeuvre est localisée dans un musee          # chemin optionnel
-                  ce musée a pour localisation les coordonnées  # chemin optionnel
+    l'oeuvre a pour peintre Johannes Vermeer;                 # chemin principal
+    en option {
+                l'oeuvre est localisée dans un musee           # chemin optionnel
+                ce musée a pour localisation les coordonnées   # chemin optionnel
                 }
-     en langue anglaise (en)                                    # service Wikilabel
+    en langue anglaise (en)                                    # service Wikilabel
 } 
 ```
 
@@ -548,6 +561,7 @@ DT::datatable(data2_WQSR)
 write.csv(x = data2_WQSR, file = "data/data2_WQSR.csv", row.names = FALSE)
 data2_WQSR <- read.csv("data/data2_WQSR.csv", row.names = NULL)
 ```
+
 
 <br />
 
@@ -593,10 +607,10 @@ Pour bien comprendre la différence entre l'interrogation "en surface" du graphe
 
 ```
 Sélectionner les données oeuvre et leur nom telles que { 
-      l'oeuvre a pour créateur le peintre Johannes Vermeer;  # chemin principal
-      en langue anglaise   (en)                              # service Wikilabel
+   l'oeuvre a pour créateur le peintre Johannes Vermeer;  # chemin principal
+   en langue anglaise   (en)                              # service Wikilabel
 } 
-par ordre décroissant      
+par ordre décroissant       # ordonne        
 ```
 
 ```{r requete sparql nombre d oeuvres attribuées à Vermeer en valeur simple, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
@@ -779,7 +793,7 @@ knitr::include_graphics('figures/modele_interroge_qualifier_b.png')
 ```
 
 <center>
-Figure 8 : *Classes et propriétés spécifiques de Wikidata mobilisées pour la localisation spatio-temporelle dans le cas d'une déclaration (*statement*).*
+Figure 8 : *Classes et propriétés spécifiques de Wikidata mobilisées pour la localisation spatio-temporelle dans le cas d'une déclaration (statement).*
 </center>
 </br>    
 
@@ -832,9 +846,9 @@ data3_WQSR <- WikidataQueryServiceR::query_wikidata(query)
 
 ```{r inscription des données de trajectoire,  eval=TRUE, echo=TRUE, include=TRUE}
 # Enregistrement des données en format csv
-write.csv(x = data3_WQSR, file = "data/data.csv", row.names = FALSE)
+write.csv(x = data3_WQSR, file = "data/data3_WQSR.csv", row.names = FALSE)
 # Import du fichier de données enregistrées
-data3_WQSR <- read.csv("data/data.csv", row.names = NULL)
+data3_WQSR <- read.csv("data/data3_WQSR.csv", row.names = NULL)
 ```
 
 
@@ -910,13 +924,13 @@ Les données issues de la seconde requête SPARQL (*data2_WQSR*) listent l'ensem
 Dans cette partie, nous allons uniquement nous intéresser à la dimension spatiale des données collectées, sans prendre en compte la dimension temporelle. Si aucune coordonnée géographique n'est renseignée (cf. [partie 3.3](#lister-les-œuvres-du-peintre-et-trouver-leurs-localisations-géographiques)), nous ne prendrons pas en compte le musée recensé. En revanche, nous considérons l'ensemble des localisations comportant des coordonnées géographiques, peu importe la temporalité qui leur est associée.
 
 
-**Commençons par supprimer les localisations (musée ou institution) qui ne sont pas associées à des coordonnées géographiques dans Wikidata ** :
+Commençons par supprimer les localisations (musée ou institution) qui ne sont pas associées à des coordonnées géographiques dans Wikidata :
 ```{r nettoyage des données de localisation,  eval=TRUE, echo=TRUE, include=TRUE}
 data2_WQSR <- data2_WQSR[!is.na(data2_WQSR$coord), ]
 ```
 
 
-**Nous pouvons ensuite supprimer les doublons**, que l'on peut expliquer par le fait qu'une œuvre ait pu être exposée à plusieurs reprises dans un même musée, ou qu'un même lieu ait pu être renseigné par plusieurs couples de coordonnées géographiques dans Wikidata.
+Nous pouvons ensuite supprimer les doublons, que l'on peut expliquer par le fait qu'une œuvre ait pu être exposée à plusieurs reprises dans un même musée, ou qu'un même lieu ait pu être renseigné par plusieurs couples de coordonnées géographiques dans Wikidata.
 
 Pour cela, nous utilisons la fonction `duplicated`, appliquée au couple  "nom de l'œuvre + lieu d'exposition"
 
@@ -1067,13 +1081,13 @@ Les attributs des entités (pays) de la couche géographique récupérée sont l
 DT::datatable(monde)
 ```
 
-La couche géographique des musées ('musee_geo') et le fond de carte du monde ('monde') sont géoréférencés dans le même système de coordonnées^[Un **système de coordonnées** est un référentiel dans lequel on peut représenter des éléments dans l'espace. Ce système permet de se situer sur l'ensemble du globe terrestre grâce à un couple de coordonnées géographiques.] ([WGS84](https://fr.wikipedia.org/wiki/WGS_84){target="_blank"}). Nous pouvons alors réaliser une [jointure spatiale](https://www.emse.fr/tice/uved/SIG/Glossaire/co/Jointure_spatiale.html){target="_blank"} qui permet de récupérer pour chaque musée, le [code ISO3](https://fr.wikipedia.org/wiki/ISO_3166-1){target="_blank"} du pays dans lequel il est situé. Pour cela, nous utilisons la fonction `st_intersection` du *package* `sf`.
+La couche géographique des musées ('musee_geo') et le fond de carte du monde ('monde') sont géoréférencés dans le même système de coordonnées^[Un **système de coordonnées** est un référentiel dans lequel on peut représenter des éléments dans l'espace. Ce système permet de se situer sur l'ensemble du globe terrestre grâce à un couple de coordonnées géographiques.] ([WGS84](https://fr.wikipedia.org/wiki/WGS_84){target="_blank"}). Nous pouvons alors réaliser une jointure spatiale^[Une **jointure spatiale** associe des champs (variables) et des valeurs attributaires d’une couche SIG à une table d’une autre donnée géographique. L’association entre la table attributaire de la couche source et la table jointe se réalise en fonction de la relation spatiale entre les différentes géométries des deux vecteurs concernés. La clé de jointure n’est pas un caractère mais une relation géographique entre les éléments localisés.] qui permet de récupérer pour chaque musée, le [code ISO3](https://fr.wikipedia.org/wiki/ISO_3166-1){target="_blank"} du pays dans lequel il est situé. Pour cela, nous utilisons la fonction `st_intersection` du *package* `sf`.
 
 ```{r jointure entre musées et pays,  eval=TRUE, echo=TRUE, include=TRUE, warning = FALSE}
 musee_geo <- st_intersection(musee_geo, monde[, "ADM0_A3"])
 ```
 
-**Cela permet d'ajouter le code ISO3 du pays de localisation ("ADM0_A3") à la couche géographique des musées :**
+Cette opération permet d'ajouter le code ISO3 du pays de localisation ("ADM0_A3") à la couche géographique des musées :
 ```{r affichage des données iso,  eval=TRUE, echo=FALSE, include=TRUE}
 DT::datatable(st_drop_geometry(musee_geo)[1:4])
 ```
@@ -1397,13 +1411,13 @@ Il existe des *packages* spécialisés dans la construction de frise chronologiq
 
 Une mise en forme des données est nécessaire pour construire ce type de frise chronologique avec `ggplot2`. Par exemple, le tri des données est important pour gérer l'ordre d'apparition des individus et des modalités sur le graphique.
 
-**Tri du tableau en fonction de la date** ('dated') d'arrivée dans chaque musée.
+Tri du tableau en fonction de la date ('dated') d'arrivée dans chaque musée.
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 data_geo <- data_geo[order(data_geo$dated, decreasing = FALSE), ] 
 ```
 
 
-**Tri d'ordre d'apparition des modalités (levels)** pour les variables 'nomLabel' (= 'musee') et 'ADM0_A3' (= 'pays') que l'on transforme en `factor`.
+Tri d'ordre d'apparition des modalités (levels) pour les variables 'nomLabel' (= 'musee') et 'ADM0_A3' (= 'pays') que l'on transforme en `factor`.
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE}
 # Tri des "levels" des musées
 data_geo$museeLabel <- ordered(as.factor(data_geo$museeLabel), levels = unique(data_geo$museeLabel))
@@ -1447,7 +1461,7 @@ ggplot(data_geo, aes(x = dated, y = museeLabel.x))
 ```
 
 
-La bibliothèque `ggplot2` fonctionne avec une syntaxe particulière (basée sur la [grammaire graphique](https://www.cultura.com/the-grammar-of-graphics-9780387987743.html){target="_blank"}). Il est possible d'ajouter des éléments de mise en forme du graphique au fur et à mesure.
+La bibliothèque `ggplot2` fonctionne avec une syntaxe particulière. Il est possible d'ajouter des éléments de mise en forme du graphique au fur et à mesure.
 
 Nous commençons par préciser le type de géométrie (ici `geom_segment`) et les variables à représenter :
 
@@ -1540,26 +1554,23 @@ img <- readJPEG("data/images/Q4660880.jpg", native = TRUE)
 
 Superposition de l'image sur la représentation graphique :
 ```{r,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE}
-
 library(patchwork)
 
-frise +
+        # Titre de l'image
+frise + annotate("text", 
+                 x = as.Date("1997-03-01"), 
+                 y = 7, 
+                 colour = "#FFFFFF", 
+                 size = 3.4,
+                 label = "Young Woman Seated\nat a Virginal  (1670)") +
   
-  # Titre de l'image
-  annotate("text", 
-           x = as.Date("1997-03-01"), 
-           y = 7, 
-           colour = "#FFFFFF", 
-           size = 3.4,
-           label = "Young Woman Seated\nat a Virginal  (1670)") +
-  
-  # Insertion de l'image
-  inset_element(p = img, 
-                clip = TRUE, 
-                left = 0.04, 
-                right = 0.27, 
-                top = 0.95, 
-                bottom = 0.46)
+         # Insertion de l'image
+         inset_element(p = img, 
+                       clip = TRUE, 
+                       left = 0.04, 
+                       right = 0.27, 
+                       top = 0.95, 
+                       bottom = 0.46)
 ```
 
 <center>
