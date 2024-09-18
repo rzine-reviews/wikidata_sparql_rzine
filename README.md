@@ -1,8 +1,9 @@
-# Histoire de cadre : élaboration d'une *trajectoire* spatio-temporelle [<img src="https://rzine.fr/img/Rzine_logo.png"  align="right" width="120"/>](http://rzine.fr/)
-### Exemple appliqué d'un notebook avec R sur des données Wikidata
-**Raphaëlle KRUMMEICH (Identité et Différenciation de l''Espace, de l'Environnement et des Sociétés (UMR 6266) - université de Rouen Normandie, CNRS)**  
-**Hugues PECOUT (Collège International des Sciences Territoriales (FR 2007)- CNRS)**  
-**Sébastien REY-COYREHOURCQ (Identité et Différenciation de l''Espace, de l'Environnement et des Sociétés (UMR 6266) - université de Rouen Normandie, CNRS)**
+# *Spatio-temporal Wikidata*. Exploration de données ouvertes et liées du web 3.0 [<img src="https://rzine.fr/img/Rzine_logo.png"  align="right" width="120"/>](http://rzine.fr/)
+### Histoire de cadre : élaboration d'une trajectoire spatio-temporelle
+**Raphaëlle KRUMMEICH (UMR IDEES, Université de Rouen Normandie)**  
+**Hugues PECOUT (UMR Géographie-Cités, CNRS)**  
+**Sébastien REY-COYREHOURCQ (UMR IDEES, Université de Rouen Normandie)** 
+
 <br/>  
 
 L'objectif de ce document computationnel (notebook *R* ou *R Markdown*) est de partager une analyse exploratoire de données, suffisamment détaillée pour être intelligible pour un large public et reproductible à l'identique sur sa machine. 
