@@ -1,4 +1,4 @@
-## *Spatio-temporal Wikidata*. Exploration de données ouvertes et liées du web 3.0 [<img src="https://rzine.fr/img/Rzine_logo.png"  align="right" width="120"/>](http://rzine.fr/)
+## *Spatio-temporal Wikidata*. Exploration de données ouvertes et liées du web 3.0  [<img src="https://rzine.fr/assets/img/rzine.png"  align="right" width="120"/>](http://rzine.fr/)
 ### Histoire de cadre : élaboration d'une trajectoire spatio-temporelle
 
 **Raphaëlle KRUMMEICH (UMR IDEES, Université de Rouen Normandie)**  
