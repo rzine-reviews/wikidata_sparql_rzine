@@ -69,7 +69,8 @@ Compte-tenu du [formalisme](https://www.wikidata.org/wiki/Wikidata:WikiProject_O
 
 # Wikimédia, Wikidata & W3C
 ## Données ouvertes et liées du graphe Wikidata
-Wikidata est une base de connaissances libre, éditée de manière collaborative et hébergée par la [fondation Wikimedia](https://wikimediafoundation.org/fr/){target="_blank"}. Son contenu étant placé sous [licence CC0](https://creativecommons.org/publicdomain/zero/1.0/deed.fr){target="_blank"} (« Transfert dans le Domaine Public »), elle permet de centraliser l'accès aux données utilisées par différents [projets Wikimedia](https://www.wikimedia.fr/les-projets-wikimedia/){target="_blank"} (@frwiki:186068284).
+
+> Wikidata est une base de connaissances libre, éditée de manière collaborative et hébergée par la [fondation Wikimedia](https://wikimediafoundation.org/fr/){target="_blank"}. Son contenu étant placé sous [licence CC0](https://creativecommons.org/publicdomain/zero/1.0/deed.fr){target="_blank"} (« Transfert dans le Domaine Public »), elle permet de centraliser l'accès aux données utilisées par différents [projets Wikimedia](https://www.wikimedia.fr/les-projets-wikimedia/){target="_blank"} (@frwiki:186068284).
 
 Les informations saisies dans Wikidata sont des données ouvertes “brutes” multilingues non-supervisées qui sont liées, notamment aux articles de l'encyclopédie contributive Wikipedia. Wikidata est à différencier de l'ontologie DBpedia^[DBpedia est une ontologie permettant de traduire Wikipedia en dépôts de données définis dans le cadre de description des ressources du standard *Ressources Description Framework* (RDF) du *World Wide Web Consortium*^[Le **World Wide Web Consortium**, abrégé par le sigle **W3C**, est un organisme de standardisation à but non lucratif, fondé en octobre 1994 chargé de promouvoir la compatibilité des technologies du *World Wide Web* telles que HTML5, HTML, XHTML, XML, RDF, SPARQL, CSS, XSL, PNG, SVG, MathML et SOAP.] (W3C)] (figure 1) au sens où l'ontologie sous-jacente de Wikidata n'est pas formalisée à priori - ce qui est le cas de DBpedia, mais elle émerge des usages et pratiques de la communauté Wikidata. En effet, les deux dispositifs à vocation encyclopédique diffèrent dans leurs finalités initiales. DBpedia est un effort de la communauté scientifique pour extraire des informations structurées  du projet encyclopédique Wikipedia et les lier à d'autres formalismes de données du web sémantique. Wikidata est un dispositif de *curation*^[Le terme de *curation* est un anglicisme désignant une activité de type archivistique ou de conservation muséale ou patrimoniale qui a pour objectif de décrire et de classer des objets pour les conserver et les rendre accessibles, le cas échéant. Le terme est issu du domaine médical au sens de prendre soin en opérant une stratégie curative. La *curation* de données peut-être décrite comme une activité de description d'une donnée ou plus précisément d'une ressource du web au moyen de métadonnées, c'est à dire de produire des données sur des données. Cette activité s'appuie en général sur des normes ou des règles de l'art des divers métiers. Dans le champ du catalogage informatique, une des plus anciennes normes est le Dublin Core.] ou d'annotation de données par les contributeurs et contributrices de Wikipedia ou Wikidata.
 ```{r figure 1, out.width="80%",  fig.align = 'center',  echo=FALSE, purl = FALSE }
@@ -234,6 +235,10 @@ liste_packages_a_installer <- liste_packages[!(liste_packages %in% installed.pac
 
 # Installation des packages manquants
 install.packages(liste_packages_a_installer)
+
+# Pour les versions les plus récentes de RStudio
+# see https://stackoverflow.com/questions/78402917/compiling-error-for-packages-installation-after-updating-to-r-4-4-on-ubuntu-22-0 et, le cas échéant, décommenter ci-dessous.
+# install.packages("progress")
 ```
 
 <div class="alert alert-danger" role="alert">Le *package* `glitter`  développé par Lise Vaudor permet l'écriture de requêtes SPARQL dans un formalisme proche de pratiques associées au langage R sans maîtriser la syntaxe SPARQL, pour sonder divers graphes (dont Wikidata). Celui-ci n'est pas disponible sur le CRAN.</div> 

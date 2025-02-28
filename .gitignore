@@ -3,4 +3,7 @@
 .RData
 .Ruserdata
 figures/*.svg
+data
+*.html
+*.Rproj
 index_last.*
