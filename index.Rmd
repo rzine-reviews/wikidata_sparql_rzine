@@ -501,9 +501,9 @@ Formalisation de la recherche des œuvres de Vermeer, musées et de leur localis
 
 ```
 Sélectionner les données œuvre, musée et coordonnées telles que {
-    l'oeuvre a pour peintre Johannes Vermeer;               # chemin principal
+    l'œuvre a pour peintre Johannes Vermeer;               # chemin principal
     en option {
-                 l'oeuvre est localisée dans un musee          # chemin optionnel
+                 l'œuvre est localisée dans un musee          # chemin optionnel
                  ce musée a pour localisation les coordonnées  # chemin optionnel
               }
 }
@@ -558,7 +558,7 @@ DT::datatable(data2_WR)
 
 
 
-```{r inscription des données sur les oeuvres 1,  eval=TRUE, echo=FALSE, include=FALSE}
+```{r inscription des données sur les œuvres 1,  eval=TRUE, echo=FALSE, include=FALSE}
 write.csv(x = data2_WR, file = "data/data2_WR.csv", row.names = FALSE)
 data2_WR <- read.csv("data/data2_WR.csv", row.names = NULL)
 ```
@@ -569,9 +569,9 @@ Formalisation de la recherche des œuvres de Vermeer, musées et de leur localis
 
 ```
 Sélectionner les noms des données oeuvre, musée et les coordonnées telles que { 
-    l'oeuvre a pour peintre Johannes Vermeer;                 # chemin principal
+    l'œuvre a pour peintre Johannes Vermeer;                 # chemin principal
     en option {
-                l'oeuvre est localisée dans un musee           # chemin optionnel
+                l'œuvre est localisée dans un musee           # chemin optionnel
                 ce musée a pour localisation les coordonnées   # chemin optionnel
                 }
     en langue anglaise (en)                                    # service Wikilabel
@@ -607,7 +607,7 @@ knitr::include_graphics('figures/query_highlight_wikidata_3.png')
 
 Assignation de la requête dans R sous forme de chaîne de caractère dans un objet et exécution de la requête :
 
-```{r requete sparql oeuvres de Vermeer et musées, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+```{r requete sparql œuvres de Vermeer et musées, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 query_label <- "SELECT ?oeuvreLabel ?museeLabel ?coord WHERE \
                  { \
                    ?oeuvre wdt:P170 wd:Q41264 . \
@@ -633,7 +633,7 @@ data2_WQSR <- query_wikidata(query_label)
 DT::datatable(data2_WQSR)
 ```
 
-```{r inscription des données sur les oeuvres,  eval=TRUE, echo=FALSE, include=FALSE}
+```{r inscription des données sur les œuvres,  eval=TRUE, echo=FALSE, include=FALSE}
 write.csv(x = data2_WQSR, file = "data/data2_WQSR.csv", row.names = FALSE)
 data2_WQSR <- read.csv("data/data2_WQSR.csv", row.names = NULL)
 ```
@@ -681,11 +681,11 @@ Pour bien comprendre la différence entre l'interrogation "en surface" du graphe
 
 #### Valeurs simples ou "quasi-vérités" {-}
 
-Formalisation de la recherche d'une liste ordonnée des oeuvres de Vermeer, en langue anglaise, mobilisant le préfixe Wikidata `wdt` associé aux valeurs simples :
+Formalisation de la recherche d'une liste ordonnée des œuvres de Vermeer, en langue anglaise, mobilisant le préfixe Wikidata `wdt` associé aux valeurs simples :
 
 ```
-Sélectionner les données oeuvre et leur nom telles que { 
-   l'oeuvre a pour créateur le peintre Johannes Vermeer;  # chemin principal
+Sélectionner les données œuvre et leur nom telles que { 
+   l'œuvre a pour créateur le peintre Johannes Vermeer;  # chemin principal
    en langue anglaise   (en)                              # service Wikilabel
 } 
 par ordre décroissant       # ordonne        
@@ -717,7 +717,7 @@ knitr::include_graphics('figures/query_highlight_wikidata_4.png')
 
 Assignation de la requête dans R sous forme de chaîne de caractère dans un objet et exécution de la requête :
 
-```{r requete sparql nombre d oeuvres attribuées à Vermeer en valeur simple, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
+```{r requete sparql nombre d œuvres attribuées à Vermeer en valeur simple, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 
 query_valeur_simple <- "SELECT  ?oeuvre ?oeuvreLabel WHERE \
                         { \
@@ -735,17 +735,17 @@ resultats_oeuvres_valeur_simple <- WikidataQueryServiceR::query_wikidata(query_v
 
 Nombre d’œuvres associées avec une valeur simple :
 
-```{r Nombre oeuvres associées avec une valeur simple, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
+```{r Nombre œuvres associées avec une valeur simple, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 nrow(resultats_oeuvres_valeur_simple)
 ``` 
 
 #### Valeurs complexes ou déclarations {-}
 
-Formalisation de la recherche d'une liste ordonnée des oeuvres de Vermeer, en langue anglaise, mobilisant les préfixes Wikidata `p/ps` associé aux déclarations (valeurs complexes) :
+Formalisation de la recherche d'une liste ordonnée des œuvres de Vermeer, en langue anglaise, mobilisant les préfixes Wikidata `p/ps` associé aux déclarations (valeurs complexes) :
 
 ```
-Sélectionner les données oeuvre et leur nom telles que { 
-   l'oeuvre est liée à une assertion de création au peintre Johannes Vermeer; # chemin principal
+Sélectionner les données œuvre et leur nom telles que { 
+   l'œuvre est liée à une assertion de création au peintre Johannes Vermeer; # chemin principal
    en langue anglaise   (en)                                                  # service Wikilabel
 } 
 par ordre décroissant       # ordonne     
@@ -793,7 +793,7 @@ resultats_oeuvres_exhaustif <- WikidataQueryServiceR::query_wikidata(query_decla
 
 Nombre d’œuvres associées avec une assertion exhaustive :
 
-```{r nombre d oeuvres attribuées à Vermeer par asertion, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
+```{r nombre d œuvres attribuées à Vermeer par asertion, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 nrow(resultats_oeuvres_exhaustif)
 ```
 
@@ -805,7 +805,7 @@ La requête effectuée sur le graphe renvoie 2 résultats différents :
 
 En différenciant les modalités d'interrogation associées aux différents types de prédicats d'attribution des œuvres à Vermeer, il est possible de connaître la liste de ces œuvres objets d'une assertion au sein du fragment de graphe Wikidata, qui ne sont pas des valeurs simples, voir figure 7) :
 
-```{r identification des oeuvres attribuées par assertion et non par valeur simple, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
+```{r identification des œuvres attribuées par assertion et non par valeur simple, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 subset(resultats_oeuvres_exhaustif, !oeuvre %in% resultats_oeuvres_valeur_simple$oeuvre)
 ```
 Cette différence de résultat peut conduire à poursuivre l'investigation du corpus tel que modélisé et instancié dans le graphe Wikidata. Par exemple, pour connaître la nature de la relation de ces œuvres au peintre Johannes Vermeer (sont-elles réellement de Vermeer ?), il est possible de sonder le fragment de graphe sur d'autres valeurs, notamment au moyen :
@@ -828,16 +828,16 @@ Pour choisir l'œuvre de Vermeer qui a le plus voyagé, nous allons voir ici que
 
 #### "à la surface" du graphe {-}
 
-Formalisation de la recherche d'une liste ordonnée du nombre de musées où se trouvent un oeuvre de Vermeer, en langue anglaise, mobilisant le préfixe Wikidata `wdt` associé aux valeurs simples pour les musées :
+Formalisation de la recherche d'une liste ordonnée du nombre de musées où se trouvent une œuvre de Vermeer, en langue anglaise, mobilisant le préfixe Wikidata `wdt` associé aux valeurs simples pour les musées :
 
 ```
-Sélectionne le nom des données oeuvre et compte leur nombre de coordonnées distinctes telles que {
-    l'oeuvre a pour créateur le peintre Johannes Vermeer;      # chemin principal
+Sélectionne le nom des données œuvre et compte leur nombre de coordonnées distinctes telles que {
+    l'œuvre a pour créateur le peintre Johannes Vermeer;      # chemin principal
                     localisation un musée.                     # chemin principal
     ce musée a pour localisation les coordonnées        # chemin principal (fin)
     en langue anglaise (en)                             # service Wikilabel
 } 
-pour chaque nom d'oeuvre     # groupe
+pour chaque nom d'œuvre     # groupe
 par ordre décroissant        # ordonne
 ```
 
@@ -868,7 +868,7 @@ knitr::include_graphics('figures/query_highlight_wikidata_6.png')
 
 Assignation de la requête dans R sous forme de chaîne de caractère dans un objet et exécution de la requête :
 
-```{r requete sparql identification du nombre de localisation par oeuvre en valeur simple, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+```{r requete sparql identification du nombre de localisation par œuvre en valeur simple, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 query <- "SELECT ?oeuvreLabel \
                   (COUNT(DISTINCT?coord) AS ?count) WHERE \
           { \
@@ -889,22 +889,22 @@ metadonnees_localisation_oeuvres_valeur_simple <- WikidataQueryServiceR::query_w
 
 **Données récupérées :**
 
-```{r result identification du nombre de localisation par oeuvre en valeur simple, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, include=TRUE}
+```{r result identification du nombre de localisation par œuvre en valeur simple, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, include=TRUE}
  DT::datatable(metadonnees_localisation_oeuvres_valeur_simple)
 ```
 
 #### dans la partie "immergée" du graphe {-}
 
-Formalisation de la recherche d'une liste ordonnée du nombre de musées où se trouvent un oeuvre de Vermeer, en langue anglaise, mobilisant les préfixes Wikidata `p/ps` associés aux valeurs complexes ou déclarations pour les musées :
+Formalisation de la recherche d'une liste ordonnée du nombre de musées où se trouvent une œuvre de Vermeer, en langue anglaise, mobilisant les préfixes Wikidata `p/ps` associés aux valeurs complexes ou déclarations pour les musées :
 
 ```
-Sélectionne le nom des données oeuvre et compte leur nombre de coordonnées distinctes telles que { 
-    l'oeuvre est liée à une assertion de création au peintre Johannes Vermeer;   # chemin principal
+Sélectionne le nom des données œuvre et compte leur nombre de coordonnées distinctes telles que { 
+    l'œuvre est liée à une assertion de création au peintre Johannes Vermeer;   # chemin principal
                                       de localisation au musée.                  # chemin principal
     ce musée a pour localisation les coordonnées        # chemin principal (fin)
     en langue anglaise (en)                             # service Wikilabel
 } 
-pour chaque nom d'oeuvre     # groupe
+pour chaque nom d'œuvre     # groupe
 par ordre décroissant        # ordonne
 ```
 Écriture de la requête en SPARQL :
@@ -934,7 +934,7 @@ knitr::include_graphics('figures/query_highlight_wikidata_7.png')
 
 Assignation de la requête dans R sous forme de chaîne de caractère dans un objet et exécution de la requête :
 
-```{r requete sparql identification du nombre de localisation par oeuvre par assertion, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
+```{r requete sparql identification du nombre de localisation par œuvre par assertion, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 query <- "SELECT ?oeuvreLabel \
                   (COUNT(DISTINCT?coord) AS ?count) WHERE \
           { \
@@ -955,7 +955,7 @@ metadonnees_localisation_oeuvres <- WikidataQueryServiceR::query_wikidata(query)
 
 **Données récupérées :**
 
-```{r result2 sparql identification du nombre de localisation par oeuvre par assertion, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, include=TRUE} 
+```{r result2 sparql identification du nombre de localisation par œuvre par assertion, eval=TRUE, echo=FALSE, message=FALSE, warning=FALSE, include=TRUE} 
 DT::datatable(metadonnees_localisation_oeuvres)
 ```
 
@@ -987,16 +987,16 @@ Figure 8 : *Classes et propriétés spécifiques de Wikidata mobilisées pour la
 
 ### Construction des requêtes
 
-#### La circulation spatio-temporelle de l'oeuvre
+#### La circulation spatio-temporelle de l'œuvre
 
 Pour connaître les modalités de circulation de l'œuvre dans divers musées et institutions, la requête SPARQL ci-dessous collecte les déclarations relatives aux lieux d'exposition ([P276](https://www.wikidata.org/wiki/Property:P276){target="_blank"}) et la période pendant laquelle l'œuvre ([Q4660880](http://www.wikidata.org/entity/Q4660880){target="_blank"}) semble y avoir été présente. .
 
-Formalisation de la recherche d'une liste des musées et d'intervalles de temps associés où se trouvent l'oeuvre choisie de Vermeer, en langue anglaise, mobilisant le préfixe de propriété directe Wikidata `p` associé à la localisation `P276` de l'oeuvre dans le temps :
+Formalisation de la recherche d'une liste des musées et d'intervalles de temps associés où se trouvent l'œuvre choisie de Vermeer, en langue anglaise, mobilisant le préfixe de propriété directe Wikidata `p` associé à la localisation `P276` de l'œuvre dans le temps :
 
 
 ```
 Sélectionne le nom des données musée, dates et coordonnées telles que { 
-   l'oeuvre choisie est localisée directement au lieu.                    # chemin principal
+   l'œuvre choisie est localisée directement au lieu.                    # chemin principal
    ce lieu est lié dans une assertion de localisation à un musée;         # chemin principal 
            est lié dans une assertion de temporalité à une date de début; # chemin principal
            est lié dans une assertion de temporalité à une date de fin.   # chemin principal 
@@ -1034,7 +1034,7 @@ knitr::include_graphics('figures/query_highlight_wikidata_8.png')
 
 Assignation de la requête dans R sous forme de chaîne de caractère dans un objet et exécution de la requête :
 
-```{r requete sparql identification de la trajectoire spatio-temporelle de l oeuvre choisie,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE , out.width="50%",fig.align = 'center', purl = FALSE}
+```{r requete sparql identification de la trajectoire spatio-temporelle de l œuvre choisie,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE , out.width="50%",fig.align = 'center', purl = FALSE}
 query <- "SELECT ?museeLabel ?dated ?datef ?coord WHERE \
           { \
             wd:Q4660880 p:P276 ?lieu . \
@@ -1074,11 +1074,11 @@ data3_WQSR <- read.csv("data/data3_WQSR.csv", row.names = NULL)
 
 La requête ci-dessous permet d'obtenir l'illustration (figure 9) de l'œuvre ciblée ([P18](https://www.wikidata.org/wiki/Property:P18){target="_blank"})
 
-Formalisation de la recherche d'une illustration de l'oeuvre choisie de Vermeer :
+Formalisation de la recherche d'une illustration de l'œuvre choisie de Vermeer :
 
 ```
 Sélectionner la donnée image telle que { 
-    l'oeuvre choisie a pour image une représentation numérique .   # chemin principal
+    l'œuvre choisie a pour image une représentation numérique .   # chemin principal
 } 
 ```
 
@@ -1116,7 +1116,7 @@ image_oeuvre <- WikidataQueryServiceR::query_wikidata(query_image)
 
 **Enregistrement de l’image de l’œuvre :**
 
-```{r enregistrement de l image collectée de l oeuvre,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
+```{r enregistrement de l image collectée de l œuvre,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 download.file(url = image_oeuvre[[1]],
               destfile = 'data/images/Q4660880.jpg',
               mode = 'wb')
@@ -1337,7 +1337,7 @@ DT::datatable(st_drop_geometry(musee_geo)[1:4])
 ### Répartition par pays
 
 Nous pouvons réaliser une représentation graphique de la distribution spatiale des musées. Pour cela, nous calculons le nombre total d'œuvres exposées par pays :
-```{r nombre d oeuvres par_pays,  eval=TRUE, echo=TRUE, include=TRUE}
+```{r nombre d œuvres par_pays,  eval=TRUE, echo=TRUE, include=TRUE}
 nb_oeuvres_pays <- musee_geo |> 
                       group_by(ADM0_A3) |> 
                       summarise(nb_oeuvres=sum(nb_oeuvres))
@@ -1345,7 +1345,7 @@ nb_oeuvres_pays <- musee_geo |>
 
 Nous pouvons ensuite construire le graphique :
 
-```{r graphe du nombre d oeuvre par pays,  eval=TRUE, echo=TRUE, include=TRUE}
+```{r graphe du nombre d œuvres par pays,  eval=TRUE, echo=TRUE, include=TRUE}
 # Graphique en barre - Nombre d'œuvres par pays
 ggplot(data = nb_oeuvres_pays, 
        aes(x = reorder(ADM0_A3, -nb_oeuvres), y = nb_oeuvres, fill = ADM0_A3)) +
@@ -1376,7 +1376,7 @@ Les données issues de la [troisième requête SPARQL](#troisième-requête-spar
 
 ### Suppression des doublons
 
-```{r nettoyage des localisations en doublon pour l oeuvre choisie,  eval=TRUE, echo=TRUE, include=TRUE}
+```{r nettoyage des localisations en doublon pour l œuvre choisie,  eval=TRUE, echo=TRUE, include=TRUE}
 data <- data3_WQSR[!duplicated(data3_WQSR$dated), ]
 ```
 
