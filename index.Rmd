@@ -271,13 +271,14 @@ Voici quelques éléments basiques du langage SPARQL permettant d'[interroger la
 Afin de permettre une bonne compréhension des requêtes réalisées pour la collecte de données sans entrer dans le détail de la syntaxe propre à SPARQL, celles-ci sont formulées de la manière suivante : 
 
 ````markdown
-SELECT données interrogées, comptage ou concatenage WHERE 
+SELECT [données interrogées] [comptage ou concatenage] WHERE 
   { 
-  chemins principaux du graphe
-  chemins optionnels du graphe
-  service Wikilabel
+  [chemins principaux du graphe]
+  [chemins optionnels du graphe]
+  [service Wikilabel]
   } 
-groupe et ordonne
+[groupe]
+[ordonne]
 ````
 
 <br />
