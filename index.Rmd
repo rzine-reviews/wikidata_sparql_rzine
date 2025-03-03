@@ -379,14 +379,34 @@ Sélection  de(s) identifiant(s) où  {
    } 
  
 ```
+Écriture de la requête en SPARQL :
 
-Conversion de la requête en SPARQL, et assignation de la chaîne de caractère dans un objet : 
+```sparql
+SELECT ?identifiant 
+          WHERE
+          {
+            ?identifiant wdt:P31 wd:Q5;
+            wdt:P373 'Johannes Vermeer'.
+          }
+```  
+
+```{r schemasparql, out.width="50%", fig.align = 'center', echo=FALSE, purl = FALSE }
+knitr::include_graphics('figures/query_highlight_wikidata.png')
+```  
+
+<center>
+*schéma : image de la requête saisie dans le service de requête de wikidata accessible ici : [https://query.wikidata.org/](https://query.wikidata.org/#SELECT%20%3Fidentifiant%20%0A%20%20%20%20%20%20%20%20%20%20WHERE%0A%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Fidentifiant%20wdt%3AP31%20wd%3AQ5%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20wdt%3AP373%20%27Johannes%20Vermeer%27.%0A%20%20%20%20%20%20%20%20%20%20%7D)*
+</center>
+</br> 
+
+Assignation de la requête dans R sous forme de chaîne de caractère dans un objet (le symbole "\\" est un caractère d'échappement permettant de conserver une structure verbeuse de la requête) : 
 
 ```{r requete_sparql,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
-query <- "SELECT ?identifiant  WHERE \
+query <- "SELECT ?identifiant  \
+          WHERE \
           { \
             ?identifiant wdt:P31 wd:Q5; \
-            wdt:P373 'Johannes Vermeer'; \
+            wdt:P373 'Johannes Vermeer'. \
           }"
 ```
 
@@ -475,8 +495,10 @@ knitr::include_graphics('figures/modele_interroge_qualifier_a.png')
 
 #### WikidataR {-}
 
+Formalisation de la recherche des œuvres de Vermeer, musées et de leur localisation :
+
 ```
-Sélectionner les données oeuvre, musée et coordonnées telles que {
+Sélectionner les données œuvre, musée et coordonnées telles que {
     l'oeuvre a pour peintre Johannes Vermeer;               # chemin principal
     en option {
                  l'oeuvre est localisée dans un musee          # chemin optionnel
@@ -484,6 +506,31 @@ Sélectionner les données oeuvre, musée et coordonnées telles que {
               }
 }
 ```
+
+Écriture de la requête en SPARQL :
+
+```
+SELECT ?oeuvre ?musee ?coord WHERE 
+           { 
+             ?oeuvre wdt:P170 wd:Q41264 . 
+             OPTIONAL 
+             {  
+               ?oeuvre wdt:P276 ?musee . 
+               ?musee wdt:P625 ?coord 
+             } 
+           }
+```
+
+```{r schemasparql2, out.width="50%", fig.align = 'center', echo=FALSE, purl = FALSE }
+knitr::include_graphics('figures/query_highlight_wikidata_2.png')
+```  
+
+<center>
+*schéma : image de la requête saisie dans le service de requête de wikidata accessible ici : [https://query.wikidata.org/](https://query.wikidata.org/#SELECT%20%3Foeuvre%20%3Fmusee%20%3Fcoord%20WHERE%20%0A%20%20%20%20%20%20%20%20%20%20%20%7B%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%3Foeuvre%20wdt%3AP170%20wd%3AQ41264%20.%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20OPTIONAL%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%7B%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Foeuvre%20wdt%3AP276%20%3Fmusee%20.%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Fmusee%20wdt%3AP625%20%3Fcoord%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%20%0A%20%20%20%20%20%20%20%20%20%20%20%7D)*
+</center>
+</br> 
+
+Assignation de la requête dans R sous forme de chaîne de caractère dans un objet et exécution de la requête :
 
 ```{r requete sparql des musees WikidataR, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 
@@ -516,6 +563,7 @@ data2_WR <- read.csv("data/data2_WR.csv", row.names = NULL)
 
 #### WikidataQueryServiceR {-}
 
+Formalisation de la recherche des œuvres de Vermeer, musées et de leur localisation, désignés par leur nom en anglais :
 
 ```
 Sélectionner les noms des données oeuvre, musée et les coordonnées telles que { 
@@ -527,6 +575,35 @@ Sélectionner les noms des données oeuvre, musée et les coordonnées telles qu
     en langue anglaise (en)                                    # service Wikilabel
 } 
 ```
+
+Écriture de la requête en SPARQL :
+
+```
+SELECT ?oeuvreLabel ?museeLabel ?coord WHERE
+                 {
+                   ?oeuvre wdt:P170 wd:Q41264 .
+                   OPTIONAL
+                    {
+                      ?oeuvre wdt:P276 ?musee . 
+                      ?musee wdt:P625 ?coord
+                    }
+                   SERVICE wikibase:label
+                    {
+                      bd:serviceParam wikibase:language "[AUTO_LANGUAGE], en".
+                    }
+                  }
+```
+
+```{r schemasparql3, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
+knitr::include_graphics('figures/query_highlight_wikidata_3.png')
+```  
+
+<center>
+*schéma : image de la requête saisie dans le service de requête de wikidata accessible ici : [https://query.wikidata.org/](https://query.wikidata.org/#SELECT%20%3FoeuvreLabel%20%3FmuseeLabel%20%3Fcoord%20WHERE%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Foeuvre%20wdt%3AP170%20wd%3AQ41264%20.%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20OPTIONAL%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Foeuvre%20wdt%3AP276%20%3Fmusee%20.%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Fmusee%20wdt%3AP625%20%3Fcoord%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20SERVICE%20wikibase%3Alabel%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20bd%3AserviceParam%20wikibase%3Alanguage%20%22%5BAUTO_LANGUAGE%5D%2C%20en%22.%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D)*
+</center>
+</br> 
+
+Assignation de la requête dans R sous forme de chaîne de caractère dans un objet et exécution de la requête :
 
 ```{r requete sparql oeuvres de Vermeer et musées, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 query_label <- "SELECT ?oeuvreLabel ?museeLabel ?coord WHERE \
@@ -602,6 +679,8 @@ Pour bien comprendre la différence entre l'interrogation "en surface" du graphe
 
 #### Valeurs simples ou "quasi-vérités" {-}
 
+Formalisation de la recherche d'une liste ordonnée des oeuvres de Vermeer, en langue anglaise, mobilisant le préfixe Wikidata `wdt` associé aux valeurs simples :
+
 ```
 Sélectionner les données oeuvre et leur nom telles que { 
    l'oeuvre a pour créateur le peintre Johannes Vermeer;  # chemin principal
@@ -609,6 +688,32 @@ Sélectionner les données oeuvre et leur nom telles que {
 } 
 par ordre décroissant       # ordonne        
 ```
+
+Écriture de la requête en SPARQL :
+
+```
+SELECT ?oeuvre ?oeuvreLabel 
+WHERE
+     {
+       ?oeuvre wdt:P170 wd:Q41264
+       SERVICE wikibase:label
+               {
+                bd:serviceParam wikibase:language "[AUTO_LANGUAGE], en ".
+               }
+      }
+ORDER BY DESC(?oeuvre)
+```
+
+```{r schemasparql4, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
+knitr::include_graphics('figures/query_highlight_wikidata_4.png')
+```  
+
+<center>
+*schéma : image de la requête saisie dans le service de requête de wikidata accessible ici : [https://query.wikidata.org/](https://query.wikidata.org/#SELECT%20%20%3Foeuvre%20%3FoeuvreLabel%20%0AWHERE%0A%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%3Foeuvre%20wdt%3AP170%20wd%3AQ41264%0A%20%20%20%20%20%20%20SERVICE%20wikibase%3Alabel%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20bd%3AserviceParam%20wikibase%3Alanguage%20%22%5BAUTO_LANGUAGE%5D%2C%20en%20%22.%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0AORDER%20BY%20DESC%28%3Foeuvre%29)*
+</center>
+</br> 
+
+Assignation de la requête dans R sous forme de chaîne de caractère dans un objet et exécution de la requête :
 
 ```{r requete sparql nombre d oeuvres attribuées à Vermeer en valeur simple, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 
@@ -634,6 +739,8 @@ nrow(resultats_oeuvres_valeur_simple)
 
 #### Valeurs complexes ou déclarations {-}
 
+Formalisation de la recherche d'une liste ordonnée des oeuvres de Vermeer, en langue anglaise, mobilisant les préfixes Wikidata `p/ps` associé aux déclarations (valeurs complexes) :
+
 ```
 Sélectionner les données oeuvre et leur nom telles que { 
    l'oeuvre est liée à une assertion de création au peintre Johannes Vermeer; # chemin principal
@@ -641,6 +748,31 @@ Sélectionner les données oeuvre et leur nom telles que {
 } 
 par ordre décroissant       # ordonne     
 ```
+Écriture de la requête en SPARQL :
+
+```
+SELECT ?oeuvre ?oeuvreLabel 
+WHERE
+     {
+     ?oeuvre p:P170/ps:P170 wd:Q41264  
+     SERVICE wikibase:label
+             {
+              bd:serviceParam wikibase:language "[AUTO_LANGUAGE], en ".
+             } 
+     } 
+ORDER BY DESC(?oeuvre)
+```
+
+```{r schemasparql5, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
+knitr::include_graphics('figures/query_highlight_wikidata_5.png')
+```  
+
+<center>
+*schéma : image de la requête saisie dans le service de requête de wikidata accessible ici : [https://query.wikidata.org/](https://query.wikidata.org/#SELECT%20%3Foeuvre%20%3FoeuvreLabel%20%0AWHERE%0A%20%20%20%20%20%7B%0A%20%20%20%20%20%3Foeuvre%20p%3AP170%2Fps%3AP170%20wd%3AQ41264%20%20%0A%20%20%20%20%20SERVICE%20wikibase%3Alabel%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20bd%3AserviceParam%20wikibase%3Alanguage%20%22%5BAUTO_LANGUAGE%5D%2C%20en%20%22.%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%20%0A%20%20%20%20%20%7D%20%0AORDER%20BY%20DESC%28%3Foeuvre%29)*
+</center>
+</br> 
+
+Assignation de la requête dans R sous forme de chaîne de caractère dans un objet et exécution de la requête :
 
 ```{r requete sparql nombre d oeuvres attribuées à Vermeer par asertion, eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE}
 query_declaration <- "SELECT ?oeuvre ?oeuvreLabel WHERE \
@@ -694,6 +826,8 @@ Pour choisir l'œuvre de Vermeer qui a le plus voyagé, nous allons voir ici que
 
 #### "à la surface" du graphe {-}
 
+Formalisation de la recherche d'une liste ordonnée du nombre de musées où se trouvent un oeuvre de Vermeer, en langue anglaise, mobilisant le préfixe Wikidata `wdt` associé aux valeurs simples pour les musées :
+
 ```
 Sélectionne le nom des données oeuvre et compte leur nombre de coordonnées distinctes telles que {
     l'oeuvre a pour créateur le peintre Johannes Vermeer;      # chemin principal
@@ -704,6 +838,33 @@ Sélectionne le nom des données oeuvre et compte leur nombre de coordonnées di
 pour chaque nom d'oeuvre     # groupe
 par ordre décroissant        # ordonne
 ```
+
+Écriture de la requête en SPARQL :
+
+```
+SELECT ?oeuvreLabel (COUNT(DISTINCT?coord) AS ?count) 
+WHERE
+  {
+   ?oeuvre p:P170/ps:P170 wd:Q41264 ; wdt:P276 ?musee .
+   ?musee wdt:P625 ?coord
+   SERVICE wikibase:label
+        {
+         bd:serviceParam wikibase:language "[AUTO_LANGUAGE], en ".
+        } 
+   }
+GROUP BY ?oeuvreLabel
+ORDER BY DESC(?count)
+```
+```{r schemasparql6, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
+knitr::include_graphics('figures/query_highlight_wikidata_6.png')
+```  
+
+<center>
+*schéma : image de la requête saisie dans le service de requête de wikidata accessible ici : [https://query.wikidata.org/](https://query.wikidata.org/#SELECT%20%3FoeuvreLabel%20%28COUNT%28DISTINCT%3Fcoord%29%20AS%20%3Fcount%29%20%0AWHERE%0A%20%20%7B%0A%20%20%20%3Foeuvre%20p%3AP170%2Fps%3AP170%20wd%3AQ41264%20%3B%20wdt%3AP276%20%3Fmusee%20.%0A%20%20%20%3Fmusee%20wdt%3AP625%20%3Fcoord%0A%20%20%20SERVICE%20wikibase%3Alabel%0A%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20bd%3AserviceParam%20wikibase%3Alanguage%20%22%5BAUTO_LANGUAGE%5D%2C%20en%20%22.%0A%20%20%20%20%20%20%20%20%7D%20%0A%20%20%20%7D%0AGROUP%20BY%20%3FoeuvreLabel%0AORDER%20BY%20DESC%28%3Fcount%29)*
+</center>
+</br> 
+
+Assignation de la requête dans R sous forme de chaîne de caractère dans un objet et exécution de la requête :
 
 ```{r requete sparql identification du nombre de localisation par oeuvre en valeur simple, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 query <- "SELECT ?oeuvreLabel \
@@ -732,6 +893,8 @@ metadonnees_localisation_oeuvres_valeur_simple <- WikidataQueryServiceR::query_w
 
 #### dans la partie "immergée" du graphe {-}
 
+Formalisation de la recherche d'une liste ordonnée du nombre de musées où se trouvent un oeuvre de Vermeer, en langue anglaise, mobilisant les préfixes Wikidata `p/ps` associés aux valeurs complexes ou déclarations pour les musées :
+
 ```
 Sélectionne le nom des données oeuvre et compte leur nombre de coordonnées distinctes telles que { 
     l'oeuvre est liée à une assertion de création au peintre Johannes Vermeer;   # chemin principal
@@ -742,6 +905,32 @@ Sélectionne le nom des données oeuvre et compte leur nombre de coordonnées di
 pour chaque nom d'oeuvre     # groupe
 par ordre décroissant        # ordonne
 ```
+Écriture de la requête en SPARQL :
+
+```
+SELECT ?oeuvreLabel (COUNT(DISTINCT?coord) AS ?count) 
+WHERE
+  {
+   ?oeuvre p:P170/ps:P170 wd:Q41264 ; p:P276/ps:P276 ?musee .
+   ?musee wdt:P625 ?coord
+   SERVICE wikibase:label
+        {
+         bd:serviceParam wikibase:language "[AUTO_LANGUAGE], en ".
+        } 
+   }
+GROUP BY ?oeuvreLabel
+ORDER BY DESC(?count)
+```
+```{r schemasparql7, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
+knitr::include_graphics('figures/query_highlight_wikidata_7.png')
+```  
+
+<center>
+*schéma : image de la requête saisie dans le service de requête de wikidata accessible ici : [https://query.wikidata.org/](https://query.wikidata.org/#SELECT%20%3FoeuvreLabel%20%28COUNT%28DISTINCT%3Fcoord%29%20AS%20%3Fcount%29%20%0AWHERE%0A%20%20%7B%0A%20%20%20%3Foeuvre%20p%3AP170%2Fps%3AP170%20wd%3AQ41264%20%3B%20p%3AP276%2Fps%3AP276%20%3Fmusee%20.%0A%20%20%20%3Fmusee%20wdt%3AP625%20%3Fcoord%0A%20%20%20SERVICE%20wikibase%3Alabel%0A%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20bd%3AserviceParam%20wikibase%3Alanguage%20%22%5BAUTO_LANGUAGE%5D%2C%20en%20%22.%0A%20%20%20%20%20%20%20%20%7D%20%0A%20%20%20%7D%0AGROUP%20BY%20%3FoeuvreLabel%0AORDER%20BY%20DESC%28%3Fcount%29)*
+</center>
+</br> 
+
+Assignation de la requête dans R sous forme de chaîne de caractère dans un objet et exécution de la requête :
 
 ```{r requete sparql identification du nombre de localisation par oeuvre par assertion, eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE, include=TRUE}
 query <- "SELECT ?oeuvreLabel \
@@ -800,7 +989,7 @@ Figure 8 : *Classes et propriétés spécifiques de Wikidata mobilisées pour la
 
 Pour connaître les modalités de circulation de l'œuvre dans divers musées et institutions, la requête SPARQL ci-dessous collecte les déclarations relatives aux lieux d'exposition ([P276](https://www.wikidata.org/wiki/Property:P276){target="_blank"}) et la période pendant laquelle l'œuvre ([Q4660880](http://www.wikidata.org/entity/Q4660880){target="_blank"}) semble y avoir été présente. .
 
-
+Formalisation de la recherche d'une liste des musées et d'intervalles de temps associés où se trouvent l'oeuvre choisie de Vermeer, en langue anglaise, mobilisant le préfixe de propriété directe Wikidata `p` associé à la localisation `P276` de l'oeuvre dans le temps :
 
 
 ```
@@ -813,6 +1002,35 @@ Sélectionne le nom des données musée, dates et coordonnées telles que {
    en langue anglaise   (en)           # service Wikilabel
   } 
 ```
+
+Écriture de la requête en SPARQL :
+
+```
+SELECT ?museeLabel ?dated ?datef ?coord 
+WHERE  
+    {
+      wd:Q4660880 p:P276 ?lieu .
+      ?lieu ps:P276 ?musee ; 
+            pq:P580 ?dated ;
+            pq:P582 ?datef .
+      ?musee wdt:P625 ?coord .
+      SERVICE wikibase:label
+            {
+             bd:serviceParam wikibase:language "[AUTO_LANGUAGE], en ".
+            }
+    }
+```
+
+```{r schemasparql8, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
+knitr::include_graphics('figures/query_highlight_wikidata_8.png')
+```  
+
+<center>
+*schéma : image de la requête saisie dans le service de requête de wikidata accessible ici : [https://query.wikidata.org/](https://query.wikidata.org/#SELECT%20%3FmuseeLabel%20%3Fdated%20%3Fdatef%20%3Fcoord%20%0AWHERE%20%20%0A%20%20%20%20%7B%0A%20%20%20%20%20%20wd%3AQ4660880%20p%3AP276%20%3Flieu%20.%0A%20%20%20%20%20%20%3Flieu%20ps%3AP276%20%3Fmusee%20%3B%20%0A%20%20%20%20%20%20%20%20%20%20%20%20pq%3AP580%20%3Fdated%20%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20pq%3AP582%20%3Fdatef%20.%0A%20%20%20%20%20%20%3Fmusee%20wdt%3AP625%20%3Fcoord%20.%0A%20%20%20%20%20%20SERVICE%20wikibase%3Alabel%0A%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20bd%3AserviceParam%20wikibase%3Alanguage%20%22%5BAUTO_LANGUAGE%5D%2C%20en%20%22.%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D)*
+</center>
+</br> 
+
+Assignation de la requête dans R sous forme de chaîne de caractère dans un objet et exécution de la requête :
 
 ```{r requete sparql identification de la trajectoire spatio-temporelle de l oeuvre choisie,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE , out.width="50%",fig.align = 'center', purl = FALSE}
 query <- "SELECT ?museeLabel ?dated ?datef ?coord WHERE \
@@ -854,11 +1072,34 @@ data3_WQSR <- read.csv("data/data3_WQSR.csv", row.names = NULL)
 
 La requête ci-dessous permet d'obtenir l'illustration (figure 9) de l'œuvre ciblée ([P18](https://www.wikidata.org/wiki/Property:P18){target="_blank"})
 
+Formalisation de la recherche d'une illustration de l'oeuvre choisie de Vermeer :
+
 ```
 Sélectionner la donnée image telle que { 
     l'oeuvre choisie a pour image une représentation numérique .   # chemin principal
 } 
 ```
+
+Écriture de la requête en SPARQL :
+
+```
+SELECT ?image 
+WHERE
+     {
+      wd:Q4660880 wdt:P18 ?image
+     }
+```
+
+```{r schemasparql9, out.width="50%", fig.align = 'center', echo=FALSE, purl = FALSE }
+knitr::include_graphics('figures/query_highlight_wikidata_9.png')
+```  
+
+<center>
+*schéma : image de la requête saisie dans le service de requête de wikidata accessible ici : [https://query.wikidata.org/](https://query.wikidata.org/#SELECT%20%3Fimage%20%0AWHERE%0A%20%20%20%20%20%7B%0A%20%20%20%20%20%20wd%3AQ4660880%20wdt%3AP18%20%3Fimage%0A%20%20%20%20%20%7D)*
+</center>
+</br> 
+
+Assignation de la requête dans R sous forme de chaîne de caractère dans un objet et exécution de la requête :
 
 ```{r requete image,  eval=TRUE, echo=TRUE, include=TRUE, warning=FALSE, message=FALSE , out.width="50%",fig.align = 'center', purl = FALSE}
 query_image <- "SELECT ?image WHERE \
