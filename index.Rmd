@@ -481,6 +481,8 @@ En utilisant `WikidataQueryServiceR`, on obtient un identifiant uniforme de ress
 
 Dans cette seconde étape, on se propose de lister les œuvres de Johannes Vermeer avec leurs localisations. Au sein du graphe Wikidata, on fait l'hypothèse que les coordonnées de la localisation d'une œuvre, c'est à dire la valeur `point(x,y)`, sont celles du musée ou de l'institution au sein de laquelle l'œuvre est actuellement exposée ou située. Afin d'obtenir cette localisation à partir de l'identifiant du peintre, on trace un premier chemin du graphe tel qu'illustré dans la figure 6. 
 
+On utilise le terme SPARQL `OPTIONAL` pour permettre de collecter les données y compris dans le cas où l'information de localisation d'une œuvre n'existerait pas dans Wikidata.
+
 ```{r figure 6, out.width="75%", fig.align = 'center', echo=FALSE, purl = FALSE }
 knitr::include_graphics('figures/modele_interroge_qualifier_a.png')
 ```
