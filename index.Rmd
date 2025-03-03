@@ -142,16 +142,7 @@ prédicat = préfixe:propriété
 domaine/co-domaine = préfixe:entité
 ```
 
-Le préfixe est, en quelque sorte, la déclaration de "la langue" dans laquelle il faut lire "la classe" (entité ou propriété) qui le suit. En langage naturel, on pourrait l'écrire ainsi : `en:city`, `fr:ville`, `de:burg`,`es:cuidad` etc. avec la déclaration de l'espace numérique où est défini cette langue : `PREFIX en:<http://malangueanglaisequejutilise.en/#`, par exemple. 
-Cela permet non seulement de simplifier l'écriture :
-```!sparql
-<http://malangueanglaisequejutilise.en/#>:city
-```
-en
-```!sparql
-en:city
-```
-mais aussi de résoudre les questions de définition ou de polysémie des termes.
+Le préfixe identifie le cadre de définition de concept. Par exemple, l'entité "ville" peut être décrit par "la ville de l'urbaniste", "la ville du géographe", "la ville selon l'Insee", etc. En effet, les ontologies et les vocabulaires sont généralement construits dans un cadre disciplinaire (histoire, épidémiologie, géographie, biologie etc.) ou de domaine d'activité (bibliothèques, musées, archives etc.). Il est donc possible de retrouver un même terme désignant une entité ou un concept, mais qui le définit différemment. Par exemple, supposons que les termes ou concepts d'un champ de l'urbanisme sont décrits dans l'espace numérique dans une page `"http://mondomaineurbanisme.fr/"`, et ceux d'un champ de la géographie dans une autre page `"http://mondomainegeographie.fr/"` (toutes deux fictives ici). Les préfixes associés, respectivement `PREFIX urba:<http://mondomaineurbanisme.fr/#>` et `PREFIX geo:<http://mondomainegeographie.fr/#>` par exemple, permettent non seulement de simplifier la syntaxe : `<http://mondomaineurbanisme.fr/#>:ville` en `urba:ville` ou `<http://mondomainegeographie.fr/#>:ville` en `geo:ville` mais aussi de résoudre les questions de définition ou de polysémie d'un même terme (ici "ville") dans deux domaines disciplinaires différents.
 
 Classiquement,  pour rechercher des entités qui ont pour [type](https://www.w3.org/TR/rdf-schema/#ch_type){target="_blank"}, dans le vocabulaire RDF (rdf), celui d'une [ville](https://dbpedia.org/ontology/city){target="_blank"}, dans le vocabulaire DBpedia (dbo), on peut écrire le triplet sous la forme suivante :
 
