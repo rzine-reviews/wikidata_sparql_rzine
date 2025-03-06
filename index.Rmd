@@ -191,16 +191,16 @@ Dans le cas où le prédicat de Wikidata est utilisé avec le préfixe `p`, `ps`
 Les *packages* utilisés pour réaliser l'ensemble de la chaîne de traitement présenté dans ce document sont les suivants :
 </br>
 
-- [`wikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html)^[[`WikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html){target="_blank"} est développé par Thomas Shafee, Os Keyes, Serena Signorelli, Alex Lum, Christian Graul et Mikhail Popov (développeur de [`WikidataQueryServiceR`](https://cran.r-project.org/web/packages/WikidataQueryServiceR/index.html)), membre de la Fondation Wikimédia. Il est maintenu par Thomas Shafee de l'université australienne La Trobe de l'état Victoria.] (et son extension [`WikidataQueryServiceR`](https://cran.r-project.org/web/packages/WikidataQueryServiceR/index.html)) : permet d'écrire une requête pour interroger le graphe de données Wikidata au moyen d'une Interface de Programmation d’Application (API) pour le service de requêtes Wikidata en langage SPARQL^[ Le [service de collecte des données de Wikidata en langage SPARQL](https://query.wikidata.org/){target="_blank"} offre une solution très complète en première approche (exemples, assistant de requêtes, diversité des représentations etc.). Toutefois, dans une dynamique d'exploration du graphe Wikidata, l'utilisation de R facilite la compréhension, l'archivage et la reproductibilité des différentes requêtes spécifiques réalisées. Pour cette raison, nous utilisons le *package* [`WikidataR`](https://www.rdocumentation.org/packages/WikidataR/versions/2.3.3){target="_blank"} ou alternativement [`WikidataQueryServiceR`](https://cran.r-project.org/web/packages/WikidataQueryServiceR/index.html){target="_blank"} qui est un *package* ayant des fonctionnalités plus développées.] ;  
-- [`rnaturalearth`](https://cran.r-project.org/web/packages/rnaturalearth/index.html) : met à disposition les données géographiques de [Natural Earth](https://www.naturalearthdata.com/){target="_blank"} ;  
-- [`sf`](https://cran.r-project.org/web/packages/sf/index.html) : permet la gestion et la manipulation de données géographiques vectorielles ;  
-- [`dplyr`](https://cran.r-project.org/web/packages/dplyr/index.html) : pour la manipulation des données ;     
-- [`mapview`](https://cran.r-project.org/web/packages/mapview/index.html) : pour l'affichage interactif de données géographiques (repose sur la librairie [JavaScript Leaflet](https://leafletjs.com/){target="_blank"}) ;  
-- [`tmap`](https://cran.r-project.org/web/packages/tmap/index.html) : pour la création de cartes thématiques ;  
-- [`ggplot2`](https://cran.r-project.org/web/packages/ggplot2/index.html) : permet la production de graphiques basés sur la grammaire graphique [@wilkinson05] ;  
-- [`av`](https://cran.r-project.org/web/packages/av/index.html) : génère des vidéos à partir d'images ou de graphiques R ;  
-- [`patchwork`](https://cran.r-project.org/web/packages/patchwork/index.html) : permet de combiner plusieurs graphiques `ggplot2` dans la fenêtre graphique ;  
-- [`jpeg`](https://cran.r-project.org/web/packages/jpeg/index.html) : permet l'import, l'enregistrement et l'affichage des images matricielles (format bitmap) ;  
+- [`wikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html){target="_blank"}^[[`WikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html){target="_blank"} est développé par Thomas Shafee, Os Keyes, Serena Signorelli, Alex Lum, Christian Graul et Mikhail Popov (développeur de [`WikidataQueryServiceR`](https://cran.r-project.org/web/packages/WikidataQueryServiceR/index.html){target="_blank"}), membre de la Fondation Wikimédia. Il est maintenu par Thomas Shafee de l'université australienne La Trobe de l'état Victoria.] (et son extension [`WikidataQueryServiceR`](https://cran.r-project.org/web/packages/WikidataQueryServiceR/index.html){target="_blank"}) : permet d'écrire une requête pour interroger le graphe de données Wikidata au moyen d'une Interface de Programmation d’Application (API) pour le service de requêtes Wikidata en langage SPARQL^[ Le [service de collecte des données de Wikidata en langage SPARQL](https://query.wikidata.org/){target="_blank"} offre une solution très complète en première approche (exemples, assistant de requêtes, diversité des représentations etc.). Toutefois, dans une dynamique d'exploration du graphe Wikidata, l'utilisation de R facilite la compréhension, l'archivage et la reproductibilité des différentes requêtes spécifiques réalisées. Pour cette raison, nous utilisons le *package* [`WikidataR`](https://www.rdocumentation.org/packages/WikidataR/versions/2.3.3){target="_blank"} ou alternativement [`WikidataQueryServiceR`](https://cran.r-project.org/web/packages/WikidataQueryServiceR/index.html){target="_blank"} qui est un *package* ayant des fonctionnalités plus développées.] ;  
+- [`rnaturalearth`](https://cran.r-project.org/web/packages/rnaturalearth/index.html){target="_blank"} : met à disposition les données géographiques de [Natural Earth](https://www.naturalearthdata.com/){target="_blank"} ;  
+- [`sf`](https://cran.r-project.org/web/packages/sf/index.html){target="_blank"} : permet la gestion et la manipulation de données géographiques vectorielles ;  
+- [`dplyr`](https://cran.r-project.org/web/packages/dplyr/index.html){target="_blank"} : pour la manipulation des données ;     
+- [`mapview`](https://cran.r-project.org/web/packages/mapview/index.html){target="_blank"} : pour l'affichage interactif de données géographiques (repose sur la librairie [JavaScript Leaflet](https://leafletjs.com/){target="_blank"}) ;  
+- [`tmap`](https://cran.r-project.org/web/packages/tmap/index.html){target="_blank"} : pour la création de cartes thématiques ;  
+- [`ggplot2`](https://cran.r-project.org/web/packages/ggplot2/index.html){target="_blank"} : permet la production de graphiques basés sur la grammaire graphique [@wilkinson05] ;  
+- [`av`](https://cran.r-project.org/web/packages/av/index.html){target="_blank"} : génère des vidéos à partir d'images ou de graphiques R ;  
+- [`patchwork`](https://cran.r-project.org/web/packages/patchwork/index.html){target="_blank"} : permet de combiner plusieurs graphiques `ggplot2` dans la fenêtre graphique ;  
+- [`jpeg`](https://cran.r-project.org/web/packages/jpeg/index.html){target="_blank"} : permet l'import, l'enregistrement et l'affichage des images matricielles (format bitmap) ;  
 
 
 Vous pouvez utiliser les lignes de code suivantes pour installer ces *packages* :
@@ -563,6 +563,13 @@ write.csv(x = data2_WR, file = "data/data2_WR.csv", row.names = FALSE)
 data2_WR <- read.csv("data/data2_WR.csv", row.names = NULL)
 ```
 
+
+
+<div class="alert alert-success" role="alert">Les coordonnées géographiques renseignées dans wikidata sont exclusivement exprimées dans le [système de coordonnées géographiques **WGS84**](https://fr.wikipedia.org/wiki/WGS_84){target="_blank"} (cf. [propriété 625](https://www.wikidata.org/wiki/Property_talk:P625){target="_blank"})</div>
+
+<br />
+
+
 #### WikidataQueryServiceR {-}
 
 Formalisation de la recherche des œuvres de Vermeer, musées et de leur localisation, désignés par leur nom en anglais :
@@ -639,7 +646,11 @@ data2_WQSR <- read.csv("data/data2_WQSR.csv", row.names = NULL)
 ```
 
 
+
+<div class="alert alert-success" role="alert">Les coordonnées géographiques renseignées dans wikidata sont exclusivement exprimées dans le [système de coordonnées géographiques **WGS84**](https://fr.wikipedia.org/wiki/WGS_84){target="_blank"} (cf. [propriété 625](https://www.wikidata.org/wiki/Property_talk:P625){target="_blank"})</div>
+
 <br />
+
 
 ## Premiers éléments d'analyse exploratoire
 
