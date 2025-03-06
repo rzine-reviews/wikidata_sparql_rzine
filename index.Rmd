@@ -1466,6 +1466,8 @@ DT::datatable(st_drop_geometry(data_geo[c("museeLabel", "coord", "ADM0_A3")]))
 ```
 
 
+<br />
+
 # Trajectoire spatio-temporelle
 
 Nous allons maintenant prendre en compte la dimension temporelle des données collectées, c'est à dire la période d'exposition du tableau *A Young Woman Seated at the Virginals* dans chaque musée, comme renseigné dans Wikidata.
@@ -2170,9 +2172,9 @@ kableExtra::kable_styling(knitr::kable(rzine::sessionRzine()[[2]], row.names = F
 ```{r Citation, echo=FALSE}
 rref <- bibentry(
    bibtype = "misc",
-   title = "Spatio-temporal Wikidata, exploration de données collaboratives du web 3.0",
+   title = "Spatio-temporal Wikidata*. Exploration de données ouvertes et liées du web 3.0",
    subtitle = "Histoire de cadre : élaboration d’une trajectoire spatio-temporelle",
-   author = c("Raphaëlle KRUMMEICH", "Hugues PECOUT","Sébastien REY-COYREHOURCQ"),
+   author = c("Raphaëlle Krummeich", "Hugues Pecout","Sébastien Rey-Coyrehourcq"),
    doi = "10.48645/xxxxxx",
    url = "https://rzine.fr/publication_rzine/xxxxxxx/",
    keywords ="FOS: Other social sciences",
