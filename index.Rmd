@@ -3,12 +3,12 @@ title: "*Spatio-temporal Wikidata*. Exploration de données ouvertes et liées d
 subtitle: "Histoire de cadre : élaboration d'une trajectoire spatio-temporelle"
 date: "`r Sys.Date()`"
 author: 
- - name: Raphaëlle KRUMMEICH
-   affiliation: IDEES, UMR6266 - université de Rouen Normandie, CNRS
- - name: Hugues PECOUT
-   affiliation: Géographie-cités, UMR8504 - CNRS
- - name: Sébastien REY-COYREHOURCQ
-   affiliation: IDEES, UMR6266 - université de Rouen Normandie, CNRS
+ - name: Raphaëlle Krummeich 
+   affiliation: UMR IDEES, université de Rouen Normandie
+ - name: Hugues Pecout
+   affiliation: UMR Géographie-cités, CNRS
+ - name: Sébastien Rey-Coyrehourcq 
+   affiliation: UMR IDEES, université de Rouen Normandie
 image: "figures/Rplot.png"   
 logo: "figures/rzine.png"  
 output:
@@ -50,7 +50,7 @@ knitr::opts_chunk$set(echo=TRUE,
 
 Cet article présente une exploration du graphe Wikidata (cf. [parties 1.2](#standard-rdf-du-w3c) et [3](#exploration-du-graphe-wikidata)) et le traitement des données extraites (cf. [parties 2](#packages-et-données) et [4](#exploration-spatiale)). 
 
-Du requêtage en langage SPARQL (cf. [partie 1.3](#le-langage-sparql)) au traitement et à la représentation des données issues du graphe Wikidata, ce document présente, étape par étape, l'ensemble de la chaîne de traitement réalisée. Le processus exploratoire, parfois itératif, a été conservé afin de mieux comprendre l'approche réflexive des auteurs et autrice. Le *notebook* retranscrit les démarches scientifique et méthodologique adoptées.
+Du requêtage en langage SPARQL (cf. [partie 1.3](#le-langage-sparql)) au traitement et à la représentation des données issues du graphe Wikidata, ce document présente, étape par étape, l'ensemble de la chaîne de traitement réalisée. Le processus exploratoire, parfois itératif, a été conservé afin de mieux comprendre l'approche réflexive des auteurs et autrice. Ce *notebook* retranscrit les démarches scientifique et méthodologique adoptées.
 
 Le schéma organisant ces données est esquissé dans la [partie 1](#wikimédia-wikidata-w3c). Afin de permettre une reproduction des traitements et des résultats présentés, les données automatiquement collectées au `r format(Sys.time(), "%d %B %Y")` et utilisées dans ce document sont mises à disposition (cf. [partie 2.2](#données-collectées)). L'idée de départ conduit à la démarche suivante en 3 étapes : 
 
@@ -1205,8 +1205,7 @@ DT::datatable(data2_WQSR)
 
 ### Regroupement par musée
 
-Plusieurs œuvres semblent avoir été exposées dans les mêmes lieux. Afin de cartographier les musées ayant exposé différentes œuvres de Johannes Vermeer, nous réalisons un regroupement des œuvres par intitulé des musées (*musee*), tout en calculant le nombre d'œuvres que chacune de ces institutions a exposées au cours du temps.
-
+Plusieurs œuvres semblent avoir été exposées dans les mêmes lieux. Afin de cartographier les musées ayant exposé différentes œuvres de Johannes Vermeer, nous réalisons un regroupement des œuvres par intitulé des musées (*musee*), tout en calculant le nombre d'œuvres que chacune de ces institutions a exposées au cours du temps. Pour cette opération, nous utilisons [l'opérateur *pipe*](https://larmarange.github.io/guide-R/manipulation/pipe.html#le-pipe-natif-de-r){target="_blank"} (`|>`) qui permet d'enchainer plusieurs fonctions de manière lisible.
 
 ```{r regroupement par musee et histogramme,  eval=TRUE, echo=TRUE, include=TRUE}
 library(dplyr)
