@@ -191,16 +191,16 @@ Dans le cas où le prédicat de Wikidata est utilisé avec le préfixe `p`, `ps`
 Les *packages* utilisés pour réaliser l'ensemble de la chaîne de traitement présenté dans ce document sont les suivants :
 </br>
 
-- `wikidataR`^[[`WikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html){target="_blank"} est développé par Thomas Shafee, Os Keyes, Serena Signorelli, Alex Lum, Christian Graul et Mikhail Popov (développeur de `WikidataQueryServiceR`), membre de la Fondation Wikimédia. Il est maintenu par Thomas Shafee de l'université australienne La Trobe de l'état Victoria.] (et son extension `WikidataQueryServiceR`) : permet d'écrire une requête pour interroger le graphe de données Wikidata au moyen d'une Interface de Programmation d’Application (API) pour le service de requêtes Wikidata en langage SPARQL^[ Le [service de collecte des données de Wikidata en langage SPARQL](https://query.wikidata.org/){target="_blank"} offre une solution très complète en première approche (exemples, assistant de requêtes, diversité des représentations etc.). Toutefois, dans une dynamique d'exploration du graphe Wikidata, l'utilisation de R facilite la compréhension, l'archivage et la reproductibilité des différentes requêtes spécifiques réalisées. Pour cette raison, nous utilisons le *package* [`WikidataR`](https://www.rdocumentation.org/packages/WikidataR/versions/2.3.3){target="_blank"} ou alternativement [`WikidataQueryServiceR`](https://cran.r-project.org/web/packages/WikidataQueryServiceR/index.html){target="_blank"} qui est un *package* ayant des fonctionnalités plus développées.] ;  
-- `rnaturalearth` : met à disposition les données géographiques de [Natural Earth](https://www.naturalearthdata.com/){target="_blank"} ;  
-- `sf` : permet la gestion et la manipulation de données géographiques vectorielles ;  
-- `dplyr` : pour la manipulation des données ;     
-- `mapview` : pour l'affichage interactif de données géographiques (repose sur la librairie [JavaScript Leaflet](https://leafletjs.com/){target="_blank"}) ;  
-- `tmap` : pour la création de cartes thématiques ;  
-- `ggplot2` : permet la production de graphiques basés sur la grammaire graphique [@wilkinson05] ;  
-- `av` : génère des vidéos à partir d'images ou de graphiques R ;  
-- `patchwork` : permet de combiner plusieurs graphiques `ggplot2` dans la fenêtre graphique ;  
-- `jpeg` : permet l'import, l'enregistrement et l'affichage des images matricielles (format bitmap) ;  
+- [`wikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html)^[[`WikidataR`](https://cran.r-project.org/web/packages/WikidataR/index.html){target="_blank"} est développé par Thomas Shafee, Os Keyes, Serena Signorelli, Alex Lum, Christian Graul et Mikhail Popov (développeur de [`WikidataQueryServiceR`](https://cran.r-project.org/web/packages/WikidataQueryServiceR/index.html)), membre de la Fondation Wikimédia. Il est maintenu par Thomas Shafee de l'université australienne La Trobe de l'état Victoria.] (et son extension [`WikidataQueryServiceR`](https://cran.r-project.org/web/packages/WikidataQueryServiceR/index.html)) : permet d'écrire une requête pour interroger le graphe de données Wikidata au moyen d'une Interface de Programmation d’Application (API) pour le service de requêtes Wikidata en langage SPARQL^[ Le [service de collecte des données de Wikidata en langage SPARQL](https://query.wikidata.org/){target="_blank"} offre une solution très complète en première approche (exemples, assistant de requêtes, diversité des représentations etc.). Toutefois, dans une dynamique d'exploration du graphe Wikidata, l'utilisation de R facilite la compréhension, l'archivage et la reproductibilité des différentes requêtes spécifiques réalisées. Pour cette raison, nous utilisons le *package* [`WikidataR`](https://www.rdocumentation.org/packages/WikidataR/versions/2.3.3){target="_blank"} ou alternativement [`WikidataQueryServiceR`](https://cran.r-project.org/web/packages/WikidataQueryServiceR/index.html){target="_blank"} qui est un *package* ayant des fonctionnalités plus développées.] ;  
+- [`rnaturalearth`](https://cran.r-project.org/web/packages/rnaturalearth/index.html) : met à disposition les données géographiques de [Natural Earth](https://www.naturalearthdata.com/){target="_blank"} ;  
+- [`sf`](https://cran.r-project.org/web/packages/sf/index.html) : permet la gestion et la manipulation de données géographiques vectorielles ;  
+- [`dplyr`](https://cran.r-project.org/web/packages/dplyr/index.html) : pour la manipulation des données ;     
+- [`mapview`](https://cran.r-project.org/web/packages/mapview/index.html) : pour l'affichage interactif de données géographiques (repose sur la librairie [JavaScript Leaflet](https://leafletjs.com/){target="_blank"}) ;  
+- [`tmap`](https://cran.r-project.org/web/packages/tmap/index.html) : pour la création de cartes thématiques ;  
+- [`ggplot2`](https://cran.r-project.org/web/packages/ggplot2/index.html) : permet la production de graphiques basés sur la grammaire graphique [@wilkinson05] ;  
+- [`av`](https://cran.r-project.org/web/packages/av/index.html) : génère des vidéos à partir d'images ou de graphiques R ;  
+- [`patchwork`](https://cran.r-project.org/web/packages/patchwork/index.html) : permet de combiner plusieurs graphiques `ggplot2` dans la fenêtre graphique ;  
+- [`jpeg`](https://cran.r-project.org/web/packages/jpeg/index.html) : permet l'import, l'enregistrement et l'affichage des images matricielles (format bitmap) ;  
 
 
 Vous pouvez utiliser les lignes de code suivantes pour installer ces *packages* :
@@ -1269,14 +1269,14 @@ tmap_mode(mode = "view")
 tm_basemap() +
 tm_shape(musee_geo) +
 tm_symbols(size="nb_oeuvres",
-           scale = 4,
+           scale = 3,
            col="red3",
            border.col="white",
            alpha =0.5,
            border.lwd=0.1,
            border.alpha=0.5,
            id = "musees",
-           popup.vars=c("Nombre d'œuvres :"="nb_oeuvres" ))
+           popup.vars=c("Nombre d'œuvres :"="nb_oeuvres" )) 
 ```
 
 <center>
@@ -1495,17 +1495,19 @@ tmap_mode(mode = "view")
 tm_basemap() +
 
 tm_shape(data_musee) +
-tm_bubbles("duree",
+tm_symbols(size ="duree",
            col = "ADM0_A3",
-           scale = 9,
+           scale = 4,
            border.col="white",
            alpha = 0.7,
-           border.lwd=0.1,
+           lwd=0.1,
            border.alpha=0.5,
            title.col="Pays d'exposition",
-           id = "musee",
+           id = "museeLabel",
            popup.vars=c("Nombre total de jours :"="duree", 
-                        "Nombre total de séjours :"="nb_expos"))
+                        "Nombre total de séjours :"="nb_expos")) 
+
+
 ```
 
 <center>
