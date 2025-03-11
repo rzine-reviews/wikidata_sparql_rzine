@@ -8,7 +8,7 @@ Sébastien REY-COYREHOURCQ (UMR IDEES, Université de Rouen Normandie)
 
 **Evaluateur·trices :**  
 Lise Vaudor (UMR Environnement Ville Société, CNRS)    
-Luca Longour (UMR Espace-Dev, IRD)   
+Lucas Longour (UMR Espace-Dev, IRD)   
 Mattia Bunel (UMR Géographie-Cités, EHESS)
 
 **Résumé :**   
