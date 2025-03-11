@@ -22,7 +22,7 @@ nocite: |
 link-citations: true
 github: "rzine-reviews/wikidata_sparql_rzine"
 # gitlab: "https://gitlab.huma-num.fr/gt-notebook/workshop/workshop_3_decembre_2021/atelier_notebooks"
-doi: "xx.xxx/xxxx.xxxxxxx"
+doi: "10.48645/qw41-b476"
 licence: "by-nc-sa"
 
 # Only Creative Commons Licence 
