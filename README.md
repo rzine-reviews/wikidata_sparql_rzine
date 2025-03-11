@@ -13,6 +13,7 @@ Mattia Bunel (UMR Géographie-Cités, EHESS)
 
 **Résumé :**   
 Cet article restitue l'expérimentation reproductible d'une approche interdisciplinaire interrogeant une trajectoire spatiale et temporelle d'un objet du Web sémantique, requêtée à l'aide du langage SPARQL. La méthode d'exploration du graphe de connaissances Wikidata explicitée pas à pas permet d'introduire les concepts de base de l'ingénierie des connaissances et, simultanément, des techniques de traitement et visualisation spatiale et temporelle des données collectées.
+
 Pour la consulter, cliquez [**ici**]( https://rzine-reviews.github.io/wikidata_sparql_rzine/)
 
 [![DOI:10.48645/qw41-b476](https://zenodo.org/badge/DOI/10.48645/qw41-b476.svg)](https://doi.org/10.48645/qw41-b476)
